@@ -4,9 +4,10 @@ import {
   TOGGLE_BOOKMARK,
   ADD_RECENT_WORD,
   REMOVE_RECENT_WORD,
+  TOGGLE_ARCHIVE,
   CLEAR_RECENT_WORDS,
 } from "../actions/words";
-import { WORDS_DATA } from "../../models/dummy-data";
+import { WORDS_DATA, ARCHIVED_WORDS_LIST } from "../../models/dummy-data";
 import { prepareForWordDetails } from "../../utils/helper";
 
 // Prepare Word Details as Section List for initial state
@@ -68,6 +69,7 @@ const initialState = {
     },
   ],
   words: WORDS_DATA_ORGANIZED,
+  archivedWordsList: ARCHIVED_WORDS_LIST,
   recentWords: [
     "pragmatic",
     "detrimental",
@@ -84,14 +86,16 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  let targetWord;
   let updatedWords;
   let updatedWordsList;
+  let updatedArchivedList;
   let updatedRecentWords;
 
   switch (action.type) {
     case TOGGLE_BOOKMARK:
       const { wordDetails, isBookmarked } = action.payload;
-      const targetWord = wordDetails.word;
+      targetWord = wordDetails.word;
       updatedWordsList = [...state.wordsList];
       updatedWords = { ...state.words };
 
@@ -115,6 +119,35 @@ export default (state = initialState, action) => {
 
       return { ...state, wordsList: updatedWordsList, words: updatedWords };
 
+    case TOGGLE_ARCHIVE:
+      targetWord = action.payload.targetWord;
+      updatedWords = { ...state.words };
+      updatedArchivedList = { ...state.archivedWordsList };
+
+      const dateArchived = updatedWords[targetWord].archived;
+      if (dateArchived) {
+        const month = dateArchived.getMonth();
+        const year = dateArchived.getFullYear();
+        const archiveRecord = updatedArchivedList[year][month];
+        const index = archiveRecord.indexOf(targetWord);
+        if (index > -1) archiveRecord.splice(index, 1);
+
+        updatedWords[targetWord].archived = null;
+      } else {
+        const today = new Date();
+        const month = today.getMonth();
+        const year = today.getFullYear();
+        updatedArchivedList[year][month].unshift(targetWord);
+
+        updatedWords[targetWord].archived = today;
+      }
+
+      return {
+        ...state,
+        words: updatedWords,
+        archivedWordsList: updatedArchivedList,
+      };
+
     case ADD_RECENT_WORD:
       const { wordSearched } = action.payload;
       updatedRecentWords = [...state.recentWords];
@@ -124,7 +157,6 @@ export default (state = initialState, action) => {
 
       updatedRecentWords.unshift(wordSearched);
 
-      console.log(updatedRecentWords);
       // Limit # of Recent words to 20
       if (updatedRecentWords.length > 20) updatedRecentWords.pop();
 

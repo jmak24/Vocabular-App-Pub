@@ -3,54 +3,24 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
-import { apiSuggestedWords } from "../utils/helper";
 
-const SearchBar = ({
-  displayRecentSearches,
-  displaySuggestedWords,
-  onNoResultsFound,
-}) => {
+const FilterBar = ({}) => {
   const [searchInput, setSearchInput] = useState("");
   const searchInputRef = useRef(null);
-
-  useEffect(() => {
-    searchInputRef.current.focus();
-  }, []);
 
   const handleSetSearchInput = (event) => {
     let value = event.nativeEvent.text;
     value = value.replace(/[^-A-Za-z ]/gi, "");
     setSearchInput(value);
 
-    if (value === "") displayRecentSearches();
+    // if (value === "") {displayRecentSearches();}
   };
 
   const handleClearSearchInput = () => {
     searchInputRef.current.clear();
     setSearchInput("");
 
-    displayRecentSearches();
-  };
-
-  const handleSearch = async () => {
-    try {
-      if (searchInput.trim().length <= 0) {
-        console.log("Invalid Search Input");
-        return;
-      }
-
-      console.log("Searching... ", searchInput);
-
-      const suggestedWords = await apiSuggestedWords(searchInput);
-      if (suggestedWords.length > 0) {
-        displaySuggestedWords(suggestedWords);
-      } else {
-        onNoResultsFound(searchInput);
-      }
-    } catch (err) {
-      if (err) console.log(err);
-      onNoResultsFound(searchInput);
-    }
+    // displayRecentSearches();
   };
 
   const clearTextInputBtn = searchInput !== "" && (
@@ -64,7 +34,7 @@ const SearchBar = ({
   );
 
   return (
-    <View style={styles.searchBar}>
+    <View style={styles.FilterBar}>
       <Ionicons
         name={"ios-search"}
         size={25}
@@ -78,7 +48,6 @@ const SearchBar = ({
         onChange={handleSetSearchInput}
         value={searchInput}
         ref={searchInputRef}
-        onSubmitEditing={handleSearch}
         returnKeyType={"search"}
       />
       {clearTextInputBtn}
@@ -87,7 +56,7 @@ const SearchBar = ({
 };
 
 const styles = StyleSheet.create({
-  searchBar: {
+  FilterBar: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -110,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchBar;
+export default FilterBar;

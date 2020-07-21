@@ -10,13 +10,18 @@ import { Ionicons } from "@expo/vector-icons";
 
 import CustomText from "./CustomText";
 import Colors from "../constants/Colors";
-import { toggleBookmark } from "../store/actions/words";
+import { toggleArchive, toggleBookmark } from "../store/actions/words";
 
 const MAX_SCROLL_DISTANCE = -80;
 const MAX_TITLE_SCALE = 1.1;
 const MAX_LEFT_PADDING = 17;
 
-const DefinitionHeader = ({ wordDetails, isBookmarked, animatedScroll }) => {
+const DefinitionHeader = ({
+  wordDetails,
+  isArchived,
+  isBookmarked,
+  animatedScroll,
+}) => {
   const dispatch = useDispatch();
   const animatedTitleExpand = animatedScroll.interpolate({
     inputRange: [MAX_SCROLL_DISTANCE, 0],
@@ -50,14 +55,17 @@ const DefinitionHeader = ({ wordDetails, isBookmarked, animatedScroll }) => {
           )}
         </View>
         <View style={styles.row}>
-          <TouchableWithoutFeedback>
-            <Ionicons
-              name='ios-volume-high'
-              size={37}
-              style={styles.icon}
-              color={Colors.secondaryText}
-            />
-          </TouchableWithoutFeedback>
+          {isArchived && (
+            <TouchableWithoutFeedback
+              onPress={() => dispatch(toggleArchive(wordDetails.word))}
+            >
+              <View style={styles.archiveBtn}>
+                <CustomText option='bodyGray'>
+                  {isArchived ? "Archived" : "Archive"}
+                </CustomText>
+              </View>
+            </TouchableWithoutFeedback>
+          )}
           <TouchableWithoutFeedback
             onPress={() => dispatch(toggleBookmark(wordDetails, isBookmarked))}
           >
@@ -90,8 +98,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 32,
   },
+  archiveBtn: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 25,
+    borderColor: Colors.secondaryText,
+    borderWidth: 1,
+  },
   icon: {
-    marginHorizontal: 10,
+    marginLeft: 15,
   },
 });
 

@@ -13,20 +13,20 @@ import CustomText from "../components/CustomText";
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
-const WordNotFound = ({ word, isModal, navigation }) => (
+const WordNotFound = ({ word, navigation }) => (
   <View
     style={{
       ...styles.screen,
-      paddingTop: isModal ? 40 : 95,
+      paddingTop: 95,
       alignItems: "center",
     }}
   >
-    <View style={{ ...styles.topStrip, paddingTop: isModal ? 40 : 50 }}>
+    <View style={{ ...styles.topStrip, paddingTop: 50 }}>
       <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
         <Ionicons
           name={"ios-arrow-back"}
           size={32}
-          style={{ ...styles.backArrow, top: isModal ? 20 : 50 }}
+          style={{ ...styles.backArrow, top: 50 }}
           color={Colors.secondaryText}
         />
       </TouchableWithoutFeedback>

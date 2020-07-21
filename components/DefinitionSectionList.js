@@ -22,39 +22,53 @@ const DefinitionSectionList = ({
   selectWordHandler,
   animatedScroll,
   isBookmarked,
+  isArchived,
 }) => {
-  const cardsExpanded = useState({});
+  const [cardsExpanded, setCardsExpanded] = useState({});
   const [arrowCommand, setArrowCommand] = useState("");
 
-  const updateExpandedCount = (expanded, speechCategory) => {
-    if (cardsExpanded.hasOwnProperty(speechCategory)) {
-      if (expanded) {
-        cardsExpanded[speechCategory] += 1;
-      } else {
-        cardsExpanded[speechCategory] -= 1;
-      }
+  const updateExpandedCount = (expanded, speechCategory, multiUpdate) => {
+    if (multiUpdate) {
+      if (expanded) multiUpdate = 0;
+      setCardsExpanded({ ...cardsExpanded, [speechCategory]: multiUpdate });
     } else {
-      if (expanded) {
-        cardsExpanded[speechCategory] = 1;
+      if (cardsExpanded.hasOwnProperty(speechCategory)) {
+        if (expanded) {
+          setCardsExpanded({
+            ...cardsExpanded,
+            [speechCategory]: cardsExpanded[speechCategory] + 1,
+          });
+        } else {
+          setCardsExpanded({
+            ...cardsExpanded,
+            [speechCategory]: cardsExpanded[speechCategory] - 1,
+          });
+        }
       } else {
-        cardsExpanded[speechCategory] = 0;
+        if (expanded) {
+          setCardsExpanded({ ...cardsExpanded, [speechCategory]: 1 });
+        } else {
+          setCardsExpanded({ ...cardsExpanded, [speechCategory]: 0 });
+        }
       }
     }
-    console.log(cardsExpanded);
   };
 
   const onPressArrowIcon = (speechCategory) => {
     let command = speechCategory + "-";
+    let expanded = cardsExpanded[speechCategory] > 0 ? true : false;
     if (cardsExpanded.hasOwnProperty(speechCategory)) {
-      command += cardsExpanded[speechCategory] === 0 ? "expand" : "collapse";
+      command += expanded ? "collapse" : "expand";
     } else {
       command += "expand";
     }
+
     // generate unique state by appending (x,y) to trigger re-render
     const id = arrowCommand.includes("(y)") ? "(x)" : "(y)";
     setArrowCommand(command + id);
+    updateExpandedCount(expanded, speechCategory, 4);
   };
-  console.log("RE-RENDERED");
+
   return (
     <SectionList
       sections={wordDetails.results}
@@ -70,6 +84,7 @@ const DefinitionSectionList = ({
           <DefinitionHeader
             wordDetails={wordDetails}
             isBookmarked={isBookmarked}
+            isArchived={isArchived}
             animatedScroll={animatedScroll}
           />
         );

@@ -85,7 +85,7 @@ export const WORDS_DATA = {
       all: "'ɛkoʊ",
     },
     frequency: 3.89,
-    archived: false,
+    archived: null,
   },
   totalitarian: {
     word: "totalitarian",
@@ -122,7 +122,7 @@ export const WORDS_DATA = {
       all: "toʊ,tælɪ'tɜriən",
     },
     frequency: 2.64,
-    archived: false,
+    archived: null,
   },
   anarchy: {
     word: "anarchy",
@@ -152,7 +152,7 @@ export const WORDS_DATA = {
       all: "'ænərki",
     },
     frequency: 3.41,
-    archived: false,
+    archived: null,
   },
   democratic: {
     word: "democratic",
@@ -204,7 +204,7 @@ export const WORDS_DATA = {
       all: ",dɛmə'krætɪk",
     },
     frequency: 3.76,
-    archived: false,
+    archived: null,
   },
   paragon: {
     word: "paragon",
@@ -246,7 +246,7 @@ export const WORDS_DATA = {
       all: "'pærə,ɡɑn",
     },
     frequency: 2.36,
-    archived: false,
+    archived: null,
   },
   docile: {
     word: "docile",
@@ -284,7 +284,7 @@ export const WORDS_DATA = {
       all: "'dɑsəl",
     },
     frequency: 3.05,
-    archived: true,
+    archived: null,
   },
   regressive: {
     word: "regressive",
@@ -323,7 +323,7 @@ export const WORDS_DATA = {
       all: "rɪ'grɛsɪv",
     },
     frequency: 1.82,
-    archived: true,
+    archived: null,
   },
   exuberant: {
     word: "exuberant",
@@ -357,7 +357,7 @@ export const WORDS_DATA = {
       all: "ɪɡ'zubərənt",
     },
     frequency: 2.57,
-    archived: true,
+    archived: null,
   },
   postulate: {
     word: "postulate",
@@ -421,7 +421,7 @@ export const WORDS_DATA = {
       all: "'pɑsʧə,leɪt",
     },
     frequency: 1.82,
-    archived: true,
+    archived: null,
   },
   patriotism: {
     word: "patriotism",
@@ -450,7 +450,7 @@ export const WORDS_DATA = {
       all: "'peɪtriə,tɪzəm",
     },
     frequency: 3.2,
-    archived: true,
+    archived: null,
   },
 };
 
@@ -471,6 +471,23 @@ export const WORDS_SECTION_LIST = [
     ],
   },
 ];
+
+export const ARCHIVED_WORDS_LIST = {
+  "2020": [
+    ["cynic", "daoism", "docile", "paragon"],
+    ["catalyst", "proponent", "chronicle"],
+    ["timber", "triage", "dynasty", "detrimental"],
+    ["counter", "conflate", "cycle", "propagate"],
+    ["finnicky", "lackluster", "tango", "microcosm"],
+    ["deprecate", "monarchy", "palpable", "anarchy"],
+    ["conjecture", "postulate", "discern", "proposition"],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ],
+};
 
 export const DEFINITIONS_SECTION_LIST = [
   {

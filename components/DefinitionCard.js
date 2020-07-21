@@ -66,23 +66,22 @@ const DefinitionCard = ({
   const uniqueId = speechCategory + "-" + index;
 
   useEffect(() => {
-    // if (toExpand !== isExpanded) toggle();
     const arrowCmd = arrowCommand.slice(0, -3); // remove (x,y) identifiers
     const speechCmd = arrowCmd.split("-")[0];
     const actionCmd = arrowCmd.split("-")[1];
     if (speechCmd === speechCategory) {
       const toExpand = actionCmd === "expand" ? true : false;
-      if (toExpand !== isExpanded) toggle();
+      if (toExpand !== isExpanded) toggle(true);
     }
   }, [arrowCommand]);
 
-  const toggle = () => {
+  const toggle = (isMulti) => {
     const expandedHeight =
       containerHeight.current + styles.animatedContainer.top;
     const finalValue = isExpanded ? 0 : expandedHeight;
 
     Animated.spring(animatedCard, { toValue: finalValue }).start();
-    updateExpandedCount(!isExpanded, speechCategory);
+    if (!isMulti) updateExpandedCount(!isExpanded, speechCategory);
     setIsExpanded(!isExpanded);
   };
 
@@ -91,7 +90,7 @@ const DefinitionCard = ({
   };
 
   return (
-    <TouchableOpacity onPress={toggle} activeOpacity={0.65}>
+    <TouchableOpacity onPress={() => toggle()} activeOpacity={0.65}>
       <View style={styles.definitionCard}>
         <View style={styles.row}>
           <CustomText option='body'>{index}.</CustomText>

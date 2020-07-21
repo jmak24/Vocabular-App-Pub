@@ -16,7 +16,7 @@ const DISPLAY_STATE = {
   loading: { state: "loading" },
 };
 
-const SearchScreen = ({ navigation }) => {
+const SearchScreen = ({ navigation, route }) => {
   const [displayState, setDisplayState] = useState(DISPLAY_STATE.recent.state);
   const [suggestedWords, setSuggestedWords] = useState([]);
   const [noResults, setNoResults] = useState("");
@@ -25,14 +25,9 @@ const SearchScreen = ({ navigation }) => {
   const recentWords = useSelector((state) => state.words.recentWords);
   const [showMoreRecent, setShowMoreRecent] = useState(false);
 
-  useEffect(() => {
-    displayRecentSearches();
-  }, [recentWords]);
-
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
       word,
-      isModal: true,
     });
   };
 
@@ -64,6 +59,7 @@ const SearchScreen = ({ navigation }) => {
           color={Colors.secondaryText}
           onPress={() => {
             dispatch(removeRecentWord(indexToRemove));
+            displayRecentSearches();
           }}
         />
       );
@@ -101,7 +97,7 @@ const SearchScreen = ({ navigation }) => {
           }}
         >
           <CustomText style={styles.clearSearchesBtn} option='thin'>
-            Clear All Recent
+            Clear Recent Words
           </CustomText>
         </TouchableOpacity>
       );
@@ -179,20 +175,13 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.topBarContainer}>
+      <View style={styles.searchBarContainer}>
         <SearchBar
           selectWordHandler={selectWordHandler}
           displayRecentSearches={displayRecentSearches}
           displaySuggestedWords={displaySuggestedWords}
           onNoResultsFound={onNoResultsFound}
         />
-        <CustomText
-          style={styles.cancelButton}
-          option='body'
-          onPress={navigation.goBack}
-        >
-          Close
-        </CustomText>
       </View>
       <MainContent />
     </View>
@@ -203,7 +192,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "flex-start",
-    paddingTop: 15,
+    paddingTop: 50,
     paddingHorizontal: 20,
     backgroundColor: Colors.background,
   },
@@ -213,15 +202,11 @@ const styles = StyleSheet.create({
   icon: {
     paddingHorizontal: 4,
   },
-  topBarContainer: {
+  searchBarContainer: {
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  cancelButton: {
-    color: Colors.secondaryText,
-    marginLeft: 15,
   },
   centerContent: {
     width: "100%",
@@ -234,8 +219,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listHeader: {
-    marginTop: 30,
-    marginBottom: 20,
+    marginVertical: 30,
   },
   listWordContainer: {
     flexDirection: "row",

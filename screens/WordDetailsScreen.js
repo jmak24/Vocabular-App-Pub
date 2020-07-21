@@ -23,13 +23,14 @@ const MAX_SCROLL_DISTANCE = 90;
 const TITLE_OFFSET_Y = 40;
 
 const WordDetailsScreen = ({ route, navigation }) => {
-  const { word, isModal } = route.params;
+  const { word } = route.params;
   const savedWordDetails = useSelector((state) => state.words.words);
   const dispatch = useDispatch();
 
   const [wordDetails, setWordDetails] = useState({});
   const animatedScroll = useRef(new Animated.Value(0)).current;
   const isBookmarked = savedWordDetails.hasOwnProperty(word);
+  const isArchived = savedWordDetails.archived !== null;
 
   const animatedTopTitle = animatedScroll.interpolate({
     inputRange: [0, MAX_SCROLL_DISTANCE],
@@ -44,7 +45,6 @@ const WordDetailsScreen = ({ route, navigation }) => {
   const selectWordHandler = async (word) => {
     navigation.push("WordDetails", {
       word,
-      isModal,
     });
   };
 
@@ -52,6 +52,7 @@ const WordDetailsScreen = ({ route, navigation }) => {
     try {
       if (isBookmarked) {
         console.log("Retrieving from saved words...");
+        console.log("TEST");
         setWordDetails(savedWordDetails[word]);
       } else {
         console.log("Pulling word data...");
@@ -60,6 +61,7 @@ const WordDetailsScreen = ({ route, navigation }) => {
         prepareForWordDetails(wordData);
 
         setWordDetails(wordData);
+        console.log("recent word added");
         dispatch(addRecentWord(word));
       }
     } catch (err) {
@@ -68,27 +70,23 @@ const WordDetailsScreen = ({ route, navigation }) => {
     }
   };
 
-  // Style Constants
-  const TOP_SECTION_HEIGHT = isModal ? 70 : 95;
-  const TOP_SECTION_PADDINGTOP = isModal ? 25 : 50;
-
   // Word Details Successfully loaded
   if (wordDetails) {
     const wordDetailsLoaded = Object.keys(wordDetails).length > 0;
     return (
-      <View style={{ ...styles.screen, paddingTop: TOP_SECTION_HEIGHT }}>
+      <View style={{ ...styles.screen, paddingTop: 95 }}>
         <View
           style={{
             ...styles.topStrip,
-            height: TOP_SECTION_HEIGHT,
-            paddingTop: TOP_SECTION_PADDINGTOP,
+            height: 95,
+            paddingTop: 50,
           }}
         >
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <Ionicons
               name={"ios-arrow-back"}
               size={32}
-              style={{ ...styles.backArrow, top: TOP_SECTION_PADDINGTOP }}
+              style={{ ...styles.backArrow, top: 50 }}
               color={Colors.secondaryText}
             />
           </TouchableWithoutFeedback>
@@ -102,15 +100,14 @@ const WordDetailsScreen = ({ route, navigation }) => {
             selectWordHandler={selectWordHandler}
             animatedScroll={animatedScroll}
             isBookmarked={isBookmarked}
+            isArchived={isArchived}
           />
         )}
       </View>
     );
     // Word Details failed to load
   } else {
-    return (
-      <WordNotFound word={word} navigation={navigation} isModal={isModal} />
-    );
+    return <WordNotFound word={word} navigation={navigation} />;
   }
 };
 

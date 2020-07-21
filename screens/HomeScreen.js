@@ -1,8 +1,7 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
-  Button,
   SectionList,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -14,8 +13,6 @@ import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../components/CustomText";
 import { addWord, removeWord, toggleBookmark } from "../store/actions/words";
 import Colors from "../constants/Colors";
-
-const panther = { word: "panther", result: [] };
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -74,11 +71,6 @@ const HomeScreen = ({ navigation }) => {
           }
         }}
       />
-      <Button
-        style={styles.button}
-        title='TOGGLE FAVORITE'
-        onPress={() => dispatch(toggleBookmark(panther, false))}
-      />
     </View>
   );
 };
@@ -100,7 +92,7 @@ const styles = StyleSheet.create({
     width: "85%",
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingVertical: 6,
+    paddingVertical: 8,
     paddingHorizontal: 10,
     marginTop: 5,
     borderRadius: 5,
@@ -124,10 +116,6 @@ const styles = StyleSheet.create({
     marginRight: 50,
     marginVertical: 30,
     backgroundColor: Colors.grayTint,
-  },
-  button: {
-    backgroundColor: "#000",
-    marginBottom: 100,
   },
 });
 
