@@ -82,7 +82,7 @@ const RootNavigator = () => (
           const color = focused ? colorSelected : colorDefault;
 
           if (route.name === "Archived") {
-            iconName = "ios-list-box";
+            iconName = "ios-archive";
           } else {
             iconName = "ios-" + route.name.toLowerCase();
           }
@@ -92,6 +92,9 @@ const RootNavigator = () => (
       tabBarOptions={{
         activeTintColor: "#4F4F4F",
         inactiveTintColor: "#BABABA",
+        style: {
+          borderTopWidth: 0,
+        },
       }}
     >
       <Tab.Screen name='Home' component={MainNavigator} />

@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import Colors from "../constants/Colors";
 import CustomText from "../components/CustomText";
@@ -42,6 +43,11 @@ const WordNotFound = ({ word, navigation }) => (
     </CustomText>
   </View>
 );
+
+WordNotFound.propTypes = {
+  word: PropTypes.string.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
 
 const styles = StyleSheet.create({
   screen: {

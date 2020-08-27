@@ -65,6 +65,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "poppins-semibold",
   },
+  toast: {
+    fontSize: 16,
+    fontFamily: "poppins-medium",
+    color: "#fff",
+  },
 });
 
 export default CustomText;

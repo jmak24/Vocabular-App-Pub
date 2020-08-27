@@ -1,26 +1,49 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import Colors from "../constants/Colors";
 
-const FilterBar = ({}) => {
+const FilterBar = ({
+  handleFilterSearch,
+  clearWordsList,
+  isFilterMode,
+  toggleFilterMode,
+  forwardRefCancelFilter,
+}) => {
   const [searchInput, setSearchInput] = useState("");
   const searchInputRef = useRef(null);
 
-  const handleSetSearchInput = (event) => {
+  useEffect(() => {
+    forwardRefCancelFilter(handleCancelFilter);
+  }, []);
+
+  const handleSetFilterInput = (event) => {
     let value = event.nativeEvent.text;
     value = value.replace(/[^-A-Za-z ]/gi, "");
     setSearchInput(value);
 
-    // if (value === "") {displayRecentSearches();}
+    if (value === "") {
+      clearWordsList();
+    } else {
+      handleFilterSearch(value.toLowerCase());
+    }
   };
 
-  const handleClearSearchInput = () => {
+  const handleClearFilterInput = () => {
     searchInputRef.current.clear();
     setSearchInput("");
 
-    // displayRecentSearches();
+    clearWordsList();
+  };
+
+  const handleCancelFilter = () => {
+    if (searchInputRef.current) {
+      searchInputRef.current.clear();
+      searchInputRef.current.blur();
+      setSearchInput("");
+    }
   };
 
   const clearTextInputBtn = searchInput !== "" && (
@@ -29,7 +52,7 @@ const FilterBar = ({}) => {
       size={25}
       style={styles.icon}
       color={Colors.secondaryText}
-      onPress={handleClearSearchInput}
+      onPress={handleClearFilterInput}
     />
   );
 
@@ -45,14 +68,27 @@ const FilterBar = ({}) => {
         style={styles.textInput}
         placeholder='Find Word'
         selectionColor={Colors.primaryTheme}
-        onChange={handleSetSearchInput}
+        onChange={handleSetFilterInput}
         value={searchInput}
         ref={searchInputRef}
         returnKeyType={"search"}
+        onFocus={() => {
+          if (!isFilterMode) {
+            toggleFilterMode();
+          }
+        }}
       />
       {clearTextInputBtn}
     </View>
   );
+};
+
+FilterBar.propTypes = {
+  handleFilterSearch: PropTypes.func.isRequired,
+  toggleFilterMode: PropTypes.func.isRequired,
+  clearWordsList: PropTypes.func.isRequired,
+  forwardRefCancelFilter: PropTypes.func.isRequired,
+  isFilterMode: PropTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({

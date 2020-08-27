@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   SectionList,
@@ -8,11 +8,12 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import CustomText from "./CustomText";
 import DefinitionCard from "./DefinitionCard";
 import Colors from "../constants/Colors";
-import DefinitionHeader from "../components/DefinitionHeader";
+import WordDetailsHeader from "../components/WordDetailsHeader";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -20,12 +21,27 @@ const screen = Dimensions.get("screen");
 const DefinitionSectionList = ({
   wordDetails,
   selectWordHandler,
-  animatedScroll,
-  isBookmarked,
-  isArchived,
+  // isBookmarked,
+  // isArchived,
+  // animatedScroll,
 }) => {
   const [cardsExpanded, setCardsExpanded] = useState({});
   const [arrowCommand, setArrowCommand] = useState("");
+  const numItemsInSpeech = useRef(null);
+
+  useEffect(() => {
+    numItemsInSpeech.current = loadNumItemsInSpeech();
+  }, []);
+
+  const loadNumItemsInSpeech = () => {
+    const numItemsInSpeech = {};
+    for (let i = 0; i < wordDetails.results.length; i++) {
+      const speech = wordDetails.results[i].title;
+      const numItems = wordDetails.results[i].data.length;
+      numItemsInSpeech[speech] = numItems;
+    }
+    return numItemsInSpeech;
+  };
 
   const updateExpandedCount = (expanded, speechCategory, multiUpdate) => {
     if (multiUpdate) {
@@ -63,32 +79,41 @@ const DefinitionSectionList = ({
       command += "expand";
     }
 
-    // generate unique state by appending (x,y) to trigger re-render
+    // set unique state by appending (x,y) to trigger re-render
     const id = arrowCommand.includes("(y)") ? "(x)" : "(y)";
     setArrowCommand(command + id);
-    updateExpandedCount(expanded, speechCategory, 4);
+    updateExpandedCount(
+      expanded,
+      speechCategory,
+      numItemsInSpeech.current[speechCategory]
+    );
   };
 
   return (
     <SectionList
       sections={wordDetails.results}
-      onScroll={Animated.event([
-        { nativeEvent: { contentOffset: { y: animatedScroll } } },
-      ])}
+      // onScroll={Animated.event(
+      //   [
+      //     {
+      //       nativeEvent: { contentOffset: { y: animatedScroll } },
+      //     },
+      //   ],
+      //   { useNativeDriver: false }
+      // )}
       stickySectionHeadersEnabled={true}
       style={styles.sectionList}
       scrollIndicatorInsets={{ right: 1 }}
       keyExtractor={(item, index) => item.partOfSpeech + index}
-      ListHeaderComponent={() => {
-        return (
-          <DefinitionHeader
-            wordDetails={wordDetails}
-            isBookmarked={isBookmarked}
-            isArchived={isArchived}
-            animatedScroll={animatedScroll}
-          />
-        );
-      }}
+      // ListHeaderComponent={() => {
+      //   return (
+      //     <WordDetailsHeader
+      //       wordDetails={wordDetails}
+      //       isBookmarked={isBookmarked}
+      //       isArchived={isArchived}
+      //       animatedScroll={animatedScroll}
+      //     />
+      //   );
+      // }}
       renderSectionHeader={({ section: { title } }) => {
         // cards collapsed
         let arrowIcon = (
@@ -136,9 +161,22 @@ const DefinitionSectionList = ({
   );
 };
 
+DefinitionSectionList.propTypes = {
+  wordDetails: PropTypes.object.isRequired,
+  selectWordHandler: PropTypes.func.isRequired,
+  // isBookmarked: PropTypes.bool.isRequired,
+  // isArchived: PropTypes.bool.isRequired,
+  animatedScroll: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.any }),
+  ]),
+};
+
 const styles = StyleSheet.create({
   sectionList: {
     width: "100%",
+    paddingTop: 25,
+    backgroundColor: Colors.grayTint,
   },
   speechCategoryBar: {
     width: "100%",

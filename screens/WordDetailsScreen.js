@@ -6,13 +6,17 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Animated,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import { addRecentWord } from "../store/actions/words";
 import CustomText from "../components/CustomText";
 import DefinitionSectionList from "../components/DefinitionSectionList";
 import WordNotFound from "../components/WordNotFound";
+import WordDetailsTabBar from "../components/WordDetailsTabBar";
+import WordDetailsHeader from "../components/WordDetailsHeader";
 import { apiWordSearch, prepareForWordDetails } from "../utils/helper";
 import Colors from "../constants/Colors";
 
@@ -30,7 +34,10 @@ const WordDetailsScreen = ({ route, navigation }) => {
   const [wordDetails, setWordDetails] = useState({});
   const animatedScroll = useRef(new Animated.Value(0)).current;
   const isBookmarked = savedWordDetails.hasOwnProperty(word);
-  const isArchived = savedWordDetails.archived !== null;
+  const isArchived =
+    savedWordDetails.hasOwnProperty(word) &&
+    savedWordDetails[word].archived !== undefined &&
+    savedWordDetails[word].archived !== null;
 
   const animatedTopTitle = animatedScroll.interpolate({
     inputRange: [0, MAX_SCROLL_DISTANCE],
@@ -52,7 +59,6 @@ const WordDetailsScreen = ({ route, navigation }) => {
     try {
       if (isBookmarked) {
         console.log("Retrieving from saved words...");
-        console.log("TEST");
         setWordDetails(savedWordDetails[word]);
       } else {
         console.log("Pulling word data...");
@@ -61,7 +67,6 @@ const WordDetailsScreen = ({ route, navigation }) => {
         prepareForWordDetails(wordData);
 
         setWordDetails(wordData);
-        console.log("recent word added");
         dispatch(addRecentWord(word));
       }
     } catch (err) {
@@ -73,6 +78,7 @@ const WordDetailsScreen = ({ route, navigation }) => {
   // Word Details Successfully loaded
   if (wordDetails) {
     const wordDetailsLoaded = Object.keys(wordDetails).length > 0;
+
     return (
       <View style={{ ...styles.screen, paddingTop: 95 }}>
         <View
@@ -95,13 +101,30 @@ const WordDetailsScreen = ({ route, navigation }) => {
           </Animated.View>
         </View>
         {wordDetailsLoaded && (
-          <DefinitionSectionList
-            wordDetails={wordDetails}
-            selectWordHandler={selectWordHandler}
-            animatedScroll={animatedScroll}
-            isBookmarked={isBookmarked}
-            isArchived={isArchived}
-          />
+          <ScrollView
+            style={{ flex: 1, width: "100%" }}
+            scrollEventThrottle={10}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: { contentOffset: { y: animatedScroll } },
+                },
+              ],
+              { useNativeDriver: false }
+            )}
+          >
+            <WordDetailsHeader
+              wordDetails={wordDetails}
+              isBookmarked={isBookmarked}
+              isArchived={isArchived}
+              animatedScroll={animatedScroll}
+            />
+            <WordDetailsTabBar
+              wordDetails={wordDetails}
+              selectWordHandler={selectWordHandler}
+              // animatedScroll={animatedScroll}
+            />
+          </ScrollView>
         )}
       </View>
     );
@@ -109,6 +132,10 @@ const WordDetailsScreen = ({ route, navigation }) => {
   } else {
     return <WordNotFound word={word} navigation={navigation} />;
   }
+};
+
+WordDetailsScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

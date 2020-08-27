@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import "react-native-get-random-values";
+import React, { useState, useEffect } from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
@@ -6,11 +7,14 @@ import { AppLoading } from "expo";
 import { composeWithDevTools } from "redux-devtools-extension";
 import * as Font from "expo-font";
 
-import RootNavigator from "./navigation/RootNavigator.js";
 import wordsReducer from "./store/reducers/words";
+import toastsReducer from "./store/reducers/toasts";
+import AppContainer from "./AppContainer";
+import { setupInitWordsState } from "./store/actions/words";
 
 const rootReducer = combineReducers({
   words: wordsReducer,
+  toasts: toastsReducer,
 });
 const store = createStore(
   rootReducer,
@@ -30,6 +34,10 @@ const fetchFonts = () => {
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  useEffect(() => {
+    store.dispatch(setupInitWordsState());
+  }, []);
+
   if (!fontLoaded) {
     return (
       <AppLoading
@@ -42,7 +50,7 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <RootNavigator />
+      <AppContainer />
     </Provider>
   );
 }

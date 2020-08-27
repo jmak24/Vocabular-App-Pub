@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Animated } from "react-native";
+import PropTypes from "prop-types";
 
 import Colors from "../constants/Colors";
 import RelatedItems from "../constants/RelatedItems";
@@ -52,6 +53,13 @@ const DefinitionRelatedItems = ({
   );
 };
 
+DefinitionRelatedItems.propTypes = {
+  selectWordHandler: PropTypes.func.isRequired,
+  initContainerHeight: PropTypes.func.isRequired,
+  details: PropTypes.object.isRequired,
+  uniqueId: PropTypes.string.isRequired,
+};
+
 const DefinitionCard = ({
   details,
   arrowCommand,
@@ -69,7 +77,7 @@ const DefinitionCard = ({
     const arrowCmd = arrowCommand.slice(0, -3); // remove (x,y) identifiers
     const speechCmd = arrowCmd.split("-")[0];
     const actionCmd = arrowCmd.split("-")[1];
-    if (speechCmd === speechCategory) {
+    if (speechCmd === speechCategory && relatedItemsExist) {
       const toExpand = actionCmd === "expand" ? true : false;
       if (toExpand !== isExpanded) toggle(true);
     }
@@ -80,7 +88,11 @@ const DefinitionCard = ({
       containerHeight.current + styles.animatedContainer.top;
     const finalValue = isExpanded ? 0 : expandedHeight;
 
-    Animated.spring(animatedCard, { toValue: finalValue }).start();
+    Animated.spring(animatedCard, {
+      toValue: finalValue,
+      bounciness: 4,
+      useNativeDriver: false,
+    }).start();
     if (!isMulti) updateExpandedCount(!isExpanded, speechCategory);
     setIsExpanded(!isExpanded);
   };
@@ -89,8 +101,18 @@ const DefinitionCard = ({
     containerHeight.current = event.nativeEvent.layout.height;
   };
 
+  const relatedItemsExist = RELATED_TYPES.reduce((result, type) => {
+    if (result || details.hasOwnProperty(type)) return true;
+    return false;
+  }, false);
+
   return (
-    <TouchableOpacity onPress={() => toggle()} activeOpacity={0.65}>
+    <TouchableOpacity
+      onPress={() => {
+        if (relatedItemsExist) toggle();
+      }}
+      activeOpacity={0.65}
+    >
       <View style={styles.definitionCard}>
         <View style={styles.row}>
           <CustomText option='body'>{index}.</CustomText>
@@ -116,6 +138,15 @@ const DefinitionCard = ({
       </View>
     </TouchableOpacity>
   );
+};
+
+DefinitionCard.propTypes = {
+  details: PropTypes.object.isRequired,
+  arrowCommand: PropTypes.string.isRequired,
+  updateExpandedCount: PropTypes.func.isRequired,
+  selectWordHandler: PropTypes.func.isRequired,
+  speechCategory: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 const styles = StyleSheet.create({

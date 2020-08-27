@@ -1,38 +1,73 @@
-export const ADD_WORD = "ADD_WORD";
-export const REMOVE_WORD = "REMOVE_WORD";
+import { setToast } from "./toasts";
+import { getAsyncStorage } from "../../utils/helper";
+
+export const SETUP_INIT = "SETUP_INIT";
 export const TOGGLE_BOOKMARK = "TOGGLE_BOOKMARK";
 export const TOGGLE_ARCHIVE = "TOGGLE_ARCHIVE";
 export const ADD_RECENT_WORD = "ADD_RECENT_WORD";
 export const REMOVE_RECENT_WORD = "REMOVE_RECENT_WORD";
 export const CLEAR_RECENT_WORDS = "CLEAR_RECENT_WORDS";
 
-export const addWord = (wordDetails) => {
-  return {
-    type: ADD_WORD,
-    payload: { wordDetails },
-  };
+export const setupInitWordsState = () => async (dispatch) => {
+  try {
+    const words = await getAsyncStorage("words");
+    const wordsList = await getAsyncStorage("wordsList");
+    const archivedWords = await getAsyncStorage("archivedWords");
+    const recentWords = await getAsyncStorage("recentWords");
+    let archivedWordsList = [];
+    for (const year in archivedWords) {
+      for (let i = 0; i < 12; i++) {
+        archivedWordsList = archivedWordsList.concat(archivedWords[year][i]);
+      }
+    }
+
+    dispatch({
+      type: SETUP_INIT,
+      payload: {
+        words,
+        wordsList,
+        archivedWords,
+        archivedWordsList,
+        recentWords,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    const toastMsg = "Failed to load the intial state";
+    dispatch(setToast("toastDanger", toastMsg, "ios-warning"));
+  }
 };
 
-export const removeWord = (wordDetails) => {
-  return {
-    type: REMOVE_WORD,
-    payload: { wordDetails },
-  };
+export const toggleBookmark = (wordDetails, isBookmarked) => async (
+  dispatch
+) => {
+  try {
+    dispatch({
+      type: TOGGLE_BOOKMARK,
+      payload: { wordDetails, isBookmarked },
+    });
+  } catch (err) {
+    console.log(err);
+    const toastMsg = isBookmarked
+      ? "An error occurred removing from Bookmark"
+      : "An error occurred adding to Bookmark";
+    dispatch(setToast("toastDanger", toastMsg, "ios-warning"));
+  }
 };
 
-export const toggleBookmark = (wordDetails, isBookmarked) => {
-  return {
-    type: TOGGLE_BOOKMARK,
-    payload: { wordDetails, isBookmarked },
-  };
-};
-
-export const toggleArchive = (targetWord) => {
-  console.log("target word ", targetWord);
-  return {
-    type: TOGGLE_ARCHIVE,
-    payload: { targetWord },
-  };
+export const toggleArchive = (targetWord, isArchived) => async (dispatch) => {
+  try {
+    dispatch({
+      type: TOGGLE_ARCHIVE,
+      payload: { targetWord },
+    });
+  } catch (err) {
+    console.log(err);
+    const toastMsg = isArchived
+      ? "An error occurred removing from Archive"
+      : "An error occurred adding to Archive";
+    dispatch(setToast("toastDanger", toastMsg, "ios-warning"));
+  }
 };
 
 export const addRecentWord = (wordSearched) => {

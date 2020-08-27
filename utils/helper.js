@@ -1,3 +1,6 @@
+import "react-native-get-random-values";
+import { nanoid } from "nanoid/async/index.native";
+import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 
 import { SPEECH_TYPES } from "../constants/OrderedItems";
@@ -8,6 +11,23 @@ const rapidapiKey = "003083cb60mshf221133e954e641p19ce9bjsnf315a270c0e0";
 
 const dataMuseAPIurl = "https://api.datamuse.com";
 const suggestedQuery = "/sug?s=";
+
+// Generate UUID
+export const generateUUID = async () => {
+  return await nanoid();
+};
+
+// Store Local Async Storage
+export const setAsyncStorage = async (storageKey, value) => {
+  const jsonValue = JSON.stringify(value);
+  await AsyncStorage.setItem(storageKey, jsonValue);
+};
+
+// Get Local Async Storage
+export const getAsyncStorage = async (storageKey) => {
+  const value = await AsyncStorage.getItem(storageKey);
+  if (value !== null) return JSON.parse(value);
+};
 
 // Web service call to WordsAPI (API key required)
 // Retrieves definition data from WordsAPI

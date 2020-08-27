@@ -473,6 +473,7 @@ export const WORDS_SECTION_LIST = [
 ];
 
 export const ARCHIVED_WORDS_LIST = {
+  "2019": [[], [], [], [], [], [], [], [], [], [], [], []],
   "2020": [
     ["cynic", "daoism", "docile", "paragon"],
     ["catalyst", "proponent", "chronicle"],
@@ -481,13 +482,44 @@ export const ARCHIVED_WORDS_LIST = {
     ["finnicky", "lackluster", "tango", "microcosm"],
     ["deprecate", "monarchy", "palpable", "anarchy"],
     ["conjecture", "postulate", "discern", "proposition"],
-    [],
+    ["old testament", "new testament"],
     [],
     [],
     [],
     [],
   ],
 };
+export const ARCHIVED_WORDS_EXTENDED = [
+  "cynic",
+  "daoism",
+  "docile",
+  "paragon",
+  "catalyst",
+  "proponent",
+  "chronicle",
+  "timber",
+  "triage",
+  "dynasty",
+  "detrimental",
+  "counter",
+  "conflate",
+  "cycle",
+  "propagate",
+  "finnicky",
+  "lackluster",
+  "tango",
+  "microcosm",
+  "deprecate",
+  "monarchy",
+  "palpable",
+  "anarchy",
+  "conjecture",
+  "postulate",
+  "discern",
+  "proposition",
+  "old testament",
+  "new testament",
+];
 
 export const DEFINITIONS_SECTION_LIST = [
   {

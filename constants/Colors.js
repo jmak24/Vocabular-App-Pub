@@ -4,5 +4,7 @@ export default {
   primaryText: "#000000",
   secondaryText: "#7C7C7C",
   grayTint: "#F6F6F6",
-  favoriteIcon: "#FF4A4A",
+  toastInfo: "#1a96e8",
+  toastWarning: "#ebbe17",
+  toastDanger: "#de5752",
 };

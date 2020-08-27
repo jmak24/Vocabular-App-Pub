@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import Colors from "../constants/Colors";
 import { apiSuggestedWords } from "../utils/helper";
@@ -84,6 +85,12 @@ const SearchBar = ({
       {clearTextInputBtn}
     </View>
   );
+};
+
+SearchBar.propTypes = {
+  displayRecentSearches: PropTypes.func.isRequired,
+  displaySuggestedWords: PropTypes.func.isRequired,
+  onNoResultsFound: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -1,29 +1,24 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   View,
-  SectionList,
+  FlatList,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Dimensions,
   StyleSheet,
+  Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import CustomText from "../components/CustomText";
-import { addWord, removeWord, toggleBookmark } from "../store/actions/words";
 import Colors from "../constants/Colors";
+import BookmarkImage from "../assets/bookmark-img.png";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const HomeScreen = ({ navigation }) => {
-  const dispatch = useDispatch();
   const wordsList = useSelector((state) => state.words.wordsList);
-
-  const openSearchHandler = () => {
-    navigation.navigate("Search");
-  };
 
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
@@ -31,48 +26,41 @@ const HomeScreen = ({ navigation }) => {
     });
   };
 
+  if (wordsList && wordsList.length === 0) {
+    return (
+      <View style={{ ...styles.screen, ...styles.centerContent }}>
+        <Image style={styles.booksImage} source={BookmarkImage} />
+        <CustomText style={{ textAlign: "center" }} option='subLargeGray'>
+          Start Bookmarking{"\n"}Words!
+        </CustomText>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.screen}>
-      <View style={styles.topBarContainer}>
-        <TouchableWithoutFeedback onPress={openSearchHandler}>
-          <View style={styles.searchBar}>
-            <Ionicons
-              name={"ios-search"}
-              size={25}
-              style={styles.icon}
-              color={Colors.secondaryText}
-            />
-            <CustomText style={styles.searchText} option='midGray'>
-              Search
-            </CustomText>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-      <SectionList
-        sections={wordsList}
+      <View style={styles.topBarContainer}></View>
+      <FlatList
+        data={wordsList}
         style={styles.list}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item, section }) => {
-          const textOption =
-            section.title === "Main Words" ? "large" : "subLarge";
-
+        renderItem={({ item }) => {
           return (
             <TouchableOpacity
               style={styles.listWord}
               onPress={() => selectWordHandler(item)}
             >
-              <CustomText option={textOption}>{item}</CustomText>
+              <CustomText option={"subLarge"}>{item}</CustomText>
             </TouchableOpacity>
           );
-        }}
-        renderSectionHeader={({ section: { title } }) => {
-          if (title === "Archived Words") {
-            return <View style={styles.listSeparator} />;
-          }
         }}
       />
     </View>
   );
+};
+
+HomeScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -83,23 +71,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: Colors.background,
   },
+  centerContent: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   topBarContainer: {
     flexDirection: "row",
     width: "100%",
   },
-  searchBar: {
-    flexDirection: "row",
-    width: "85%",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    marginTop: 5,
-    borderRadius: 5,
-    backgroundColor: Colors.grayTint,
-  },
-  icon: {
-    paddingHorizontal: 4,
+  booksImage: {
+    width: 135,
+    height: 135,
+    right: 10,
+    marginBottom: 40,
   },
   searchText: {
     marginLeft: 8,

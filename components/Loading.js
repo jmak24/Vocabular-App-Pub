@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 
-import loadingIcon from "../assets/loading.svg";
+import LoadingIcon from "../assets/loading.svg";
 
 const Loading = () => (
   <View style={styles.screen}>
-    <Image style={styles.icon} source={loadingIcon} />
+    <Image style={styles.icon} source={LoadingIcon} />
   </View>
 );
 

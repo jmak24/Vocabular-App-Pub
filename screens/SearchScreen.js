@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import { removeRecentWord, clearAllRecentWords } from "../store/actions/words";
 import SearchBar from "../components/SearchBar";
@@ -16,7 +17,7 @@ const DISPLAY_STATE = {
   loading: { state: "loading" },
 };
 
-const SearchScreen = ({ navigation, route }) => {
+const SearchScreen = ({ navigation }) => {
   const [displayState, setDisplayState] = useState(DISPLAY_STATE.recent.state);
   const [suggestedWords, setSuggestedWords] = useState([]);
   const [noResults, setNoResults] = useState("");
@@ -94,6 +95,7 @@ const SearchScreen = ({ navigation, route }) => {
           style={{ alignSelf: "center" }}
           onPress={() => {
             dispatch(clearAllRecentWords());
+            setDisplayState(DISPLAY_STATE.empty.state);
           }}
         >
           <CustomText style={styles.clearSearchesBtn} option='thin'>
@@ -186,6 +188,10 @@ const SearchScreen = ({ navigation, route }) => {
       <MainContent />
     </View>
   );
+};
+
+SearchScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

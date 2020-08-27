@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import PropTypes from "prop-types";
 
 import CustomText from "./CustomText";
 import DefinitionCard from "./DefinitionCard";
@@ -45,6 +46,11 @@ const DefinitionsList = ({ wordDetails, selectWordHandler }) => {
       })}
     </Fragment>
   );
+};
+
+DefinitionsList.propTypes = {
+  wordDetails: PropTypes.object.isRequired,
+  selectWordHandler: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
