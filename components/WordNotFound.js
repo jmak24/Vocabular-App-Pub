@@ -28,7 +28,7 @@ const WordNotFound = ({ word, navigation }) => (
           name={"ios-arrow-back"}
           size={32}
           style={{ ...styles.backArrow, top: 50 }}
-          color={Colors.secondaryText}
+          color={Colors.iconLightGray}
         />
       </TouchableWithoutFeedback>
     </View>

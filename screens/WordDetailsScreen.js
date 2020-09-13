@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   View,
@@ -13,9 +13,8 @@ import PropTypes from "prop-types";
 
 import { addRecentWord } from "../store/actions/words";
 import CustomText from "../components/CustomText";
-import DefinitionSectionList from "../components/DefinitionSectionList";
 import WordNotFound from "../components/WordNotFound";
-import WordDetailsTabBar from "../components/WordDetailsTabBar";
+import WordDetailsTabNavigator from "../components/WordDetailsTabNavigator";
 import WordDetailsHeader from "../components/WordDetailsHeader";
 import { apiWordSearch, prepareForWordDetails } from "../utils/helper";
 import Colors from "../constants/Colors";
@@ -23,7 +22,7 @@ import Colors from "../constants/Colors";
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 // Animation Constants
-const MAX_SCROLL_DISTANCE = 90;
+const MAX_SCROLL_DISTANCE = 140;
 const TITLE_OFFSET_Y = 40;
 
 const WordDetailsScreen = ({ route, navigation }) => {
@@ -32,16 +31,22 @@ const WordDetailsScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
   const [wordDetails, setWordDetails] = useState({});
-  const animatedScroll = useRef(new Animated.Value(0)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
   const isBookmarked = savedWordDetails.hasOwnProperty(word);
   const isArchived =
     savedWordDetails.hasOwnProperty(word) &&
     savedWordDetails[word].archived !== undefined &&
     savedWordDetails[word].archived !== null;
 
-  const animatedTopTitle = animatedScroll.interpolate({
+  const animatedTopTitle = scrollY.interpolate({
     inputRange: [0, MAX_SCROLL_DISTANCE],
     outputRange: [TITLE_OFFSET_Y, 0],
+    extrapolate: "clamp",
+  });
+
+  const animatedOpacity = scrollY.interpolate({
+    inputRange: [0, MAX_SCROLL_DISTANCE],
+    outputRange: [0, 1],
     extrapolate: "clamp",
   });
 
@@ -93,38 +98,36 @@ const WordDetailsScreen = ({ route, navigation }) => {
               name={"ios-arrow-back"}
               size={32}
               style={{ ...styles.backArrow, top: 50 }}
-              color={Colors.secondaryText}
+              color={Colors.iconGray}
             />
           </TouchableWithoutFeedback>
-          <Animated.View style={{ marginTop: animatedTopTitle }}>
+          <Animated.View
+            style={{ marginTop: animatedTopTitle, opacity: animatedOpacity }}
+          >
             <CustomText option='mid'>{word}</CustomText>
           </Animated.View>
         </View>
         {wordDetailsLoaded && (
-          <ScrollView
-            style={{ flex: 1, width: "100%" }}
-            scrollEventThrottle={10}
-            onScroll={Animated.event(
-              [
-                {
-                  nativeEvent: { contentOffset: { y: animatedScroll } },
-                },
-              ],
-              { useNativeDriver: false }
-            )}
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              height: "100%",
+              backgroundColor: Colors.grayTint,
+            }}
           >
             <WordDetailsHeader
               wordDetails={wordDetails}
               isBookmarked={isBookmarked}
               isArchived={isArchived}
-              animatedScroll={animatedScroll}
+              scrollY={scrollY}
             />
-            <WordDetailsTabBar
+            <WordDetailsTabNavigator
               wordDetails={wordDetails}
               selectWordHandler={selectWordHandler}
-              // animatedScroll={animatedScroll}
+              scrollY={scrollY}
             />
-          </ScrollView>
+          </View>
         )}
       </View>
     );
@@ -142,7 +145,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "flex-start",
-    paddingHorizontal: 20,
     backgroundColor: Colors.grayTint,
   },
   topStrip: {
@@ -153,6 +155,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     backgroundColor: Colors.grayTint,
+    zIndex: 100,
   },
   backArrow: {
     position: "absolute",

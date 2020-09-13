@@ -1,5 +1,11 @@
 import { setToast } from "./toasts";
 import { getAsyncStorage } from "../../utils/helper";
+import {
+  WORDS_DATA,
+  WORDS_LIST,
+  ARCHIVED_WORDS_LIST,
+  RECENT_WORDS,
+} from "../../models/dummy-data";
 
 export const SETUP_INIT = "SETUP_INIT";
 export const TOGGLE_BOOKMARK = "TOGGLE_BOOKMARK";
@@ -10,10 +16,21 @@ export const CLEAR_RECENT_WORDS = "CLEAR_RECENT_WORDS";
 
 export const setupInitWordsState = () => async (dispatch) => {
   try {
-    const words = await getAsyncStorage("words");
-    const wordsList = await getAsyncStorage("wordsList");
-    const archivedWords = await getAsyncStorage("archivedWords");
-    const recentWords = await getAsyncStorage("recentWords");
+    // const words = await getAsyncStorage("words");
+    // const wordsList = await getAsyncStorage("wordsList");
+    // const archivedWords = await getAsyncStorage("archivedWords");
+    // const recentWords = await getAsyncStorage("recentWords");
+    // let archivedWordsList = [];
+    // for (const year in archivedWords) {
+    //   for (let i = 0; i < 12; i++) {
+    //     archivedWordsList = archivedWordsList.concat(archivedWords[year][i]);
+    //   }
+    // }
+
+    const words = WORDS_DATA;
+    const wordsList = WORDS_LIST;
+    const archivedWords = ARCHIVED_WORDS_LIST;
+    const recentWords = RECENT_WORDS;
     let archivedWordsList = [];
     for (const year in archivedWords) {
       for (let i = 0; i < 12; i++) {

@@ -521,6 +521,40 @@ export const ARCHIVED_WORDS_EXTENDED = [
   "new testament",
 ];
 
+export const RECENT_WORDS = [
+  "cynic",
+  "daoism",
+  "docile",
+  "paragon",
+  "catalyst",
+  "proponent",
+  "chronicle",
+  "timber",
+  "triage",
+  "dynasty",
+  "detrimental",
+  "counter",
+  "conflate",
+  "cycle",
+];
+
+export const WORDS_LIST = [
+  "echo",
+  "lackluster",
+  "tango",
+  "microcosm",
+  "deprecate",
+  "monarchy",
+  "palpable",
+  "anarchy",
+  "conjecture",
+  "postulate",
+  "discern",
+  "proposition",
+  "old testament",
+  "new testament",
+];
+
 export const DEFINITIONS_SECTION_LIST = [
   {
     title: "noun",

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import {
   View,
   SectionList,
@@ -13,21 +13,23 @@ import PropTypes from "prop-types";
 import CustomText from "./CustomText";
 import DefinitionCard from "./DefinitionCard";
 import Colors from "../constants/Colors";
-import WordDetailsHeader from "../components/WordDetailsHeader";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
+const HeaderHeight = 131;
+const NavBarHeight = 60;
 
 const DefinitionSectionList = ({
   wordDetails,
   selectWordHandler,
-  // isBookmarked,
-  // isArchived,
-  // animatedScroll,
+  forwardRef,
+  scrollY,
+  route,
 }) => {
   const [cardsExpanded, setCardsExpanded] = useState({});
   const [arrowCommand, setArrowCommand] = useState("");
   const numItemsInSpeech = useRef(null);
+  const listOffsetY = useRef({});
 
   useEffect(() => {
     numItemsInSpeech.current = loadNumItemsInSpeech();
@@ -89,93 +91,98 @@ const DefinitionSectionList = ({
     );
   };
 
+  console.log(wordDetails.results);
+
   return (
-    <SectionList
-      sections={wordDetails.results}
-      // onScroll={Animated.event(
-      //   [
-      //     {
-      //       nativeEvent: { contentOffset: { y: animatedScroll } },
-      //     },
-      //   ],
-      //   { useNativeDriver: false }
-      // )}
-      stickySectionHeadersEnabled={true}
-      style={styles.sectionList}
+    <Animated.ScrollView
+      scrollEventThrottle={10}
+      style={styles.scrollView}
       scrollIndicatorInsets={{ right: 1 }}
       keyExtractor={(item, index) => item.partOfSpeech + index}
-      // ListHeaderComponent={() => {
-      //   return (
-      //     <WordDetailsHeader
-      //       wordDetails={wordDetails}
-      //       isBookmarked={isBookmarked}
-      //       isArchived={isArchived}
-      //       animatedScroll={animatedScroll}
-      //     />
-      //   );
-      // }}
-      renderSectionHeader={({ section: { title } }) => {
+      ref={forwardRef}
+      onScroll={Animated.event(
+        [
+          {
+            nativeEvent: { contentOffset: { y: scrollY } },
+          },
+        ],
+        {
+          useNativeDriver: false,
+          listener: (event) => {
+            const offsetY = event.nativeEvent.contentOffset.y;
+            const curRoute = route.key;
+            listOffsetY.current[curRoute] = offsetY;
+            // console.log("1 - offsetY:", offsetY);
+          },
+        }
+      )}
+    >
+      {wordDetails.results.map((section) => {
+        // Section Header Bar
+        const title = section.title;
         // cards collapsed
         let arrowIcon = (
           <Ionicons
             name={"ios-arrow-up"}
             size={22}
             style={styles.icon}
-            color={Colors.secondaryText}
+            color={Colors.iconGray}
           />
         );
+        // cards expanded
         if (cardsExpanded.hasOwnProperty(title) && cardsExpanded[title] > 0) {
-          // cards expanded
           arrowIcon = (
             <Ionicons
               name={"ios-arrow-down"}
               size={22}
               style={styles.icon}
-              color={Colors.secondaryText}
+              color={Colors.iconGray}
             />
           );
         }
         return (
-          <View style={styles.speechCategoryBar}>
-            <CustomText option='mid'>{title}</CustomText>
-            <TouchableWithoutFeedback onPress={() => onPressArrowIcon(title)}>
-              {arrowIcon}
-            </TouchableWithoutFeedback>
-          </View>
+          <Fragment>
+            <View style={styles.speechCategoryBar}>
+              <CustomText option='mid'>{title}</CustomText>
+              <TouchableWithoutFeedback onPress={() => onPressArrowIcon(title)}>
+                {arrowIcon}
+              </TouchableWithoutFeedback>
+            </View>
+            {section.data.map((definitionDetails, index) => {
+              index++;
+              return (
+                <DefinitionCard
+                  details={definitionDetails}
+                  arrowCommand={arrowCommand}
+                  updateExpandedCount={updateExpandedCount}
+                  selectWordHandler={selectWordHandler}
+                  speechCategory={definitionDetails.partOfSpeech}
+                  index={index}
+                />
+              );
+            })}
+          </Fragment>
         );
-      }}
-      renderItem={({ item, index }) => {
-        index++;
-        return (
-          <DefinitionCard
-            details={item}
-            arrowCommand={arrowCommand}
-            updateExpandedCount={updateExpandedCount}
-            selectWordHandler={selectWordHandler}
-            speechCategory={item.partOfSpeech}
-            index={index}
-          />
-        );
-      }}
-    />
+      })}
+      <View style={{ height: 10 + HeaderHeight + NavBarHeight }} />
+    </Animated.ScrollView>
   );
 };
 
 DefinitionSectionList.propTypes = {
   wordDetails: PropTypes.object.isRequired,
   selectWordHandler: PropTypes.func.isRequired,
-  // isBookmarked: PropTypes.bool.isRequired,
-  // isArchived: PropTypes.bool.isRequired,
-  animatedScroll: PropTypes.oneOfType([
+  scrollY: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }),
   ]),
 };
 
 const styles = StyleSheet.create({
-  sectionList: {
+  scrollView: {
     width: "100%",
-    paddingTop: 25,
+    paddingTop: 10 + HeaderHeight + NavBarHeight,
+    paddingHorizontal: 20,
     backgroundColor: Colors.grayTint,
   },
   speechCategoryBar: {
@@ -184,19 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingBottom: 10,
-    backgroundColor: Colors.grayTint,
-  },
-  wordTitle: {
-    textAlign: "left",
-    fontSize: 40,
-  },
-  topContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginTop: 4,
-    marginBottom: 32,
+    backgroundColor: "transparent",
   },
   icon: {
     marginHorizontal: 8,

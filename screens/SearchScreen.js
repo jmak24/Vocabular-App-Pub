@@ -25,7 +25,7 @@ const SearchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const recentWords = useSelector((state) => state.words.recentWords);
   const [showMoreRecent, setShowMoreRecent] = useState(false);
-
+  useSelector((state) => console.log(state));
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
       word,
@@ -57,7 +57,7 @@ const SearchScreen = ({ navigation }) => {
           name={"ios-close"}
           size={25}
           style={styles.icon}
-          color={Colors.secondaryText}
+          color={Colors.iconGray}
           onPress={() => {
             dispatch(removeRecentWord(indexToRemove));
             displayRecentSearches();
@@ -139,6 +139,7 @@ const SearchScreen = ({ navigation }) => {
             ? recentWords
             : recentWords.slice(0, 10)
           : suggestedWords;
+
       return (
         <FlatList
           style={styles.list}

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { View, StyleSheet, Animated, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,29 +17,20 @@ const WordDetailsHeader = ({
   wordDetails,
   isArchived,
   isBookmarked,
-  animatedScroll,
+  scrollY,
 }) => {
   const dispatch = useDispatch();
-  const containerHeight = useRef(131);
-  const animatedTitleExpand = animatedScroll.interpolate({
-    inputRange: [MAX_SCROLL_DISTANCE, 0],
-    outputRange: [MAX_TITLE_SCALE, 1],
-    extrapolate: "clamp",
-  });
-  const animatedTitlePad = animatedScroll.interpolate({
-    inputRange: [MAX_SCROLL_DISTANCE, 0],
-    outputRange: [MAX_LEFT_PADDING, 0],
-    extrapolate: "clamp",
-  });
-  // const animatedCollapseContainer = animatedScroll.interpolate({
-  //   inputRange: [0, containerHeight.current],
-  //   outputRange: [containerHeight.current, 0],
-  //   extrapolate: "clamp",
-  // });
+  const HeaderHeight = useRef(131);
 
-  // const initContainerHeight = (event) => {
-  //   containerHeight.current = event.nativeEvent.layout.height;
-  // };
+  const animatedContainer = scrollY.interpolate({
+    inputRange: [0, HeaderHeight.current],
+    outputRange: [0, -HeaderHeight.current],
+    extrapolate: "clamp",
+  });
+
+  const initHeaderHeight = (event) => {
+    HeaderHeight.current = event.nativeEvent.layout.height;
+  };
 
   const bookmarkPressed = () => {
     const toastMsg = isBookmarked
@@ -57,22 +48,17 @@ const WordDetailsHeader = ({
 
   return (
     <Animated.View
-    // onLayout={(e) => initContainerHeight(e)}
-    // style={{
-    //   ...styles.headerContainer,
-    //   height: animatedCollapseContainer,
-    // }}
+      onLayout={(e) => initHeaderHeight(e)}
+      style={[
+        styles.headerContainer,
+        { transform: [{ translateY: animatedContainer }] },
+      ]}
     >
-      <Animated.View
-        style={{
-          paddingLeft: animatedTitlePad,
-          transform: [{ scale: animatedTitleExpand }],
-        }}
-      >
+      <View>
         <CustomText style={styles.wordTitle} option='large'>
           {wordDetails.word}
         </CustomText>
-      </Animated.View>
+      </View>
       <View style={styles.topContainer}>
         <View>
           {wordDetails.hasOwnProperty("pronunciation") && (
@@ -81,7 +67,7 @@ const WordDetailsHeader = ({
             </CustomText>
           )}
         </View>
-        <View style={styles.row}>
+        <View style={{ flexDirection: "row" }}>
           {isBookmarked && (
             <TouchableOpacity onPress={archivePressed}>
               <View style={{ ...styles.archiveBtn }}>
@@ -96,7 +82,7 @@ const WordDetailsHeader = ({
               name={isBookmarked ? "ios-bookmark" : "ios-bookmark"}
               size={32}
               style={{ ...styles.icon, marginRight: 8 }}
-              color={isBookmarked ? Colors.primaryTheme : Colors.secondaryText}
+              color={isBookmarked ? Colors.primaryTheme : Colors.iconLightGray}
             />
           </TouchableOpacity>
         </View>
@@ -109,19 +95,22 @@ WordDetailsHeader.propTypes = {
   wordDetails: PropTypes.object.isRequired,
   isArchived: PropTypes.bool.isRequired,
   isBookmarked: PropTypes.bool.isRequired,
-  animatedScroll: PropTypes.oneOfType([
+  scrollY: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }),
   ]),
 };
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-  },
   wordTitle: {
     textAlign: "left",
     fontSize: 40,
+  },
+  headerContainer: {
+    left: 20,
+    right: 20,
+    position: "absolute",
+    zIndex: 100,
   },
   topContainer: {
     width: "100%",

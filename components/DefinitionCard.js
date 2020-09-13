@@ -114,7 +114,7 @@ const DefinitionCard = ({
       activeOpacity={0.65}
     >
       <View style={styles.definitionCard}>
-        <View style={styles.row}>
+        <View style={{ flexDirection: "row" }}>
           <CustomText option='body'>{index}.</CustomText>
           <View style={styles.definitionText}>
             <CustomText option='body'>{details.definition}</CustomText>
@@ -157,9 +157,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: "hidden",
     backgroundColor: Colors.background,
-  },
-  row: {
-    flexDirection: "row",
   },
   definitionText: {
     paddingHorizontal: 10,

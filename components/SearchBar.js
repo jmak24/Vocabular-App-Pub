@@ -59,7 +59,7 @@ const SearchBar = ({
       name={"ios-close"}
       size={25}
       style={styles.icon}
-      color={Colors.secondaryText}
+      color={Colors.iconGray}
       onPress={handleClearSearchInput}
     />
   );
@@ -70,7 +70,7 @@ const SearchBar = ({
         name={"ios-search"}
         size={25}
         style={styles.icon}
-        color={Colors.secondaryText}
+        color={Colors.iconGray}
       />
       <TextInput
         style={styles.textInput}
