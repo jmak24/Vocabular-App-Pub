@@ -11,11 +11,7 @@ import {
   ARCHIVED_WORDS_LIST,
   ARCHIVED_WORDS_EXTENDED,
 } from "../../models/dummy-data";
-import {
-  prepareForWordDetails,
-  setAsyncStorage,
-  getAsyncStorage,
-} from "../../utils/helper";
+import { prepareForWordDetails, setAsyncStorage } from "../../utils/helper";
 
 // Prepare Bookmarked and Archived Word Lists
 const prepareWordsList = (words) => {
@@ -64,32 +60,44 @@ const initialState1 = {
 };
 
 export default (state = {}, action) => {
-  let targetWord;
-  let updatedWords;
-  let updatedWordsList;
-  let updatedArchivedWords;
-  let updatedRecentWords;
+  // let targetWord;
+  // let updatedWords;
+  // let updatedWordsList;
+  // let updatedArchivedWords;
+  // let updatedRecentWords;
 
   switch (action.type) {
-    case SETUP_INIT:
+    case SETUP_INIT: {
       return { ...state, ...action.payload };
-    case TOGGLE_BOOKMARK:
+    }
+    case TOGGLE_BOOKMARK: {
       const { wordDetails, isBookmarked } = action.payload;
-      targetWord = wordDetails.word;
-      updatedWords = { ...state.words };
-      updatedWordsList = [...state.wordsList];
-      updatedArchivedWordsList = [...state.archivedWordsList];
+      const targetWord = wordDetails.word;
+      const updatedWords = { ...state.words };
+      let updatedWordsList = [...state.wordsList];
+      let updatedArchivedWords = { ...state.archivedWords };
+      let updatedArchivedWordsList = [...state.archivedWordsList];
+      console.log("targetWord:", targetWord);
       if (!isBookmarked) {
         // ADD WORD
         updatedWordsList.unshift(targetWord);
 
         updatedWords[targetWord] = wordDetails;
       } else {
+        const dateArchived = updatedWords[targetWord].archived;
         // REMOVE WORD
         delete updatedWords[targetWord];
         updatedWordsList = updatedWordsList.filter(
           (word) => word !== targetWord
         );
+        // UNARCHIVE WORD
+        if (dateArchived) {
+          const month = dateArchived.getMonth();
+          const year = dateArchived.getFullYear();
+          const archiveRecord = updatedArchivedWords[year][month];
+          const index = archiveRecord.indexOf(targetWord);
+          if (index > -1) archiveRecord.splice(index, 1);
+        }
         updatedArchivedWordsList = updatedArchivedWordsList.filter(
           (word) => word !== targetWord
         );
@@ -97,14 +105,20 @@ export default (state = {}, action) => {
 
       setAsyncStorage("words", updatedWords);
       setAsyncStorage("wordsList", updatedWordsList);
-      return { ...state, wordsList: updatedWordsList, words: updatedWords };
-
-    case TOGGLE_ARCHIVE:
-      targetWord = action.payload.targetWord;
-      updatedWords = { ...state.words };
-      updatedWordsList = [...state.wordsList];
-      updatedArchivedWords = { ...state.archivedWords };
-      updatedArchivedWordsList = [...state.archivedWordsList];
+      setAsyncStorage("archivedWordList", updatedArchivedWordsList);
+      return {
+        ...state,
+        wordsList: updatedWordsList,
+        words: updatedWords,
+        archivedWordsList: updatedArchivedWordsList,
+      };
+    }
+    case TOGGLE_ARCHIVE: {
+      const targetWord = action.payload.targetWord;
+      const updatedWords = { ...state.words };
+      let updatedWordsList = [...state.wordsList];
+      const updatedArchivedWords = { ...state.archivedWords };
+      const updatedArchivedWordsList = [...state.archivedWordsList];
 
       const dateArchived = updatedWords[targetWord].archived;
       if (!dateArchived) {
@@ -135,6 +149,7 @@ export default (state = {}, action) => {
       setAsyncStorage("words", updatedWords);
       setAsyncStorage("wordsList", updatedWordsList);
       setAsyncStorage("archivedWords", updatedArchivedWords);
+      setAsyncStorage("archivedWordsList", updatedArchivedWordsList);
       return {
         ...state,
         words: updatedWords,
@@ -142,10 +157,10 @@ export default (state = {}, action) => {
         archivedWords: updatedArchivedWords,
         archivedWordsList: updatedArchivedWordsList,
       };
-
-    case ADD_RECENT_WORD:
+    }
+    case ADD_RECENT_WORD: {
       const { wordSearched } = action.payload;
-      updatedRecentWords = [...state.recentWords];
+      const updatedRecentWords = [...state.recentWords];
 
       const wordIndex = updatedRecentWords.indexOf(wordSearched);
       if (wordIndex >= 0) updatedRecentWords.splice(wordIndex, 1);
@@ -157,19 +172,19 @@ export default (state = {}, action) => {
 
       setAsyncStorage("recentWords", updatedRecentWords);
       return { ...state, recentWords: updatedRecentWords };
-
-    case REMOVE_RECENT_WORD:
+    }
+    case REMOVE_RECENT_WORD: {
       const { indexToRemove } = action.payload;
-      updatedRecentWords = [...state.recentWords];
+      const updatedRecentWords = [...state.recentWords];
       updatedRecentWords.splice(indexToRemove, 1);
 
       setAsyncStorage("recentWords", updatedRecentWords);
       return { ...state, recentWords: updatedRecentWords };
-
-    case CLEAR_RECENT_WORDS:
+    }
+    case CLEAR_RECENT_WORDS: {
       setAsyncStorage("recentWords", "");
       return { ...state, recentWords: [] };
-
+    }
     default:
       return state;
   }

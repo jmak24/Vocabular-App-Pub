@@ -25,7 +25,6 @@ const SearchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const recentWords = useSelector((state) => state.words.recentWords);
   const [showMoreRecent, setShowMoreRecent] = useState(false);
-  useSelector((state) => console.log(state));
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
       word,

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, Fragment } from "react";
 import {
   View,
-  SectionList,
   Dimensions,
   Animated,
   TouchableWithoutFeedback,
@@ -19,12 +18,12 @@ const screen = Dimensions.get("screen");
 const HeaderHeight = 131;
 const NavBarHeight = 60;
 
-const DefinitionSectionList = ({
+const DefinitionList = ({
   wordDetails,
   selectWordHandler,
   forwardRef,
   scrollY,
-  route,
+  routeIndex,
 }) => {
   const [cardsExpanded, setCardsExpanded] = useState({});
   const [arrowCommand, setArrowCommand] = useState("");
@@ -91,15 +90,13 @@ const DefinitionSectionList = ({
     );
   };
 
-  console.log(wordDetails.results);
-
   return (
     <Animated.ScrollView
-      scrollEventThrottle={10}
+      scrollEventThrottle={16}
       style={styles.scrollView}
       scrollIndicatorInsets={{ right: 1 }}
       keyExtractor={(item, index) => item.partOfSpeech + index}
-      ref={forwardRef}
+      ref={(ref) => forwardRef(routeIndex, ref)}
       onScroll={Animated.event(
         [
           {
@@ -108,50 +105,33 @@ const DefinitionSectionList = ({
         ],
         {
           useNativeDriver: false,
-          listener: (event) => {
-            const offsetY = event.nativeEvent.contentOffset.y;
-            const curRoute = route.key;
-            listOffsetY.current[curRoute] = offsetY;
-            // console.log("1 - offsetY:", offsetY);
-          },
         }
       )}
     >
       {wordDetails.results.map((section) => {
-        // Section Header Bar
         const title = section.title;
-        // cards collapsed
-        let arrowIcon = (
-          <Ionicons
-            name={"ios-arrow-up"}
-            size={22}
-            style={styles.icon}
-            color={Colors.iconGray}
-          />
-        );
-        // cards expanded
-        if (cardsExpanded.hasOwnProperty(title) && cardsExpanded[title] > 0) {
-          arrowIcon = (
-            <Ionicons
-              name={"ios-arrow-down"}
-              size={22}
-              style={styles.icon}
-              color={Colors.iconGray}
-            />
-          );
-        }
+        const arrowIcon =
+          cardsExpanded.hasOwnProperty(title) && cardsExpanded[title] > 0
+            ? "ios-arrow-down"
+            : "ios-arrow-up";
         return (
-          <Fragment>
+          <Fragment key={title}>
             <View style={styles.speechCategoryBar}>
               <CustomText option='mid'>{title}</CustomText>
               <TouchableWithoutFeedback onPress={() => onPressArrowIcon(title)}>
-                {arrowIcon}
+                <Ionicons
+                  name={arrowIcon}
+                  size={23}
+                  style={styles.icon}
+                  color={Colors.iconGray}
+                />
               </TouchableWithoutFeedback>
             </View>
             {section.data.map((definitionDetails, index) => {
               index++;
               return (
                 <DefinitionCard
+                  key={(title, index)}
                   details={definitionDetails}
                   arrowCommand={arrowCommand}
                   updateExpandedCount={updateExpandedCount}
@@ -169,7 +149,7 @@ const DefinitionSectionList = ({
   );
 };
 
-DefinitionSectionList.propTypes = {
+DefinitionList.propTypes = {
   wordDetails: PropTypes.object.isRequired,
   selectWordHandler: PropTypes.func.isRequired,
   scrollY: PropTypes.oneOfType([
@@ -198,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DefinitionSectionList;
+export default DefinitionList;

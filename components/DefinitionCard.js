@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
   definitionCard: {
     width: "100%",
     borderRadius: 15,
-    padding: 13,
+    paddingVertical: 11,
+    paddingHorizontal: 13,
     marginBottom: 16,
     overflow: "hidden",
     backgroundColor: Colors.background,

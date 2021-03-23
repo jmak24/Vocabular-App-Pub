@@ -17,6 +17,10 @@ export const generateUUID = async () => {
   return await nanoid();
 };
 
+// Native method to remove keys from object
+export const omit = (keyToOmit, { [keyToOmit]: _, ...omittedPropObj } = {}) =>
+  omittedPropObj;
+
 // Store Local Async Storage
 export const setAsyncStorage = async (storageKey, value) => {
   const jsonValue = JSON.stringify(value);
@@ -43,7 +47,7 @@ export const apiWordSearch = async (word) => {
     const response = await axios.get(url, config);
     return response.data;
   } catch (err) {
-    if (err) console.log(err);
+    if (err) console.log(err.response);
   }
 };
 
@@ -59,6 +63,9 @@ export const apiSuggestedWords = async (keyword) => {
     if (err) console.log(err);
   }
 };
+
+// Retreive My Phrases, Top Phrases, Recent Phrases
+export const getPhraseData = async (word) => {};
 
 // Prepare definition data for Word Details screen
 // Organize results by speech type to be consumed for SectionList component

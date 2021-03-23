@@ -46,7 +46,6 @@ const ArchivedScreen = ({ navigation }) => {
   }, [monthSelected, isFilterMode]);
 
   useEffect(() => {
-    setMonthSelected(0);
     setWordsList(archivedWords[yearSelected][0]);
   }, [yearSelected]);
 
@@ -131,7 +130,7 @@ const ArchivedScreen = ({ navigation }) => {
         <View style={{ alignSelf: "flex-start" }}>
           <ModalSelector
             data={getYearsForSelector()}
-            initValue={yearSelected}
+            initValue={today.getFullYear()}
             supportedOrientations={["portrait"]}
             animationType='fade'
             accessible={true}

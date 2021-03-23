@@ -9,18 +9,37 @@ import HomeScreen from "../screens/HomeScreen";
 import WordDetailsScreen from "../screens/WordDetailsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ArchivedScreen from "../screens/ArchivedScreen";
+import SignUpScreen from "../screens/SignUpScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => (
-  <Stack.Navigator initialRouteName='Home' headerMode='none'>
+  <Stack.Navigator
+    initialRouteName='Home'
+    screenOptions={({ route, navigation }) => {
+      return route.name === "Settings"
+        ? {
+            gestureEnabled: true,
+            cardOverlayEnabled: true,
+            headerStatusBarHeight:
+              navigation.dangerouslyGetState().routes.indexOf(route) > 0
+                ? 0
+                : undefined,
+            ...TransitionPresets.ModalPresentationIOS,
+          }
+        : {};
+    }}
+    mode={({ route }) => (route.name === "Settings" ? "modal" : "card")}
+    headerMode='none'
+  >
     <Stack.Screen
       name='Home'
       component={HomeScreen}
       options={{ title: "Home" }}
     />
     <Stack.Screen name='WordDetails' component={WordDetailsScreen} />
+    <Stack.Screen name='Settings' component={SignUpScreen} />
   </Stack.Navigator>
 );
 

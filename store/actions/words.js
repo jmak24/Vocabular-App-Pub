@@ -4,7 +4,7 @@ import {
   WORDS_DATA,
   WORDS_LIST,
   ARCHIVED_WORDS_LIST,
-  RECENT_WORDS,
+  RECENT_WORDS_LIST,
 } from "../../models/dummy-data";
 
 export const SETUP_INIT = "SETUP_INIT";
@@ -30,13 +30,29 @@ export const setupInitWordsState = () => async (dispatch) => {
     const words = WORDS_DATA;
     const wordsList = WORDS_LIST;
     const archivedWords = ARCHIVED_WORDS_LIST;
-    const recentWords = RECENT_WORDS;
+    const recentWords = RECENT_WORDS_LIST;
     let archivedWordsList = [];
     for (const year in archivedWords) {
       for (let i = 0; i < 12; i++) {
         archivedWordsList = archivedWordsList.concat(archivedWords[year][i]);
       }
     }
+    const currentYear = new Date().getFullYear();
+    if (!archivedWords.hasOwnProperty(currentYear))
+      archivedWords[currentYear] = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ];
 
     dispatch({
       type: SETUP_INIT,

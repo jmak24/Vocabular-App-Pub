@@ -4,11 +4,13 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Dimensions,
   StyleSheet,
   Image,
 } from "react-native";
 import PropTypes from "prop-types";
+import { Ionicons } from "@expo/vector-icons";
 
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
@@ -26,6 +28,10 @@ const HomeScreen = ({ navigation }) => {
     });
   };
 
+  const onPressSettings = () => {
+    navigation.push("Settings");
+  };
+
   if (wordsList && wordsList.length === 0) {
     return (
       <View style={{ ...styles.screen, ...styles.centerContent }}>
@@ -39,7 +45,11 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.topBarContainer}></View>
+      <View style={styles.topBarContainer}>
+        <TouchableWithoutFeedback onPress={onPressSettings}>
+          <Ionicons name={"ios-settings"} size={32} color={Colors.iconGray} />
+        </TouchableWithoutFeedback>
+      </View>
       <FlatList
         data={wordsList}
         style={styles.list}
@@ -78,6 +88,7 @@ const styles = StyleSheet.create({
   topBarContainer: {
     flexDirection: "row",
     width: "100%",
+    justifyContent: "flex-end",
   },
   booksImage: {
     width: 135,

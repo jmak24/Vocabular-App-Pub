@@ -473,8 +473,8 @@ export const WORDS_SECTION_LIST = [
 ];
 
 export const ARCHIVED_WORDS_LIST = {
-  "2019": [[], [], [], [], [], [], [], [], [], [], [], []],
-  "2020": [
+  2019: [[], [], [], [], [], [], [], [], [], [], [], []],
+  2020: [
     ["cynic", "daoism", "docile", "paragon"],
     ["catalyst", "proponent", "chronicle"],
     ["timber", "triage", "dynasty", "detrimental"],
@@ -516,12 +516,12 @@ export const ARCHIVED_WORDS_EXTENDED = [
   "conjecture",
   "postulate",
   "discern",
-  "proposition",
   "old testament",
   "new testament",
+  "proposition",
 ];
 
-export const RECENT_WORDS = [
+export const RECENT_WORDS_LIST = [
   "cynic",
   "daoism",
   "docile",
@@ -540,19 +540,16 @@ export const RECENT_WORDS = [
 
 export const WORDS_LIST = [
   "echo",
-  "lackluster",
-  "tango",
-  "microcosm",
-  "deprecate",
-  "monarchy",
-  "palpable",
+  "totalitarian",
+  "democratic",
+  "paragon",
+  "docile",
+  "regressive",
   "anarchy",
-  "conjecture",
+  "exuberant",
   "postulate",
-  "discern",
+  "patriotism",
   "proposition",
-  "old testament",
-  "new testament",
 ];
 
 export const DEFINITIONS_SECTION_LIST = [
@@ -641,3 +638,133 @@ export const DEFINITIONS_SECTION_LIST = [
     ],
   },
 ];
+
+export const PHRASE_DATA = {
+  myPhrases: {
+    "7e0e87cb-a520-41ee-89ce-1c6447e53fd0": {
+      id: "7e0e87cb-a520-41ee-89ce-1c6447e53fd0",
+      phrase: "You could hear a slight echo in the caves.",
+      likes: ["soberMike", "californiaK"],
+      author: "jmak",
+      timestamp: 1518122597860,
+      isPublic: false,
+    },
+    "7e1e87cb-a520-51ee-89ce-1c6447e53fd1": {
+      id: "7e1e87cb-a520-51ee-89ce-1c6447e53fd1",
+      phrase: "I echo his sentiment on the new voting system.",
+      likes: ["sailorMoon", "dynamiteKite", "richierich"],
+      author: "jmak",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+  },
+  topPhrases: {
+    "8e7e87cb-a520-41ee-89ce-1c6447e53fd0": {
+      id: "8e7e87cb-a520-41ee-89ce-1c6447e53fd0",
+      phrase:
+        "His groan brought an echo from the depths of her soul and she pressed closer.",
+      likes: ["bob1", "bob2", "bob3", "bob4", "bob5", "bob6", "bob7"],
+      author: "jmak",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7d7e87cb-a520-41ee-89ce-1c6447e53fd0": {
+      id: "7d7e87cb-a520-41ee-89ce-1c6447e53fd0",
+      phrase:
+        "The echo of little voices inspired several snickers from around them.",
+      likes: ["tim1", "tim2", "tim3", "tim4", "tim5", "tim6", "tim7"],
+      author: "soberMike",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7e7e87cb-a520-51ee-89ce-1c6447e53fd0": {
+      id: "7e7e87cb-a520-51ee-89ce-1c6447e53fd0",
+      phrase:
+        "Remember your Digital Echo file, that record of everything you do and say?",
+      likes: ["claire1", "claire2", "claire3", "claire4", "claire5", "claire6"],
+      author: "californiaK",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7e7e87cb-a520-51de-89ce-1c6447e53fd0": {
+      id: "7e7e87cb-a520-51de-89ce-1c6447e53fd0",
+      phrase: "A complete Digital Echo of your life.",
+      likes: [
+        "sarah1",
+        "sarah2",
+        "sarah3",
+        "sarah4",
+        "sarah5",
+        "sarah6",
+        "sarah7",
+        "jmak",
+      ],
+      author: "tonyTurner",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7e7e87cb-a530-41ee-89ce-1c6447e53fd0": {
+      id: "7e7e87cb-a530-41ee-89ce-1c6447e53fd0",
+      phrase: "to Echo River, the largest of all being from 20 to 200 ft.",
+      likes: [
+        "james1",
+        "james2",
+        "james3",
+        "james4",
+        "james5",
+        "james6",
+        "james7",
+        "james8",
+        "james9",
+      ],
+      author: "jackTyson",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+  },
+  recentPhrases: {
+    "7e7e97cb-a520-41ee-89ce-1c6447e53fd0": {
+      id: "7e7e97cb-a520-41ee-89ce-1c6447e53fd0",
+      phrase:
+        "His rejection of the love of the nymph Echo drew upon him the vengeance of the gods.",
+      likes: ["laurabar", "eazy", "jmak"],
+      author: "sallypal",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7e7e87ce-a520-41ee-89ce-1c6447e53fd0": {
+      id: "7e7e87ce-a520-41ee-89ce-1c6447e53fd0",
+      phrase:
+        "The echo is then broken up into small waves, none of which may be sufficiently distinct to interfere with the direct voice.",
+      likes: [],
+      author: "sallypal",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7e7e87cb-a527-41ee-89ce-1c6447e53fd0": {
+      id: "7e7e87cb-a527-41ee-89ce-1c6447e53fd0",
+      phrase:
+        "A long-drawn echo from all classes hailed a revolution that was possible because it was necessary.",
+      likes: ["laurabar", "eazy"],
+      author: "dandilion5",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7e7e87cb-a520-51ee-89ce-1c6447e53fd0": {
+      id: "7e7e87cb-a520-51ee-89ce-1c6447e53fd0",
+      phrase: "A complete Digital Echo of your life.",
+      likes: [],
+      author: "dandilion5",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+    "7a7e87cb-a520-41ee-89ce-1c6447e53fd0": {
+      id: "7a7e87cb-a520-41ee-89ce-1c6447e53fd0",
+      phrase: "to Echo River, the largest of all being from 20 to 200 ft.",
+      likes: ["dandilion5", "batman44", "towsocks", "candlelit"],
+      author: "fantastical",
+      timestamp: 1518122597860,
+      isPublic: true,
+    },
+  },
+};

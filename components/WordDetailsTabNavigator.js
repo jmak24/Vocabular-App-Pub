@@ -9,8 +9,8 @@ import {
 import PropTypes from "prop-types";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import DefinitionSectionList from "./DefinitionSectionList";
-import PhraseSectionList from "./PhraseSectionList";
+import DefinitionList from "./DefinitionList";
+import PhraseList from "./PhraseList";
 import Colors from "../constants/Colors";
 import CustomText from "./CustomText";
 
@@ -23,6 +23,7 @@ const TabBar = ({
   navigation,
   scrollY,
   syncScrollOffset,
+  expandHeader,
 }) => {
   const animatedTabBarY = scrollY.interpolate({
     inputRange: [0, HeaderHeight],
@@ -62,7 +63,8 @@ const TabBar = ({
         const isFocused = state.index === routeIndex;
 
         const onTabPress = () => {
-          syncScrollOffset(routeIndex);
+          expandHeader(routeIndex);
+          // syncScrollOffset(routeIndex);
 
           const event = navigation.emit({
             type: "tabPress",
@@ -110,16 +112,27 @@ const WordDetailsTabNavigator = ({
   scrollY,
 }) => {
   const listRefArr = useRef([]).current;
+  // const listHeightArr = useRef([]).current;
 
-  const setListRefArr = (ref) => {
-    listRefArr.push(ref);
+  const setListRefArr = (routeIndex, ref) => {
+    listRefArr[routeIndex] = ref;
   };
 
-  const syncScrollOffset = (tabIndex) => {
-    if (listRefArr[tabIndex]) {
+  // const setListHeightArr = (routeIndex, contentHeight) => {
+  //   listHeightArr[routeIndex] = contentHeight;
+  // };
+
+  const expandHeader = (routeIndex) => {
+    const curRouteIndex = routeIndex === 0 ? 1 : 0;
+    listRefArr[curRouteIndex].scrollTo({ x: 0, y: 0, animated: true });
+  };
+
+  // On tab switch - possibly remove sync offset and keep expand header by default
+  const syncScrollOffset = (routeIndex) => {
+    if (listRefArr[routeIndex]) {
       if (scrollY._value >= 0 && scrollY._value < HeaderHeight) {
         // if Header not fully collapsed, scroll to current offset
-        listRefArr[tabIndex].scrollTo({
+        listRefArr[routeIndex].scrollTo({
           x: 0,
           y: scrollY._value,
           animated: false,
@@ -127,7 +140,7 @@ const WordDetailsTabNavigator = ({
         // console.log("1: scrolledTo:", scrollY._value);
       } else {
         // if Header full collapsed, scroll to Header height
-        listRefArr[tabIndex].scrollTo({
+        listRefArr[routeIndex].scrollTo({
           x: 0,
           y: HeaderHeight,
           animated: false,
@@ -147,19 +160,20 @@ const WordDetailsTabNavigator = ({
           {...props}
           scrollY={scrollY}
           syncScrollOffset={syncScrollOffset}
+          expandHeader={expandHeader}
         />
       )}
     >
       <Tab.Screen
         name='Definitions'
         options={{ tabBarLabel: "Definitions" }}
-        children={(props) => (
-          <DefinitionSectionList
+        children={() => (
+          <DefinitionList
             wordDetails={wordDetails}
             selectWordHandler={selectWordHandler}
             scrollY={scrollY}
             forwardRef={setListRefArr}
-            route={props.route}
+            routeIndex={0}
           />
         )}
         style={styles.tabNav}
@@ -167,11 +181,12 @@ const WordDetailsTabNavigator = ({
       <Tab.Screen
         name='Phrases'
         options={{ tabBarLabel: "Phrases" }}
-        children={(props) => (
-          <PhraseSectionList
+        children={() => (
+          <PhraseList
+            word={wordDetails.word}
             scrollY={scrollY}
             forwardRef={setListRefArr}
-            route={props.route}
+            routeIndex={1}
           />
         )}
         options={{ tabBarLabel: "Phrases" }}

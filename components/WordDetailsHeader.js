@@ -9,10 +9,6 @@ import Colors from "../constants/Colors";
 import { toggleArchive, toggleBookmark } from "../store/actions/words";
 import { setToast } from "../store/actions/toasts";
 
-const MAX_SCROLL_DISTANCE = -200;
-const MAX_TITLE_SCALE = 1.15;
-const MAX_LEFT_PADDING = 23;
-
 const WordDetailsHeader = ({
   wordDetails,
   isArchived,
@@ -110,6 +106,7 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     position: "absolute",
+
     zIndex: 100,
   },
   topContainer: {

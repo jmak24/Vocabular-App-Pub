@@ -6,6 +6,7 @@ export default {
   grayTint: "#F6F6F6",
   iconGray: "#7C7C7C",
   iconLightGray: "#b8b8b8",
+  iconHeartFilled: "#f57569",
   toastInfo: "#1a96e8",
   toastWarning: "#ebbe17",
   toastDanger: "#de5752",
