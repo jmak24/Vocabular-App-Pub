@@ -15,8 +15,8 @@ import { TextInput } from "react-native-gesture-handler";
 import { setToast } from "../store/actions/toasts";
 import { handlePostPhrase } from "../store/actions/phrases";
 
-const CollapsedHeight = 60;
-const ExpandedHeight = 160;
+// const CollapsedHeight = 60;
+// const ExpandedHeight = 160;
 
 const PhraseModal = ({ toggleModal, modalVisible, word }) => {
   const dispatch = useDispatch();
@@ -34,12 +34,13 @@ const PhraseModal = ({ toggleModal, modalVisible, word }) => {
 
   const postPhrase = () => {
     if (!postBtnDisabled) {
-      dispatch(handlePostPhrase({ text: textInput, isPublic }));
+      dispatch(handlePostPhrase({ word, textInput, isPublic }));
       closeModal();
     } else {
       const warningMsg =
         "Phrase must contain word '" + word + "' at least once";
       dispatch(setToast("toastWarning", warningMsg, "ios-close-circle"));
+
       closeModal();
     }
   };
@@ -117,8 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "#8a8a8a",
-    // opacity: 0.8,
   },
   modalView: {
     width: "84%",

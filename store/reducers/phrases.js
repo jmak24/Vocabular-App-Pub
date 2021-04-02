@@ -4,7 +4,7 @@ import {
   REMOVE_PHRASE,
   TOGGLE_PHRASE_LIKE,
   TOGGLE_PHRASE_VISIBILITY,
-  LOAD_RECENT_PHRASES,
+  CLEANUP_PHRASES,
 } from "../actions/phrases";
 import { omit } from "../../utils/helper";
 
@@ -40,7 +40,7 @@ export default (state = {}, action) => {
       };
     }
     case TOGGLE_PHRASE_LIKE: {
-      const { phraseId, authedUser, hasLiked } = action.payload;
+      const { phraseId, userId, hasLiked } = action.payload;
       let updatedTopPhrases;
       if (state.topPhrases.hasOwnProperty(phraseId)) {
         updatedTopPhrases = {
@@ -48,10 +48,8 @@ export default (state = {}, action) => {
           [phraseId]: {
             ...state.topPhrases[phraseId],
             likes: hasLiked
-              ? state.topPhrases[phraseId].likes.filter(
-                  (user) => user !== authedUser
-                )
-              : state.topPhrases[phraseId].likes.concat([authedUser]),
+              ? state.topPhrases[phraseId].likes.filter((id) => id !== userId)
+              : state.topPhrases[phraseId].likes.concat([userId]),
           },
         };
       } else {
@@ -66,9 +64,9 @@ export default (state = {}, action) => {
             ...state.recentPhrases[phraseId],
             likes: hasLiked
               ? state.recentPhrases[phraseId].likes.filter(
-                  (user) => user !== authedUser
+                  (id) => id !== userId
                 )
-              : state.recentPhrases[phraseId].likes.concat([authedUser]),
+              : state.recentPhrases[phraseId].likes.concat([userId]),
           },
         };
       } else {
@@ -91,6 +89,9 @@ export default (state = {}, action) => {
         ...state,
         myPhrases: updatedMyPhrases,
       };
+    }
+    case CLEANUP_PHRASES: {
+      return {};
     }
 
     default:

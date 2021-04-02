@@ -145,7 +145,7 @@ DefinitionCard.propTypes = {
   arrowCommand: PropTypes.string.isRequired,
   updateExpandedCount: PropTypes.func.isRequired,
   selectWordHandler: PropTypes.func.isRequired,
-  speechCategory: PropTypes.string.isRequired,
+  speechCategory: PropTypes.string,
   index: PropTypes.number.isRequired,
 };
 

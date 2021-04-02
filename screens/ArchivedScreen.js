@@ -130,7 +130,7 @@ const ArchivedScreen = ({ navigation }) => {
         <View style={{ alignSelf: "flex-start" }}>
           <ModalSelector
             data={getYearsForSelector()}
-            initValue={today.getFullYear()}
+            initValue={today.getFullYear().toString()}
             supportedOrientations={["portrait"]}
             animationType='fade'
             accessible={true}

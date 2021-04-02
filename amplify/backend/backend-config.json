@@ -1,6 +1,6 @@
 {
   "api": {
-    "vocabular": {
+    "vocabularAPI": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -8,13 +8,21 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
-              "description": "API key for Vocabular"
+              "apiKeyExpirationDays": 7,
+              "description": "API key Vocabular"
             }
           },
           "additionalAuthenticationProviders": []
         }
       }
+    }
+  },
+  "auth": {
+    "vocabular66b7db0a": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
     }
   }
 }

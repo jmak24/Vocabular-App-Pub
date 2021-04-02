@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   View,
   Dimensions,
@@ -14,8 +14,8 @@ import CustomText from "./CustomText";
 import PhraseCard from "./PhraseCard";
 import PhraseModal from "./PhraseModal";
 import Colors from "../constants/Colors";
-import { setPhraseData } from "../store/actions/phrases";
-import { PHRASE_DATA } from "../models/dummy-data"; // pull from AWS DB
+import { handleLoadPhrases, cleanupPhrases } from "../store/actions/phrases";
+import { objIsNotEmpty } from "../utils/helper";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -26,11 +26,15 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const phraseData = useSelector((state) => state.phrases);
+  const { myPhrases, topPhrases, recentPhrases } = phraseData;
   // const authedUser = useSelector((state) => state.authedUser); get authedUser
-  const authedUser = "jmak";
+  const authedUser = { id: "8aca195a-2932-4e78-94ae-0a74500d4a5a" };
 
   useEffect(() => {
-    dispatch(setPhraseData(PHRASE_DATA)); // will call api to pull phrase data
+    dispatch(handleLoadPhrases({ word })); // load phrases on mount
+    return () => {
+      dispatch(cleanupPhrases()); // clear phrases on unmount
+    };
   }, []);
 
   const toggleModal = () => {
@@ -39,7 +43,7 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
 
   const isLoading =
     phraseData === undefined ||
-    (phraseData && !phraseData.hasOwnProperty("myPhrases"));
+    (phraseData && !phraseData.hasOwnProperty("recentPhrases"));
 
   return (
     <Fragment>
@@ -85,9 +89,9 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
             <CustomText option='large'>LOADING...</CustomText>
           ) : (
             <Fragment>
-              {Object.keys(phraseData.myPhrases).map((key, index) => {
+              {Object.keys(myPhrases).map((key, index) => {
                 index++;
-                const item = phraseData.myPhrases[key];
+                const item = myPhrases[key];
                 return (
                   <PhraseCard
                     key={("My Phrases", index)}
@@ -97,36 +101,44 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
                   />
                 );
               })}
-              <View style={styles.phraseCategoryBar}>
-                <CustomText option='mid'>Top Phrases</CustomText>
-              </View>
-              {Object.keys(phraseData.topPhrases).map((key, index) => {
-                index++;
-                const item = phraseData.topPhrases[key];
-                return (
-                  <PhraseCard
-                    key={("Top Phrases", index)}
-                    details={item}
-                    myPhraseSection={false}
-                    authedUser={authedUser}
-                  />
-                );
-              })}
-              <View style={styles.phraseCategoryBar}>
-                <CustomText option='mid'>Recent Phrases</CustomText>
-              </View>
-              {Object.keys(phraseData.recentPhrases).map((key, index) => {
-                index++;
-                const item = phraseData.recentPhrases[key];
-                return (
-                  <PhraseCard
-                    key={("Recent Phrases", index)}
-                    details={item}
-                    myPhraseSection={false}
-                    authedUser={authedUser}
-                  />
-                );
-              })}
+              {objIsNotEmpty(topPhrases) && (
+                <Fragment>
+                  <View style={styles.phraseCategoryBar}>
+                    <CustomText option='mid'>Top</CustomText>
+                  </View>
+                  {Object.keys(topPhrases).map((key, index) => {
+                    index++;
+                    const item = topPhrases[key];
+                    return (
+                      <PhraseCard
+                        key={("Top Phrases", index)}
+                        details={item}
+                        myPhraseSection={false}
+                        authedUser={authedUser}
+                      />
+                    );
+                  })}
+                </Fragment>
+              )}
+              {objIsNotEmpty(recentPhrases) && (
+                <Fragment>
+                  <View style={styles.phraseCategoryBar}>
+                    <CustomText option='mid'>Recent</CustomText>
+                  </View>
+                  {Object.keys(recentPhrases).map((key, index) => {
+                    index++;
+                    const item = recentPhrases[key];
+                    return (
+                      <PhraseCard
+                        key={("Recent Phrases", index)}
+                        details={item}
+                        myPhraseSection={false}
+                        authedUser={authedUser}
+                      />
+                    );
+                  })}
+                </Fragment>
+              )}
               <View style={{ height: 10 + HeaderHeight + NavBarHeight }} />
             </Fragment>
           )}

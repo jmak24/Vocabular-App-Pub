@@ -14,11 +14,11 @@ import {
 
 const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
   const dispatch = useDispatch();
-  const { id, phrase, likes, isPublic, author } = details;
+  const { id, phrase, likes, isPublic, authorId } = details;
   const eyeIcon = isPublic ? "ios-eye" : "ios-eye-off";
-  const hasLiked = likes.includes(authedUser);
+  const hasLiked = likes.includes(authedUser.id);
   // if you are author of phrase and is set to private
-  if (authedUser === author && !myPhraseSection && !isPublic) {
+  if (authedUser.id === authorId && !myPhraseSection && !isPublic) {
     return null;
   }
 
@@ -38,7 +38,10 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
               <TouchableOpacity
                 onPress={() =>
                   dispatch(
-                    handleTogglePhraseVisibility({ phraseId: id, isPublic })
+                    handleTogglePhraseVisibility({
+                      phraseId: id,
+                      isPublic: !isPublic,
+                    })
                   )
                 }
               >
@@ -70,7 +73,12 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
           <TouchableOpacity
             onPress={() =>
               dispatch(
-                handleTogglePhraseLike({ phraseId: id, authedUser, hasLiked })
+                handleTogglePhraseLike({
+                  phraseId: id,
+                  authedUser,
+                  hasLiked,
+                  likes,
+                })
               )
             }
             disabled={myPhraseSection}

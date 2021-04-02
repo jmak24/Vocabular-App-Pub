@@ -9,5 +9,5 @@ export default {
   iconHeartFilled: "#f57569",
   toastInfo: "#1a96e8",
   toastWarning: "#ebbe17",
-  toastDanger: "#de5752",
+  toastError: "#de5752",
 };

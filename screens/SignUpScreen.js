@@ -68,7 +68,7 @@ const SignUpScreen = ({ navigation }) => {
         </View>
         <View style={styles.fieldInput}>
           <Ionicons
-            name={"ios-lock"}
+            name={"ios-lock-closed"}
             size={26}
             style={styles.icon}
             color={Colors.iconLightGray}

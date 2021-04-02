@@ -1,0 +1,16 @@
+projects:
+  vocabularAPI:
+    schemaPath: Users/jonmak/Developer/My Projects/Vocabular/graphql/schema.json
+    includes:
+      - amplify/graphql/**/*.js
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: amplify/graphql
+        maxDepth: 2
+extensions:
+  amplify:
+    version: 3

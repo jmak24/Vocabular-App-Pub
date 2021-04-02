@@ -2,6 +2,9 @@ import "react-native-get-random-values";
 import { nanoid } from "nanoid/async/index.native";
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
+import { API, Auth, graphqlOperation } from "aws-amplify";
+import * as mutations from "../amplify/graphql/mutations";
+import * as queries from "../amplify/graphql/queries";
 
 import { SPEECH_TYPES } from "../constants/OrderedItems";
 
@@ -20,6 +23,26 @@ export const generateUUID = async () => {
 // Native method to remove keys from object
 export const omit = (keyToOmit, { [keyToOmit]: _, ...omittedPropObj } = {}) =>
   omittedPropObj;
+
+// Check if object is empty
+export const objIsNotEmpty = (myObject) => {
+  return (
+    myObject &&
+    Object.keys(myObject).length > 0 &&
+    myObject.constructor === Object
+  );
+};
+
+// Convert Array of Phrases to Object
+export const phrasesToObj = (phrasesArr) => {
+  const phrasesObj = {};
+  for (let i = 0; i < phrasesArr.length; i++) {
+    const phrase = phrasesArr[i];
+    phrase.likes = JSON.parse(phrase.likes);
+    phrasesObj[phrase.id] = phrase;
+  }
+  return phrasesObj;
+};
 
 // Store Local Async Storage
 export const setAsyncStorage = async (storageKey, value) => {
@@ -64,13 +87,10 @@ export const apiSuggestedWords = async (keyword) => {
   }
 };
 
-// Retreive My Phrases, Top Phrases, Recent Phrases
-export const getPhraseData = async (word) => {};
-
 // Prepare definition data for Word Details screen
 // Organize results by speech type to be consumed for SectionList component
 export const prepareForWordDetails = (word) => {
-  // Word details has already been configured
+  // End - Word details has already been configured
   if (word.results[0].hasOwnProperty("data")) return;
 
   try {
@@ -94,4 +114,101 @@ export const prepareForWordDetails = (word) => {
   } catch (err) {
     if (err) console.log(err);
   }
+};
+
+// AWS GraphQL Queries & Mutations
+
+// CREATE USER
+export const createUser = async ({ user }) => {
+  try {
+    return await API.graphql(
+      graphqlOperation(mutations.createUser, { input: user })
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// CREATE PHRASE
+export const createPhrase = ({ phrase }) => {
+  console.log(phrase);
+  return API.graphql(
+    graphqlOperation(mutations.createPhrase, { input: phrase })
+  );
+};
+
+// DELETE A PHRASE
+export const deletePhrase = ({ phraseId }) => {
+  return API.graphql(
+    graphqlOperation(mutations.deletePhrase, { input: { id: phraseId } })
+  );
+};
+
+// UPDATE PHRASE LIKES
+export const updatePhraseLikes = ({ phraseId, userId, likes }) => {
+  const indexOfUser = likes.indexOf(userId);
+  let updatedLikes;
+  if (indexOfUser < 0) {
+    updatedLikes = likes.concat([userId]); // add user to likes
+  } else {
+    updatedLikes = likes.filter((id) => id !== userId); // remove user from likes
+  }
+
+  const input = {
+    id: phraseId,
+    likes: JSON.stringify(updatedLikes),
+    numLikes: likes.length,
+  };
+
+  return API.graphql(graphqlOperation(mutations.updatePhrase, { input }));
+};
+
+// UPDATE PHRASE VISIBILITY
+export const updatePhraseVisibility = ({ phraseId, isPublic }) => {
+  const input = { id: phraseId, isPublic };
+  return API.graphql(graphqlOperation(mutations.updatePhrase, { input }));
+};
+
+// GET USER
+export const getUser = ({ userId }) => {
+  return API.graphql(graphqlOperation(queries.getUser, { id: userId }));
+};
+
+// GET PHRASES BY USER ID
+export const getPhrasesByUser = ({ userId: authorId, word }) => {
+  return API.graphql(
+    graphqlOperation(queries.phrasesByUser, {
+      authorId,
+      filter: { word: { eq: word } },
+      sortDirection: "DESC",
+    })
+  );
+};
+
+// GET PHRASES BY MOST LIKES
+export const getPhrasesByLikes = ({ word }) => {
+  // need to exclude isPublic = false
+  return API.graphql(
+    graphqlOperation(queries.phrasesByLikes, {
+      limit: 5,
+      type: "Phrase",
+      filter: {
+        word: { eq: word },
+        isPublic: { eq: true },
+      },
+      sortDirection: "DESC",
+    })
+  );
+};
+
+// GET PRASES BY MOST RECENT
+export const getPhrasesByDate = async ({ word }) => {
+  // need to exclude isPublic = false
+  return await API.graphql(
+    graphqlOperation(queries.phrasesByDate, {
+      word,
+      isPublic: { eq: true },
+      sortDirection: "DESC",
+    })
+  );
 };

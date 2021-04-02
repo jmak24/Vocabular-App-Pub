@@ -1,0 +1,46 @@
+type User @model @key(name: "userByEmail", fields: ["email", "id"]) {
+  # @auth(rules: [{ allow: owner }])
+  id: ID!
+  userTag: String!
+  email: AWSEmail!
+  phrases: [Phrase]! @connection(keyName: "byUser", fields: ["id"])
+  words: AWSJSON!
+  createdAt: AWSDateTime!
+}
+
+type Phrase
+  @model
+  # @auth(rules: [{ allow: owner, operations: [create, delete, update] }])
+  @key(name: "byUser", fields: ["authorId"])
+  @key(
+    name: "phrasesByUser"
+    fields: ["authorId", "createdAt"]
+    queryField: "phrasesByUser"
+  )
+  @key(
+    name: "phrasesByDate"
+    fields: ["word", "createdAt"]
+    queryField: "phrasesByDate"
+  )
+  @key(
+    name: "phrasesByLikes"
+    fields: ["type", "numLikes"]
+    queryField: "phrasesByLikes"
+  ) {
+  id: ID!
+  word: String!
+  phrase: String!
+  numLikes: Int!
+  likes: AWSJSON!
+  authorId: ID!
+  authorTag: String!
+  isPublic: Boolean!
+  createdAt: AWSDateTime!
+  type: String!
+}
+
+# type PhraseLike @model @key(name: "byLike", fields: ["phraseId"]) {
+#   id: ID!
+#   phraseId: ID!
+#   username: String!
+# }
