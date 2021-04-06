@@ -10,7 +10,7 @@ export const setToast = (toastType, msg, icon) => async (dispatch) => {
     payload: { id, toastType, msg, icon },
   });
 
-  setTimeout(() => dispatch(removeToast(id)), 3000);
+  setTimeout(() => dispatch(removeToast(id)), 5000);
 };
 
 export const removeToast = (id) => {

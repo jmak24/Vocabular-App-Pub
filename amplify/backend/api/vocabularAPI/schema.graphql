@@ -1,16 +1,24 @@
-type User @model @key(name: "userByEmail", fields: ["email", "id"]) {
-  # @auth(rules: [{ allow: owner }])
+type UserProfile
+  @model
+  @aws_cognito_user_pools
+  @auth(rules: [{ allow: owner }])
+  @key(
+    name: "byEmail"
+    fields: ["email", "id"]
+    queryField: "userProfileByEmail"
+  ) {
   id: ID!
-  userTag: String!
+  owner: String
+  userHandle: String
   email: AWSEmail!
   phrases: [Phrase]! @connection(keyName: "byUser", fields: ["id"])
   words: AWSJSON!
-  createdAt: AWSDateTime!
 }
 
 type Phrase
   @model
-  # @auth(rules: [{ allow: owner, operations: [create, delete, update] }])
+  @aws_cognito_user_pools
+  @auth(rules: [{ allow: owner, operations: [create, delete, update] }])
   @key(name: "byUser", fields: ["authorId"])
   @key(
     name: "phrasesByUser"
@@ -33,14 +41,8 @@ type Phrase
   numLikes: Int!
   likes: AWSJSON!
   authorId: ID!
-  authorTag: String!
+  authorHandle: String!
   isPublic: Boolean!
   createdAt: AWSDateTime!
   type: String!
 }
-
-# type PhraseLike @model @key(name: "byLike", fields: ["phraseId"]) {
-#   id: ID!
-#   phraseId: ID!
-#   username: String!
-# }

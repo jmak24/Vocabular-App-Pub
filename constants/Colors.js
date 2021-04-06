@@ -8,6 +8,6 @@ export default {
   iconLightGray: "#b8b8b8",
   iconHeartFilled: "#f57569",
   toastInfo: "#1a96e8",
-  toastWarning: "#ebbe17",
+  toastWarning: "#f5cb33",
   toastError: "#de5752",
 };

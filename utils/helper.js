@@ -118,11 +118,20 @@ export const prepareForWordDetails = (word) => {
 
 // AWS GraphQL Queries & Mutations
 
-// CREATE USER
-export const createUser = async ({ user }) => {
+// GET USER PROFILE
+export const getUserProfile = async ({ id }) => {
+  try {
+    return await API.graphql(graphqlOperation(queries.getUserProfile, { id }));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// CREATE USER PROFILE
+export const createUserProfile = async ({ user }) => {
   try {
     return await API.graphql(
-      graphqlOperation(mutations.createUser, { input: user })
+      graphqlOperation(mutations.createUserProfile, { input: user })
     );
   } catch (err) {
     console.log(err);

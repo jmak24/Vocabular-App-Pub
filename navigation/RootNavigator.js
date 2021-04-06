@@ -9,7 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import WordDetailsScreen from "../screens/WordDetailsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ArchivedScreen from "../screens/ArchivedScreen";
-import SignUpScreen from "../screens/SignUpScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -18,7 +18,7 @@ const MainNavigator = () => (
   <Stack.Navigator
     initialRouteName='Home'
     screenOptions={({ route, navigation }) => {
-      return route.name === "Settings"
+      return route.name === "Login"
         ? {
             gestureEnabled: true,
             cardOverlayEnabled: true,
@@ -30,7 +30,7 @@ const MainNavigator = () => (
           }
         : {};
     }}
-    mode={({ route }) => (route.name === "Settings" ? "modal" : "card")}
+    mode={({ route }) => (route.name === "Login" ? "modal" : "card")}
     headerMode='none'
   >
     <Stack.Screen
@@ -39,7 +39,7 @@ const MainNavigator = () => (
       options={{ title: "Home" }}
     />
     <Stack.Screen name='WordDetails' component={WordDetailsScreen} />
-    <Stack.Screen name='Settings' component={SignUpScreen} />
+    <Stack.Screen name='Login' component={LoginScreen} />
   </Stack.Navigator>
 );
 

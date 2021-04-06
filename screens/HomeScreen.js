@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onPressSettings = () => {
-    navigation.push("Settings");
+    navigation.push("Login");
   };
 
   if (wordsList && wordsList.length === 0) {
@@ -47,7 +47,11 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.screen}>
       <View style={styles.topBarContainer}>
         <TouchableWithoutFeedback onPress={onPressSettings}>
-          <Ionicons name={"ios-settings"} size={32} color={Colors.iconGray} />
+          <Ionicons
+            name={"ios-settings-sharp"}
+            size={32}
+            color={Colors.iconGray}
+          />
         </TouchableWithoutFeedback>
       </View>
       <FlatList

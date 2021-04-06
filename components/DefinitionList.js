@@ -28,7 +28,6 @@ const DefinitionList = ({
   const [cardsExpanded, setCardsExpanded] = useState({});
   const [arrowCommand, setArrowCommand] = useState("");
   const numItemsInSpeech = useRef(null);
-  const listOffsetY = useRef({});
 
   useEffect(() => {
     numItemsInSpeech.current = loadNumItemsInSpeech();
@@ -112,8 +111,8 @@ const DefinitionList = ({
         const title = section.title;
         const arrowIcon =
           cardsExpanded.hasOwnProperty(title) && cardsExpanded[title] > 0
-            ? "ios-arrow-down"
-            : "ios-arrow-up";
+            ? "ios-chevron-down"
+            : "ios-chevron-up";
         return (
           <Fragment key={title}>
             <View style={styles.speechCategoryBar}>

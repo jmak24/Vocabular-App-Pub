@@ -27,8 +27,7 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const phraseData = useSelector((state) => state.phrases);
   const { myPhrases, topPhrases, recentPhrases } = phraseData;
-  // const authedUser = useSelector((state) => state.authedUser); get authedUser
-  const authedUser = { id: "8aca195a-2932-4e78-94ae-0a74500d4a5a" };
+  const authedUser = useSelector((state) => state.userProfile);
 
   useEffect(() => {
     dispatch(handleLoadPhrases({ word })); // load phrases on mount

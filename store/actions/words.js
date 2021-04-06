@@ -67,7 +67,7 @@ export const setupInitWordsState = () => async (dispatch) => {
   } catch (err) {
     console.log(err);
     const toastMsg = "Failed to load the intial state";
-    dispatch(setToast("toastDanger", toastMsg, "ios-warning"));
+    dispatch(setToast("toastError", toastMsg, "ios-warning"));
   }
 };
 
@@ -84,7 +84,7 @@ export const toggleBookmark = (wordDetails, isBookmarked) => async (
     const toastMsg = isBookmarked
       ? "An error occurred removing from Bookmark"
       : "An error occurred adding to Bookmark";
-    dispatch(setToast("toastDanger", toastMsg, "ios-warning"));
+    dispatch(setToast("toastError", toastMsg, "ios-warning"));
   }
 };
 
@@ -99,7 +99,7 @@ export const toggleArchive = (targetWord, isArchived) => async (dispatch) => {
     const toastMsg = isArchived
       ? "An error occurred removing from Archive"
       : "An error occurred adding to Archive";
-    dispatch(setToast("toastDanger", toastMsg, "ios-warning"));
+    dispatch(setToast("toastError", toastMsg, "ios-warning"));
   }
 };
 

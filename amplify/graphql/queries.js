@@ -1,13 +1,28 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
+export const getUserProfile = /* GraphQL */ `
+  query GetUserProfile($id: ID!) {
+    getUserProfile(id: $id) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -16,17 +31,21 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
+export const listUserProfiles = /* GraphQL */ `
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userTag
+        owner
+        userHandle
         email
+        phrases {
+          nextToken
+        }
         words
         createdAt
         updatedAt
@@ -44,11 +63,12 @@ export const getPhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;
@@ -66,10 +86,44 @@ export const listPhrases = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorTag
+        authorHandle
         isPublic
         createdAt
         type
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const userProfileByOwner = /* GraphQL */ `
+  query UserProfileByOwner(
+    $owner: String
+    $id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userProfileByOwner(
+      owner: $owner
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        userHandle
+        email
+        phrases {
+          nextToken
+        }
+        words
+        createdAt
         updatedAt
       }
       nextToken
@@ -100,11 +154,12 @@ export const phrasesByUser = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorTag
+        authorHandle
         isPublic
         createdAt
         type
         updatedAt
+        owner
       }
       nextToken
     }
@@ -134,11 +189,12 @@ export const phrasesByDate = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorTag
+        authorHandle
         isPublic
         createdAt
         type
         updatedAt
+        owner
       }
       nextToken
     }
@@ -168,11 +224,12 @@ export const phrasesByLikes = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorTag
+        authorHandle
         isPublic
         createdAt
         type
         updatedAt
+        owner
       }
       nextToken
     }

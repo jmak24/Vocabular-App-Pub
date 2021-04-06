@@ -61,32 +61,24 @@ export const cleanupPhrases = () => {
   };
 };
 
-// ****** TO REMOVE ******
-// const authedUser = {
-//   id: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
-//   userTag: "jmak",
-// };
-const authedUser = {
-  id: "8aca195a-2932-4e78-94ae-0a74500d4a5a",
-  userTag: "djdannyd",
-};
-
 export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
-  // const { authedUser } = getState()
-  // dispatch(showLoading())
+  const { userProfile: authedUser } = getState();
   try {
-    const myPhrasesRes = await getPhrasesByUser({
-      userId: authedUser.id,
-      word,
-    });
-    const myPhrasesArr = myPhrasesRes.data.phrasesByUser.items;
+    let myPhrasesArr, myPhrasesRes;
+    if (authedUser) {
+      myPhrasesRes = await getPhrasesByUser({
+        userId: authedUser.id,
+        word,
+      });
+      myPhrasesArr = myPhrasesRes.data.phrasesByUser.items;
+    }
     const topPhrasesRes = await getPhrasesByLikes({ word });
     const topPhrasesArr = topPhrasesRes.data.phrasesByLikes.items;
     const recentPhrasesRes = await getPhrasesByDate({ word });
     const recentPhrasesArr = recentPhrasesRes.data.phrasesByDate.items;
 
     const phraseData = {
-      myPhrases: phrasesToObj(myPhrasesArr),
+      myPhrases: authedUser ? phrasesToObj(myPhrasesArr) : {},
       topPhrases: phrasesToObj(topPhrasesArr),
       recentPhrases: phrasesToObj(recentPhrasesArr),
     };
@@ -103,14 +95,14 @@ export const handlePostPhrase = ({ word, textInput, isPublic }) => async (
   dispatch,
   getState
 ) => {
-  // const { authedUser } = getState()
+  const { userProfile: authedUser } = getState();
   const phrase = {
     word,
     phrase: textInput,
     numLikes: 0,
     likes: JSON.stringify([]),
     authorId: authedUser.id,
-    authorTag: authedUser.userTag,
+    authorHandle: authedUser.userHandle,
     isPublic,
     createdAt: new Date(),
     type: "Phrase",
@@ -131,11 +123,7 @@ export const handlePostPhrase = ({ word, textInput, isPublic }) => async (
   dispatch(setToast("toastInfo", "Phrase Posted!", "ios-checkmark-circle"));
 };
 
-export const handleRemovePhrase = ({ phraseId }) => async (
-  dispatch,
-  getState
-) => {
-  // const { authedUser } = getState()
+export const handleRemovePhrase = ({ phraseId }) => async (dispatch) => {
   try {
     await deletePhrase({ phraseId });
     dispatch({
@@ -211,7 +199,7 @@ export const getMoreRecentPhrases = (word) => async (dispatch) => {
     console.log(err);
     dispatch(
       setToast(
-        "toastDanger",
+        "toastError",
         "Error occurred loading more phrases",
         "ios-warning"
       )

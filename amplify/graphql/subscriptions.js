@@ -1,13 +1,28 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+export const onCreateUserProfile = /* GraphQL */ `
+  subscription OnCreateUserProfile($owner: String!) {
+    onCreateUserProfile(owner: $owner) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -16,13 +31,28 @@ export const onCreateUser = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+export const onUpdateUserProfile = /* GraphQL */ `
+  subscription OnUpdateUserProfile($owner: String!) {
+    onUpdateUserProfile(owner: $owner) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -31,13 +61,28 @@ export const onUpdateUser = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+export const onDeleteUserProfile = /* GraphQL */ `
+  subscription OnDeleteUserProfile($owner: String!) {
+    onDeleteUserProfile(owner: $owner) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -55,11 +100,12 @@ export const onCreatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;
@@ -72,11 +118,12 @@ export const onUpdatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;
@@ -89,11 +136,12 @@ export const onDeletePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;

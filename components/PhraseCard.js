@@ -15,7 +15,7 @@ import {
 const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
   const dispatch = useDispatch();
   const { id, phrase, likes, isPublic, authorId } = details;
-  const eyeIcon = isPublic ? "ios-eye" : "ios-eye-off";
+  const eyeIcon = isPublic ? "ios-eye-outline" : "ios-eye-off-outline";
   const hasLiked = likes.includes(authedUser.id);
   // if you are author of phrase and is set to private
   if (authedUser.id === authorId && !myPhraseSection && !isPublic) {
@@ -56,7 +56,7 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
                 onPress={() => dispatch(handleRemovePhrase({ phraseId: id }))}
               >
                 <Ionicons
-                  name={"ios-trash"}
+                  name={"ios-trash-outline"}
                   size={25}
                   style={styles.icon}
                   color={Colors.iconLightGray}
@@ -84,7 +84,7 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
             disabled={myPhraseSection}
           >
             <Ionicons
-              name={"ios-heart"}
+              name={hasLiked ? "ios-heart" : "ios-heart-outline"}
               size={24}
               style={styles.heartIcon}
               color={hasLiked ? Colors.iconHeartFilled : Colors.iconLightGray}

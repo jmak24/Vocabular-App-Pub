@@ -1,16 +1,31 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
+export const createUserProfile = /* GraphQL */ `
+  mutation CreateUserProfile(
+    $input: CreateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    createUser(input: $input, condition: $condition) {
+    createUserProfile(input: $input, condition: $condition) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -19,16 +34,31 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
+export const updateUserProfile = /* GraphQL */ `
+  mutation UpdateUserProfile(
+    $input: UpdateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    updateUser(input: $input, condition: $condition) {
+    updateUserProfile(input: $input, condition: $condition) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -37,16 +67,31 @@ export const updateUser = /* GraphQL */ `
     }
   }
 `;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
+export const deleteUserProfile = /* GraphQL */ `
+  mutation DeleteUserProfile(
+    $input: DeleteUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    deleteUser(input: $input, condition: $condition) {
+    deleteUserProfile(input: $input, condition: $condition) {
       id
-      userTag
+      owner
+      userHandle
       email
       phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          authorHandle
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
         nextToken
       }
       words
@@ -67,11 +112,12 @@ export const createPhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;
@@ -87,11 +133,12 @@ export const updatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;
@@ -107,11 +154,12 @@ export const deletePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorTag
+      authorHandle
       isPublic
       createdAt
       type
       updatedAt
+      owner
     }
   }
 `;

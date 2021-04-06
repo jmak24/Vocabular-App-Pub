@@ -10,29 +10,31 @@ import * as Font from "expo-font";
 import wordsReducer from "./store/reducers/words";
 import toastsReducer from "./store/reducers/toasts";
 import phrasesReducer from "./store/reducers/phrases";
+import userProfilerReducer from "./store/reducers/userProfile";
 import AppContainer from "./AppContainer";
 import { setupInitWordsState } from "./store/actions/words";
-
-import Amplify, { API, Auth, graphqlOperation } from "aws-amplify";
-import awsconfig from "./aws-exports";
-Amplify.configure(awsconfig);
-
 import {
-  createUser,
-  createPhrase,
-  deletePhrase,
-  updatePhraseLikes,
-  updatePhraseVisibility,
-  getUser,
-  getPhrasesByUser,
-  getPhrasesByLikes,
-  getPhrasesByDate,
-} from "./utils/helper";
+  SET_USER_PROFILE,
+  CLEAR_USER_PROFILE,
+  setUserProfile,
+  clearUserProfile,
+} from "./store/actions/userProfile";
+
+import { Auth } from "aws-amplify"; // TO REMOVE
+import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
+import * as queries from "./amplify/graphql/queries"; // TO REMOVE
+import { getUserProfile } from "./utils/helper";
+
+import Amplify from "aws-amplify";
+import awsconfig from "./aws-exports";
+
+Amplify.configure(awsconfig);
 
 const rootReducer = combineReducers({
   words: wordsReducer,
   toasts: toastsReducer,
   phrases: phrasesReducer,
+  userProfile: userProfilerReducer,
 });
 const store = createStore(
   rootReducer,
@@ -49,109 +51,28 @@ const fetchFonts = () => {
   });
 };
 
-export default function App() {
+function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
     store.dispatch(setupInitWordsState());
-    testAPI();
+    authenticateUser();
   }, []);
 
-  const testAPI = async () => {
+  const authenticateUser = async () => {
     try {
-      // CREATE USER
-      const userDetails = {
-        userTag: "jmak",
-        email: "makjonathan@hotmail.com",
-        words: JSON.stringify({ bookmarked: [], archived: [] }),
-        createdAt: new Date(),
-      };
-      // id: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b"
-      const userDetails2 = {
-        userTag: "pandabox",
-        email: "pbox@hotmail.com",
-        words: JSON.stringify({ bookmarked: [], archived: [] }),
-        createdAt: new Date(),
-      };
-      const userDetails3 = {
-        userTag: "djdannyd",
-        email: "djdannyd@hotmail.com",
-        words: JSON.stringify({ bookmarked: [], archived: [] }),
-        createdAt: new Date(),
-      };
-      // id: "8aca195a-2932-4e78-94ae-0a74500d4a5a"
-      // const newUser = await createUser({ user: userDetails3 });
-      // console.log("newUser:", newUser);
-
-      // GET USER
-      // const user = await getUser({
-      //   userId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
-      // });
-      // console.log("user:", user);
-
-      // CREATE PHRASE
-      const phraseDetails1 = {
-        word: "amplify",
-        phrase: "I love AWS Amplify",
-        numLikes: 2,
-        likes: JSON.stringify(["timmyturner", "xblader"]),
-        authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
-        authorTag: "jmak",
-        isPublic: true,
-        createdAt: new Date(),
-        type: "Phrase",
-      };
-      const phraseDetails2 = {
-        word: "anarchy",
-        phrase: "Anarchy broke out after the election results",
-        numLikes: 0,
-        likes: JSON.stringify([""]),
-        authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
-        authorTag: "jmak",
-        isPublic: true,
-        createdAt: new Date(),
-        type: "Phrase",
-      };
-      // const newPhrase = await createPhrase({ phrase: phraseDetails2 });
-      // console.log("newPhrase:", newPhrase);
-
-      // DELETE A PHRASE
-      // const deletedPhrase = await deletePhrase({
-      //   phraseId: "6437076b-d00e-43d9-bdc7-0ce3a23e6661",
-      // });
-      // console.log(deletedPhrase);
-
-      // LIKE A PHRASE
-      // const updatedPhrase = await updatePhraseLikes({
-      //   phraseId: "5ab4ff9d-7925-4e96-a8e6-443221dae4e1",
-      //   userId: "421f53bb-fcaf-4730-95be-509713d768b9",
-      //   likes: JSON.stringify([]),
-      // });
-      // console.log(updatedPhrase);
-
-      // UPDATE PHRASE VISIBILITY
-      // const updatedPhrase = await updatePhraseVisibility({
-      //   phraseId: "96669e33-62f2-4212-890e-e621b3acb1cc",
-      //   isPublic: false,
-      // });
-      // console.log(updatedPhrase);
-
-      // GET PHRASE BY USER
-      // const phraseByUser = await getPhrasesByUser({
-      //   userId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
-      //   word: "amplify",
-      // });
-      // console.log(phraseByUser);
-
-      // GET PHRASE BY MOST LIKES
-      // const phraseByLikes = await getPhrasesByLikes({ word: "amplify" });
-      // console.log(phraseByLikes);
-
-      // GET PRASE BY MOST RECENT
-      // const phrasesByDate = await getPhrasesByDate({ word: "anarchy" });
-      // console.log(phrasesByDate);
+      const cognitoUser = await Auth.currentAuthenticatedUser();
+      if (cognitoUser) {
+        const userId = cognitoUser.username;
+        const userProfileRes = await getUserProfile({ id: userId });
+        const userProfile = userProfileRes.data.getUserProfile;
+        console.log("APP - userProfile", userProfile);
+        store.dispatch(setUserProfile(userProfile));
+      } else {
+        store.dispatch(clearUserProfile());
+      }
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
     }
   };
 
@@ -172,3 +93,5 @@ export default function App() {
     </Provider>
   );
 }
+
+export default App;
