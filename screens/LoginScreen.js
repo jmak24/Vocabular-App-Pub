@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   View,
   StyleSheet,
@@ -16,16 +16,31 @@ import LogoIcon from "../assets/bookmark-img.png";
 
 import { createUserProfile, getUserProfile } from "../utils/helper";
 import { Auth } from "@aws-amplify/auth";
+import { setUserProfile } from "../store/actions/userProfile";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [submitEnabled, setSubmitEnabled] = useState(false);
   const [formState, setFormState] = useState({
-    userHandle: "",
+    userTag: "",
     email: "",
     password: "",
     authCode: "",
     formType: "signUp",
   });
+  const { userTag, email, password, authCode, formType } = formState;
+
+  useEffect(() => {
+    if (
+      (formType === "signIn" && email && password) ||
+      (formType === "signUp" && userTag && email && password) ||
+      (formType === "confirmSignUp" && authCode)
+    ) {
+      setSubmitEnabled(true);
+    } else {
+      setSubmitEnabled(false);
+    }
+  }, [formState]);
 
   const handleSetFieldInput = (event, field) => {
     let value = event.nativeEvent.text;
@@ -44,12 +59,12 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const signUp = async () => {
-    const { userHandle, email, password } = formState;
+    const { userTag, email, password } = formState;
     try {
       await Auth.signUp({
         username: email,
         password,
-        attributes: { email, preferred_username: userHandle },
+        attributes: { email, preferred_username: userTag },
       });
 
       updateFormType("confirmSignUp");
@@ -79,39 +94,12 @@ const LoginScreen = ({ navigation }) => {
     const { email, password } = formState;
 
     try {
-      const cognitoUser = await Auth.signIn({ username: email, password });
-      const userId = cognitoUser.username;
-
-      const userProfileRes = await getUserProfile({ id: userId });
-      let userProfile = userProfileRes.data.getUserProfile;
-      console.log("LoginScreen - userProfile", userProfile);
-
-      // create user profile (only on first time logging in)
-      if (!userProfile) {
-        const userAttributes = await Auth.userAttributes(cognitoUser);
-        let userHandle;
-        for (let i = 0; i < userAttributes.length; i++) {
-          if (userAttributes[i].Name === "preferred_username")
-            userHandle = userAttributes[i].Value;
-        }
-
-        const user = {
-          id: userId,
-          email,
-          userHandle,
-          words: JSON.stringify({ words: [], archived: [] }),
-        };
-        const createUserProfileRes = await createUserProfile({ user });
-        userProfile = createUserProfileRes.data.createUserProfile;
-        console.log("new user profile created");
-      }
-
-      console.log("userProfile", userProfile);
-      setToast("toastInfo", "Log in Successful!", "ios-checkmark-circle");
-
+      await Auth.signIn({ username: email, password });
+      dispatch(
+        setToast("toastInfo", "Log in Successful", "ios-checkmark-circle")
+      );
       navigation.popToTop();
     } catch (err) {
-      console.log(err);
       let msg;
       let toastType = "toastWarning";
       switch (err.code) {
@@ -155,22 +143,20 @@ const LoginScreen = ({ navigation }) => {
             </CustomText>
           </View>
           <View style={styles.mainSection}>
-            {formState.formType === "signUp" && (
-              <View style={styles.fieldInput}>
-                <Ionicons
-                  name={"ios-person-outline"}
-                  size={26}
-                  style={styles.icon}
-                  color={Colors.iconLightGray}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  onChange={(event) => handleSetFieldInput(event, "userHandle")}
-                  placeholder='Username'
-                  value={formState.userHandle}
-                />
-              </View>
-            )}
+            <View style={styles.fieldInput}>
+              <Ionicons
+                name={"ios-person-outline"}
+                size={26}
+                style={styles.icon}
+                color={Colors.iconLightGray}
+              />
+              <TextInput
+                style={styles.textInput}
+                onChange={(event) => handleSetFieldInput(event, "userTag")}
+                placeholder='Username'
+                value={formState.userTag}
+              />
+            </View>
             <View style={styles.fieldInput}>
               <Ionicons
                 name={"ios-mail-outline"}
@@ -200,7 +186,9 @@ const LoginScreen = ({ navigation }) => {
                 value={formState.password}
               />
             </View>
-            <View style={styles.button}>
+            <View
+              style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+            >
               <TouchableOpacity onPress={signUp}>
                 <CustomText option='mid' style={{ color: "#fff" }}>
                   Sign Up
@@ -247,7 +235,9 @@ const LoginScreen = ({ navigation }) => {
               keyboardType='numeric'
             />
           </View>
-          <View style={styles.button}>
+          <View
+            style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+          >
             <TouchableOpacity onPress={confirmSignUp}>
               <CustomText option='mid' style={{ color: "#fff" }}>
                 Confirm Sign Up
@@ -297,7 +287,9 @@ const LoginScreen = ({ navigation }) => {
                 value={formState.password}
               />
             </View>
-            <View style={styles.button}>
+            <View
+              style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+            >
               <TouchableOpacity onPress={signIn}>
                 <CustomText option='mid' style={{ color: "#fff" }}>
                   Sign In
@@ -381,6 +373,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginTop: 35,
     marginBottom: 35,
+  },
+  buttonDisabled: {
+    opacity: 0.65,
   },
   signUpOrSignIn: {
     color: Colors.primaryTheme,

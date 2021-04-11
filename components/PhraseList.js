@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import {
   View,
   Dimensions,
@@ -8,13 +8,13 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { Ionicons } from "@expo/vector-icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import CustomText from "./CustomText";
 import PhraseCard from "./PhraseCard";
 import PhraseModal from "./PhraseModal";
+import Loading from "./Loading";
 import Colors from "../constants/Colors";
-import { handleLoadPhrases, cleanupPhrases } from "../store/actions/phrases";
 import { objIsNotEmpty } from "../utils/helper";
 
 const window = Dimensions.get("window");
@@ -23,26 +23,17 @@ const HeaderHeight = 131;
 const NavBarHeight = 60;
 
 const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
-  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-  const phraseData = useSelector((state) => state.phrases);
+  const {
+    phrases: phraseData,
+    loading: { FETCH_PHRASES },
+    userProfile: authedUser,
+  } = useSelector((state) => state);
   const { myPhrases, topPhrases, recentPhrases } = phraseData;
-  const authedUser = useSelector((state) => state.userProfile);
-
-  useEffect(() => {
-    dispatch(handleLoadPhrases({ word })); // load phrases on mount
-    return () => {
-      dispatch(cleanupPhrases()); // clear phrases on unmount
-    };
-  }, []);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
-
-  const isLoading =
-    phraseData === undefined ||
-    (phraseData && !phraseData.hasOwnProperty("recentPhrases"));
 
   return (
     <Fragment>
@@ -84,22 +75,26 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
               <CustomText option='body'>Add Phrase</CustomText>
             </View>
           </TouchableOpacity>
-          {isLoading ? (
-            <CustomText option='large'>LOADING...</CustomText>
+          {FETCH_PHRASES.loading ? (
+            <Loading />
           ) : (
             <Fragment>
-              {Object.keys(myPhrases).map((key, index) => {
-                index++;
-                const item = myPhrases[key];
-                return (
-                  <PhraseCard
-                    key={("My Phrases", index)}
-                    details={item}
-                    myPhraseSection={true}
-                    authedUser={authedUser}
-                  />
-                );
-              })}
+              {objIsNotEmpty(myPhrases) && (
+                <Fragment>
+                  {Object.keys(myPhrases).map((key, index) => {
+                    index++;
+                    const item = myPhrases[key];
+                    return (
+                      <PhraseCard
+                        key={("My Phrases", index)}
+                        details={item}
+                        myPhraseSection={true}
+                        authedUser={authedUser}
+                      />
+                    );
+                  })}
+                </Fragment>
+              )}
               {objIsNotEmpty(topPhrases) && (
                 <Fragment>
                   <View style={styles.phraseCategoryBar}>
@@ -146,10 +141,6 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
     </Fragment>
   );
 };
-
-// PhraseList.propTypes = {
-//   phraseData: PropTypes.object.isRequired,
-// };
 
 const styles = StyleSheet.create({
   scrollView: {

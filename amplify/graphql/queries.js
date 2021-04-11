@@ -6,7 +6,7 @@ export const getUserProfile = /* GraphQL */ `
     getUserProfile(id: $id) {
       id
       owner
-      userHandle
+      userTag
       email
       phrases {
         items {
@@ -16,7 +16,6 @@ export const getUserProfile = /* GraphQL */ `
           numLikes
           likes
           authorId
-          authorHandle
           isPublic
           createdAt
           type
@@ -25,7 +24,8 @@ export const getUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      words
+      bookmarkedWords
+      archivedWords
       createdAt
       updatedAt
     }
@@ -41,12 +41,13 @@ export const listUserProfiles = /* GraphQL */ `
       items {
         id
         owner
-        userHandle
+        userTag
         email
         phrases {
           nextToken
         }
-        words
+        bookmarkedWords
+        archivedWords
         createdAt
         updatedAt
       }
@@ -63,7 +64,9 @@ export const getPhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorHandle
+      author {
+        userTag
+      }
       isPublic
       createdAt
       type
@@ -86,7 +89,9 @@ export const listPhrases = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorHandle
+        author {
+          userTag
+        }
         isPublic
         createdAt
         type
@@ -97,17 +102,17 @@ export const listPhrases = /* GraphQL */ `
     }
   }
 `;
-export const userProfileByOwner = /* GraphQL */ `
-  query UserProfileByOwner(
-    $owner: String
+export const userProfileByEmail = /* GraphQL */ `
+  query UserProfileByEmail(
+    $email: AWSEmail
     $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelUserProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    userProfileByOwner(
-      owner: $owner
+    userProfileByEmail(
+      email: $email
       id: $id
       sortDirection: $sortDirection
       filter: $filter
@@ -117,12 +122,13 @@ export const userProfileByOwner = /* GraphQL */ `
       items {
         id
         owner
-        userHandle
+        userTag
         email
         phrases {
           nextToken
         }
-        words
+        bookmarkedWords
+        archivedWords
         createdAt
         updatedAt
       }
@@ -154,7 +160,9 @@ export const phrasesByUser = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorHandle
+        author {
+          userTag
+        }
         isPublic
         createdAt
         type
@@ -189,7 +197,9 @@ export const phrasesByDate = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorHandle
+        author {
+          userTag
+        }
         isPublic
         createdAt
         type
@@ -224,7 +234,9 @@ export const phrasesByLikes = /* GraphQL */ `
         numLikes
         likes
         authorId
-        authorHandle
+        author {
+          userTag
+        }
         isPublic
         createdAt
         type

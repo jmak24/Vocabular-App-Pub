@@ -36,9 +36,7 @@ const DefinitionRelatedItems = ({
                       key={(uniqueId, " ", relatedType, "-", index)}
                       onPress={() => selectWordHandler(relatedItem)}
                     >
-                      <View
-                        style={{ ...styles.relatedWord, ...styles.relatedItem }}
-                      >
+                      <View style={[styles.relatedWord, styles.relatedItem]}>
                         <CustomText option='body'>{relatedItem}</CustomText>
                       </View>
                     </TouchableOpacity>

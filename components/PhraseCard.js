@@ -14,11 +14,19 @@ import {
 
 const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
   const dispatch = useDispatch();
-  const { id, phrase, likes, isPublic, authorId } = details;
+  const {
+    id,
+    phrase,
+    likes,
+    isPublic,
+    authorId,
+    author: { userTag },
+  } = details;
   const eyeIcon = isPublic ? "ios-eye-outline" : "ios-eye-off-outline";
   const hasLiked = likes.includes(authedUser.id);
+  const isAuthor = authedUser.id === authorId;
   // if you are author of phrase and is set to private
-  if (authedUser.id === authorId && !myPhraseSection && !isPublic) {
+  if (isAuthor && !myPhraseSection && !isPublic) {
     return null;
   }
 
@@ -33,7 +41,7 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
             style={styles.icon}
             color={Colors.iconLightGray}
           />
-          {myPhraseSection && (
+          {myPhraseSection ? (
             <Fragment>
               <TouchableOpacity
                 onPress={() =>
@@ -63,6 +71,8 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
                 />
               </TouchableOpacity>
             </Fragment>
+          ) : (
+            <CustomText option='thin'>{userTag}</CustomText>
           )}
         </View>
 

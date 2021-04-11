@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import Colors from "../constants/Colors";
-import { apiSuggestedWords } from "../utils/helper";
+import { fetchSuggestedWords } from "../utils/helper";
 
 const SearchBar = ({
   displayRecentSearches,
@@ -42,7 +42,7 @@ const SearchBar = ({
 
       console.log("Searching... ", searchInput);
 
-      const suggestedWords = await apiSuggestedWords(searchInput);
+      const suggestedWords = await fetchSuggestedWords(searchInput);
       if (suggestedWords.length > 0) {
         displaySuggestedWords(suggestedWords);
       } else {

@@ -8,7 +8,9 @@ import {
 } from "../actions/phrases";
 import { omit } from "../../utils/helper";
 
-export default (state = {}, action) => {
+initialState = { myPhrases: {}, topPhrases: {}, recentPhrases: {} };
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PHRASE_DATA: {
       const { phraseData } = action.payload;
@@ -91,7 +93,7 @@ export default (state = {}, action) => {
       };
     }
     case CLEANUP_PHRASES: {
-      return {};
+      return initialState;
     }
 
     default:

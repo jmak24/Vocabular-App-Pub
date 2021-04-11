@@ -47,12 +47,28 @@ const PhraseModal = ({ toggleModal, modalVisible, word }) => {
 
   const onTextInput = (text) => {
     setTextInput(text);
-    // use indexOf instead and then check if word is independent
-    if (text.includes(" " + word + " ")) {
+    if (wordExistsInPhrase(text)) {
       setPostBtnDisabled(false);
     } else {
       setPostBtnDisabled(true);
     }
+  };
+
+  const wordExistsInPhrase = (text) => {
+    text = text.toLowerCase();
+    const wordStartIndex = text.indexOf(word);
+    const punctuationMarks = '.,:;!?/()" ';
+    if (wordStartIndex >= 0) {
+      const wordEndIndex = wordStartIndex + word.length;
+      if (wordStartIndex > 0 && text[wordStartIndex - 1] !== " ") return false;
+      if (
+        wordEndIndex < text.length - 1 &&
+        !punctuationMarks.includes(text[wordEndIndex])
+      )
+        return false;
+      return true;
+    }
+    return false;
   };
 
   return (

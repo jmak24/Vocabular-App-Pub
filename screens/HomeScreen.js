@@ -29,12 +29,16 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onPressSettings = () => {
+    navigation.push("Settings");
+  };
+
+  const onPressLogin = () => {
     navigation.push("Login");
   };
 
   if (wordsList && wordsList.length === 0) {
     return (
-      <View style={{ ...styles.screen, ...styles.centerContent }}>
+      <View style={[styles.screen, styles.centerContent]}>
         <Image style={styles.booksImage} source={BookmarkImage} />
         <CustomText style={{ textAlign: "center" }} option='subLargeGray'>
           Start Bookmarking{"\n"}Words!
@@ -49,6 +53,13 @@ const HomeScreen = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={onPressSettings}>
           <Ionicons
             name={"ios-settings-sharp"}
+            size={32}
+            color={Colors.iconGray}
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={onPressLogin}>
+          <Ionicons
+            name={"ios-person-outline"}
             size={32}
             color={Colors.iconGray}
           />

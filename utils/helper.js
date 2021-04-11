@@ -58,7 +58,7 @@ export const getAsyncStorage = async (storageKey) => {
 
 // Web service call to WordsAPI (API key required)
 // Retrieves definition data from WordsAPI
-export const apiWordSearch = async (word) => {
+export const fetchApiWord = async (word) => {
   const config = {
     headers: {
       "x-rapidapi-host": rapidapiHost,
@@ -70,20 +70,20 @@ export const apiWordSearch = async (word) => {
     const response = await axios.get(url, config);
     return response.data;
   } catch (err) {
-    if (err) console.log(err.response);
+    if (err) console.log("apiWordSerch:", err.response);
   }
 };
 
 // Web service call to DataMuse API
 // Pulls suggested words based on keyword
-export const apiSuggestedWords = async (keyword) => {
+export const fetchSuggestedWords = async (keyword) => {
   try {
     const url = dataMuseAPIurl + suggestedQuery + keyword;
     const response = await axios.get(url);
     const suggestedWords = response.data.map((item) => item.word);
     return suggestedWords;
   } catch (err) {
-    if (err) console.log(err);
+    if (err) console.log("fetchSuggestedWords:", err);
   }
 };
 
@@ -138,9 +138,15 @@ export const createUserProfile = async ({ user }) => {
   }
 };
 
+// UPDATE USER PROFILE USERTAG
+export const updateUserTag = async ({ id, userTag }) => {
+  return API.graphql(
+    graphqlOperation(mutations.updateUserProfile, { input: { id, userTag } })
+  );
+};
+
 // CREATE PHRASE
 export const createPhrase = ({ phrase }) => {
-  console.log(phrase);
   return API.graphql(
     graphqlOperation(mutations.createPhrase, { input: phrase })
   );
@@ -196,7 +202,6 @@ export const getPhrasesByUser = ({ userId: authorId, word }) => {
 
 // GET PHRASES BY MOST LIKES
 export const getPhrasesByLikes = ({ word }) => {
-  // need to exclude isPublic = false
   return API.graphql(
     graphqlOperation(queries.phrasesByLikes, {
       limit: 5,
@@ -212,7 +217,6 @@ export const getPhrasesByLikes = ({ word }) => {
 
 // GET PRASES BY MOST RECENT
 export const getPhrasesByDate = async ({ word }) => {
-  // need to exclude isPublic = false
   return await API.graphql(
     graphqlOperation(queries.phrasesByDate, {
       word,

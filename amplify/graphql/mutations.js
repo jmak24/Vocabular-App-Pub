@@ -9,7 +9,7 @@ export const createUserProfile = /* GraphQL */ `
     createUserProfile(input: $input, condition: $condition) {
       id
       owner
-      userHandle
+      userTag
       email
       phrases {
         items {
@@ -19,7 +19,6 @@ export const createUserProfile = /* GraphQL */ `
           numLikes
           likes
           authorId
-          authorHandle
           isPublic
           createdAt
           type
@@ -28,7 +27,8 @@ export const createUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      words
+      bookmarkedWords
+      archivedWords
       createdAt
       updatedAt
     }
@@ -42,7 +42,7 @@ export const updateUserProfile = /* GraphQL */ `
     updateUserProfile(input: $input, condition: $condition) {
       id
       owner
-      userHandle
+      userTag
       email
       phrases {
         items {
@@ -52,7 +52,6 @@ export const updateUserProfile = /* GraphQL */ `
           numLikes
           likes
           authorId
-          authorHandle
           isPublic
           createdAt
           type
@@ -61,7 +60,8 @@ export const updateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      words
+      bookmarkedWords
+      archivedWords
       createdAt
       updatedAt
     }
@@ -75,7 +75,7 @@ export const deleteUserProfile = /* GraphQL */ `
     deleteUserProfile(input: $input, condition: $condition) {
       id
       owner
-      userHandle
+      userTag
       email
       phrases {
         items {
@@ -85,7 +85,6 @@ export const deleteUserProfile = /* GraphQL */ `
           numLikes
           likes
           authorId
-          authorHandle
           isPublic
           createdAt
           type
@@ -94,7 +93,8 @@ export const deleteUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      words
+      bookmarkedWords
+      archivedWords
       createdAt
       updatedAt
     }
@@ -112,7 +112,19 @@ export const createPhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorHandle
+      author {
+        id
+        owner
+        userTag
+        email
+        phrases {
+          nextToken
+        }
+        bookmarkedWords
+        archivedWords
+        createdAt
+        updatedAt
+      }
       isPublic
       createdAt
       type
@@ -133,7 +145,19 @@ export const updatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorHandle
+      author {
+        id
+        owner
+        userTag
+        email
+        phrases {
+          nextToken
+        }
+        bookmarkedWords
+        archivedWords
+        createdAt
+        updatedAt
+      }
       isPublic
       createdAt
       type
@@ -154,7 +178,19 @@ export const deletePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
-      authorHandle
+      author {
+        id
+        owner
+        userTag
+        email
+        phrases {
+          nextToken
+        }
+        bookmarkedWords
+        archivedWords
+        createdAt
+        updatedAt
+      }
       isPublic
       createdAt
       type

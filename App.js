@@ -11,21 +11,17 @@ import wordsReducer from "./store/reducers/words";
 import toastsReducer from "./store/reducers/toasts";
 import phrasesReducer from "./store/reducers/phrases";
 import userProfilerReducer from "./store/reducers/userProfile";
+import loadingReducer from "./store/reducers/loading";
 import AppContainer from "./AppContainer";
 import { setupInitWordsState } from "./store/actions/words";
-import {
-  SET_USER_PROFILE,
-  CLEAR_USER_PROFILE,
-  setUserProfile,
-  clearUserProfile,
-} from "./store/actions/userProfile";
+import { setUserProfile } from "./store/actions/userProfile";
 
-import { Auth } from "aws-amplify"; // TO REMOVE
 import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
 import * as queries from "./amplify/graphql/queries"; // TO REMOVE
+import { getPhrasesByDate } from "./utils/helper"; // TO REMOVE
 import { getUserProfile } from "./utils/helper";
 
-import Amplify from "aws-amplify";
+import Amplify, { Auth, Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
 
 Amplify.configure(awsconfig);
@@ -35,6 +31,7 @@ const rootReducer = combineReducers({
   toasts: toastsReducer,
   phrases: phrasesReducer,
   userProfile: userProfilerReducer,
+  loading: loadingReducer,
 });
 const store = createStore(
   rootReducer,
@@ -56,23 +53,58 @@ function App() {
 
   useEffect(() => {
     store.dispatch(setupInitWordsState());
-    authenticateUser();
+    loadUserProfile();
+    authListener();
   }, []);
 
-  const authenticateUser = async () => {
-    try {
-      const cognitoUser = await Auth.currentAuthenticatedUser();
-      if (cognitoUser) {
-        const userId = cognitoUser.username;
-        const userProfileRes = await getUserProfile({ id: userId });
-        const userProfile = userProfileRes.data.getUserProfile;
-        console.log("APP - userProfile", userProfile);
-        store.dispatch(setUserProfile(userProfile));
-      } else {
-        store.dispatch(clearUserProfile());
+  const authListener = () => {
+    Hub.listen("auth", ({ payload: { event, data } }) => {
+      switch (event) {
+        case "signIn":
+        case "cognitoHostedUI":
+          loadUserProfile();
+          console.log("SIGNED IN");
+          break;
+        case "signOut":
+          store.dispatch(setUserProfile({}));
+          console.log("SIGNED OUT");
+          break;
+        case "signIn_failure":
+        case "cognitoHostedUI_failure":
+          console.log("SIGN IN FAILURE", data);
+          break;
       }
-    } catch (err) {
-      console.log(err);
+    });
+  };
+
+  const loadUserProfile = async () => {
+    const cognitoUser = await Auth.currentAuthenticatedUser();
+    if (cognitoUser) {
+      const userId = cognitoUser.username;
+      const userProfileRes = await getUserProfile({ id: userId });
+      let userProfile = userProfileRes.data.getUserProfile;
+      // create user profile (only on first time logging in)
+      if (!userProfile) {
+        const userAttributes = await Auth.userAttributes(cognitoUser);
+        let userTag;
+        for (let i = 0; i < userAttributes.length; i++) {
+          if (userAttributes[i].Name === "preferred_username")
+            userTag = userAttributes[i].Value;
+        }
+        const user = {
+          id: userId,
+          email,
+          userTag,
+          bookmarkedWords: JSON.stringify([]),
+          archivedWords: JSON.stringify({}),
+        };
+        const createUserProfileRes = await createUserProfile({ user });
+        userProfile = createUserProfileRes.data.createUserProfile;
+        console.log("New user profile created in Amplify");
+      }
+
+      // console.log("APP - loadUserProfile", userProfile);
+      store.dispatch(setUserProfile(userProfile));
     }
   };
 

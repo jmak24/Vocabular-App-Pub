@@ -1,5 +1,6 @@
 import { setToast } from "./toasts";
 import { updatePhraseVisibility, phrasesToObj } from "../../utils/helper";
+import { fetchPhrases } from "../actions/loading";
 
 export const SET_PHRASE_DATA = "SET_PHRASE_DATA";
 export const POST_PHRASE = "POST_PHRASE";
@@ -64,6 +65,7 @@ export const cleanupPhrases = () => {
 export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
   const { userProfile: authedUser } = getState();
   try {
+    dispatch(fetchPhrases("REQUEST"));
     let myPhrasesArr, myPhrasesRes;
     if (authedUser) {
       myPhrasesRes = await getPhrasesByUser({
@@ -83,10 +85,12 @@ export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
       recentPhrases: phrasesToObj(recentPhrasesArr),
     };
     dispatch(setPhraseData(phraseData));
+    dispatch(fetchPhrases("SUCCESS"));
   } catch (err) {
     dispatch(
       setToast("toastError", "Failed to Load Phrases", "ios-close-circle")
     );
+    dispatch(fetchPhrases("FAIL"));
     console.log(err);
   }
 };
@@ -102,7 +106,6 @@ export const handlePostPhrase = ({ word, textInput, isPublic }) => async (
     numLikes: 0,
     likes: JSON.stringify([]),
     authorId: authedUser.id,
-    authorHandle: authedUser.userHandle,
     isPublic,
     createdAt: new Date(),
     type: "Phrase",
@@ -143,8 +146,7 @@ export const handleTogglePhraseLike = ({
   authedUser,
   hasLiked,
   likes,
-}) => async (dispatch, getState) => {
-  // const { authedUser } = getState()
+}) => async (dispatch) => {
   try {
     await updatePhraseLikes({
       phraseId,
@@ -168,9 +170,7 @@ export const handleTogglePhraseVisibility = ({ phraseId, isPublic }) => async (
   dispatch,
   getState
 ) => {
-  // const { authedUser } = getState()
   try {
-    // api call to DB to toggle phrase visibility (phraseId)
     await updatePhraseVisibility({ phraseId, isPublic });
     dispatch({
       type: TOGGLE_PHRASE_VISIBILITY,

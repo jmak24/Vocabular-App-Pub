@@ -9,10 +9,11 @@ type UserProfile
   ) {
   id: ID!
   owner: String
-  userHandle: String
+  userTag: String!
   email: AWSEmail!
   phrases: [Phrase]! @connection(keyName: "byUser", fields: ["id"])
-  words: AWSJSON!
+  bookmarkedWords: AWSJSON!
+  archivedWords: AWSJSON!
 }
 
 type Phrase
@@ -41,7 +42,7 @@ type Phrase
   numLikes: Int!
   likes: AWSJSON!
   authorId: ID!
-  authorHandle: String!
+  author: UserProfile @connection(fields: ["authorId"])
   isPublic: Boolean!
   createdAt: AWSDateTime!
   type: String!

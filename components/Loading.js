@@ -1,7 +1,9 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 
-import LoadingIcon from "../assets/loading.svg";
+import LoadingIcon from "../assets/loading.gif";
+
+const SIZE = 80;
 
 const Loading = () => (
   <View style={styles.screen}>
@@ -12,12 +14,13 @@ const Loading = () => (
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
   icon: {
-    width: 1000,
-    height: 1000,
+    height: SIZE,
+    width: SIZE,
   },
 });
 

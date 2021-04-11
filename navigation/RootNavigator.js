@@ -9,6 +9,9 @@ import HomeScreen from "../screens/HomeScreen";
 import WordDetailsScreen from "../screens/WordDetailsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ArchivedScreen from "../screens/ArchivedScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import UpdateProfileScreen from "../screens/UpdateProfileScreen";
 import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
@@ -39,6 +42,9 @@ const MainNavigator = () => (
       options={{ title: "Home" }}
     />
     <Stack.Screen name='WordDetails' component={WordDetailsScreen} />
+    <Stack.Screen name='Settings' component={SettingsScreen} />
+    <Stack.Screen name='Profile' component={ProfileScreen} />
+    <Stack.Screen name='UpdateProfile' component={UpdateProfileScreen} />
     <Stack.Screen name='Login' component={LoginScreen} />
   </Stack.Navigator>
 );
@@ -68,28 +74,6 @@ const ArchivedNavigator = () => (
     <Stack.Screen name='WordDetails' component={WordDetailsScreen} />
   </Stack.Navigator>
 );
-
-// const RootNavigator2 = () => (
-//   <NavigationContainer>
-//     <Stack.Navigator
-//       initialRouteName='Home'
-//       screenOptions={({ route, navigation }) => ({
-//         gestureEnabled: true,
-//         cardOverlayEnabled: true,
-//         headerStatusBarHeight:
-//           navigation.dangerouslyGetState().routes.indexOf(route) > 0
-//             ? 0
-//             : undefined,
-//         ...TransitionPresets.ModalPresentationIOS,
-//       })}
-//       mode='modal'
-//       headerMode='none'
-//     >
-//       <Stack.Screen name='Home' component={MainNavigator} />
-//       <Stack.Screen name='Search' component={SearchNavigator} />
-//     </Stack.Navigator>
-//   </NavigationContainer>
-// );
 
 const RootNavigator = () => (
   <NavigationContainer>

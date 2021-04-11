@@ -27,7 +27,7 @@ export const setupInitWordsState = () => async (dispatch) => {
     //   }
     // }
 
-    const words = WORDS_DATA;
+    const wordsData = WORDS_DATA;
     const wordsList = WORDS_LIST;
     const archivedWords = ARCHIVED_WORDS_LIST;
     const recentWords = RECENT_WORDS_LIST;
@@ -57,7 +57,7 @@ export const setupInitWordsState = () => async (dispatch) => {
     dispatch({
       type: SETUP_INIT,
       payload: {
-        words,
+        wordsData,
         wordsList,
         archivedWords,
         archivedWordsList,

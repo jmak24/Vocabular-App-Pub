@@ -454,24 +454,6 @@ export const WORDS_DATA = {
   },
 };
 
-export const WORDS_SECTION_LIST = [
-  {
-    title: "Main Words",
-    data: ["Echo", "Totalitarian", "Anarchy", "Democratic", "Paragon"],
-  },
-  {
-    title: "Archived Words",
-    data: [
-      "Docile",
-      "Regressive",
-      "Traceability",
-      "Exuberant",
-      "Postulate",
-      "Patriotism",
-    ],
-  },
-];
-
 export const ARCHIVED_WORDS_LIST = {
   2019: [[], [], [], [], [], [], [], [], [], [], [], []],
   2020: [
@@ -553,6 +535,7 @@ export const WORDS_LIST = [
 ];
 
 export const DEFINITIONS_SECTION_LIST = [
+  // SECTION LIST IMPLEMENTATION NOT BEING USED
   {
     title: "noun",
     data: [
@@ -645,7 +628,7 @@ export const PHRASE_DATA = {
       id: "7e0e87cb-a520-41ee-89ce-1c6447e53fd0",
       phrase: "You could hear a slight echo in the caves.",
       likes: JSON.stringify({ usernames: ["soberMike", "californiaK"] }),
-      authorHandle: "jmak",
+      authorTag: "jmak",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: false,
@@ -657,7 +640,7 @@ export const PHRASE_DATA = {
       likes: JSON.stringify({
         usernames: ["sailorMoon", "dynamiteKite", "richierich"],
       }),
-      authorHandle: "jmak",
+      authorTag: "jmak",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -672,7 +655,7 @@ export const PHRASE_DATA = {
       likes: JSON.stringify({
         usernames: ["bob1", "bob2", "bob3", "bob4", "bob5", "bob6", "bob7"],
       }),
-      authorHandle: "jmak",
+      authorTag: "jmak",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -685,7 +668,7 @@ export const PHRASE_DATA = {
       likes: JSON.stringify({
         usernames: ["tim1", "tim2", "tim3", "tim4", "tim5", "tim6", "tim7"],
       }),
-      authorHandle: "soberMike",
+      authorTag: "soberMike",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -705,7 +688,7 @@ export const PHRASE_DATA = {
           "claire6",
         ],
       }),
-      authorHandle: "californiaK",
+      authorTag: "californiaK",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -726,7 +709,7 @@ export const PHRASE_DATA = {
           "jmak",
         ],
       }),
-      authorHandle: "tonyTurner",
+      authorTag: "tonyTurner",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -748,7 +731,7 @@ export const PHRASE_DATA = {
           "james9",
         ],
       }),
-      authorHandle: "jackTyson",
+      authorTag: "jackTyson",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -761,7 +744,7 @@ export const PHRASE_DATA = {
       phrase:
         "His rejection of the love of the nymph Echo drew upon him the vengeance of the gods.",
       likes: JSON.stringify({ usernames: ["laurabar", "eazy", "jmak"] }),
-      authorHandle: "sallypal",
+      authorTag: "sallypal",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -772,7 +755,7 @@ export const PHRASE_DATA = {
       phrase:
         "The echo is then broken up into small waves, none of which may be sufficiently distinct to interfere with the direct voice.",
       likes: JSON.stringify({ usernames: [] }),
-      authorHandle: "sallypal",
+      authorTag: "sallypal",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -783,7 +766,7 @@ export const PHRASE_DATA = {
       phrase:
         "A long-drawn echo from all classes hailed a revolution that was possible because it was necessary.",
       likes: JSON.stringify({ usernames: ["laurabar", "eazy"] }),
-      authorHandle: "dandilion5",
+      authorTag: "dandilion5",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -793,7 +776,7 @@ export const PHRASE_DATA = {
       id: "7e7e87cb-a520-51ee-89ce-1c6447e53fd0",
       phrase: "A complete Digital Echo of your life.",
       likes: JSON.stringify({ usernames: [] }),
-      authorHandle: "dandilion5",
+      authorTag: "dandilion5",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,
@@ -805,7 +788,7 @@ export const PHRASE_DATA = {
       likes: JSON.stringify({
         usernames: ["dandilion5", "batman44", "towsocks", "candlelit"],
       }),
-      authorHandle: "fantastical",
+      authorTag: "fantastical",
       authorId: "bae8ad68-b36a-4adb-868d-7ffbbda1c18b",
       createdAt: 1518122597860,
       isPublic: true,

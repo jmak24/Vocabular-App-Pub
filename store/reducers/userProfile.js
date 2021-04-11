@@ -1,4 +1,8 @@
-import { SET_USER_PROFILE, CLEAR_USER_PROFILE } from "../actions/userProfile";
+import {
+  SET_USER_PROFILE,
+  CLEAR_USER_PROFILE,
+  SET_USER_TAG,
+} from "../actions/userProfile";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -7,6 +11,9 @@ export default (state = {}, action) => {
       return { ...state, ...userProfile };
     case CLEAR_USER_PROFILE:
       return {};
+    case SET_USER_TAG:
+      const { userTag } = action.payload;
+      return { ...state, userTag };
     default:
       return state;
   }

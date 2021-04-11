@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     position: "absolute",
-
     zIndex: 100,
   },
   topContainer: {

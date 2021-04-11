@@ -11,12 +11,20 @@ import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import { addRecentWord } from "../store/actions/words";
+import { fetchWordDetails } from "../store/actions/loading";
+import { handleLoadPhrases, cleanupPhrases } from "../store/actions/phrases";
 import CustomText from "../components/CustomText";
 import WordNotFound from "../components/WordNotFound";
 import WordDetailsTabNavigator from "../components/WordDetailsTabNavigator";
 import WordDetailsHeader from "../components/WordDetailsHeader";
-import { apiWordSearch, prepareForWordDetails } from "../utils/helper";
+import {
+  fetchApiWord,
+  prepareForWordDetails,
+  objIsNotEmpty,
+} from "../utils/helper";
 import Colors from "../constants/Colors";
+import Sizing from "../constants/Sizing";
+import Loading from "../components/Loading";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -26,16 +34,17 @@ const TITLE_OFFSET_Y = 40;
 
 const WordDetailsScreen = ({ route, navigation }) => {
   const { word } = route.params;
-  const savedWordDetails = useSelector((state) => state.words.words);
+  const {
+    words: { wordsData },
+    loading: { FETCH_WORD_DETAILS },
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const [wordDetails, setWordDetails] = useState({});
   const scrollY = useRef(new Animated.Value(0)).current;
-  const isBookmarked = savedWordDetails.hasOwnProperty(word);
+  const isBookmarked = wordsData.hasOwnProperty(word);
   const isArchived =
-    savedWordDetails.hasOwnProperty(word) &&
-    savedWordDetails[word].archived !== undefined &&
-    savedWordDetails[word].archived !== null;
+    wordsData.hasOwnProperty(word) && wordsData[word].archived != null;
 
   const animatedTopTitle = scrollY.interpolate({
     inputRange: [0, MAX_SCROLL_DISTANCE],
@@ -50,7 +59,12 @@ const WordDetailsScreen = ({ route, navigation }) => {
   });
 
   useEffect(() => {
-    pullWordData(word);
+    loadWordDetails(word); // load word details
+
+    dispatch(handleLoadPhrases({ word })); // load phrases on mount
+    return () => {
+      dispatch(cleanupPhrases()); // clear phrases on unmount
+    };
   }, []);
 
   const selectWordHandler = async (word) => {
@@ -59,81 +73,93 @@ const WordDetailsScreen = ({ route, navigation }) => {
     });
   };
 
-  const pullWordData = async (word) => {
+  const loadWordDetails = async (word) => {
+    // word details are saved locally
+    if (isBookmarked) {
+      console.log("Retrieving from saved words...");
+      setWordDetails(wordsData[word]);
+      return;
+    }
+    // fetch word details from WordsAPI
     try {
-      if (isBookmarked) {
-        console.log("Retrieving from saved words...");
-        setWordDetails(savedWordDetails[word]);
-      } else {
-        console.log("Pulling word data...");
-        const wordData = await apiWordSearch(word);
+      console.log("Pulling word data...");
+      dispatch(fetchWordDetails("REQUEST"));
+      const wordData = await fetchApiWord(word);
+      prepareForWordDetails(wordData);
+      setWordDetails(wordData);
 
-        prepareForWordDetails(wordData);
-
-        setWordDetails(wordData);
-        dispatch(addRecentWord(word));
-      }
+      // dispatch fetch word details SUCCESS
+      dispatch(fetchWordDetails("SUCCESS"));
+      dispatch(addRecentWord(word));
     } catch (err) {
       if (err) console.log("Failed to load Word - ", err);
+      // dispatch fetch word details FAILURE
+      dispatch(fetchWordDetails("FAIL"));
       setWordDetails(null);
+      console.log(err);
     }
   };
 
-  // Word Details Successfully loaded
-  if (wordDetails) {
-    const wordDetailsLoaded = Object.keys(wordDetails).length > 0;
-
-    return (
-      <View style={{ ...styles.screen, paddingTop: 95 }}>
+  const mainSection = () => {
+    if (objIsNotEmpty(wordDetails)) {
+      // Word details fetched or retrieved from saved wordsData
+      return (
         <View
           style={{
-            ...styles.topStrip,
-            height: 95,
-            paddingTop: 50,
+            flex: 1,
+            width: "100%",
+            height: "100%",
+            backgroundColor: Colors.grayTint,
           }}
         >
-          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-            <Ionicons
-              name={"ios-arrow-back"}
-              size={32}
-              style={{ ...styles.backArrow, top: 50 }}
-              color={Colors.iconGray}
-            />
-          </TouchableWithoutFeedback>
-          <Animated.View
-            style={{ marginTop: animatedTopTitle, opacity: animatedOpacity }}
-          >
-            <CustomText option='mid'>{word}</CustomText>
-          </Animated.View>
+          <WordDetailsHeader
+            wordDetails={wordDetails}
+            isBookmarked={isBookmarked}
+            isArchived={isArchived}
+            scrollY={scrollY}
+          />
+          <WordDetailsTabNavigator
+            wordDetails={wordDetails}
+            selectWordHandler={selectWordHandler}
+            scrollY={scrollY}
+          />
         </View>
-        {wordDetailsLoaded && (
-          <View
-            style={{
-              flex: 1,
-              width: "100%",
-              height: "100%",
-              backgroundColor: Colors.grayTint,
-            }}
-          >
-            <WordDetailsHeader
-              wordDetails={wordDetails}
-              isBookmarked={isBookmarked}
-              isArchived={isArchived}
-              scrollY={scrollY}
-            />
-            <WordDetailsTabNavigator
-              wordDetails={wordDetails}
-              selectWordHandler={selectWordHandler}
-              scrollY={scrollY}
-            />
-          </View>
-        )}
+      );
+    } else if (FETCH_WORD_DETAILS.loading) {
+      // Fetching word details
+      return <Loading />;
+    } else if (wordDetails === null) {
+      // Word details was not found
+      return <WordNotFound word={word} navigation={navigation} />;
+    }
+  };
+
+  return (
+    <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
+      <View
+        style={{
+          ...styles.topStrip,
+          height: 95,
+          paddingTop: 50,
+        }}
+      >
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <Ionicons
+            name={"ios-arrow-back"}
+            size={32}
+            style={{ ...styles.backArrow, top: 50 }}
+            color={Colors.iconGray}
+          />
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={{ marginTop: animatedTopTitle, opacity: animatedOpacity }}
+        >
+          <CustomText option='mid'>{word}</CustomText>
+        </Animated.View>
       </View>
-    );
-    // Word Details failed to load
-  } else {
-    return <WordNotFound word={word} navigation={navigation} />;
-  }
+      {mainSection()}
+    </View>
+  );
 };
 
 WordDetailsScreen.propTypes = {
