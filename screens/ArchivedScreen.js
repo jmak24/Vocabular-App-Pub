@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import PropTypes from "prop-types";
+import { Ionicons } from "@expo/vector-icons";
 
 import MonthsContainer from "../components/MonthsContainer";
 import FilterBar from "../components/FilterBar";
@@ -20,34 +21,33 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const ArchivedScreen = ({ navigation }) => {
-  const archivedWords = useSelector((state) => state.words.archivedWords);
-  const archivedWordsList = useSelector(
-    (state) => state.words.archivedWordsList
+  const wordsArchived = useSelector((state) => state.words.wordsArchived);
+  const wordsArchivedList = useSelector(
+    (state) => state.words.wordsArchivedList
   );
   const today = new Date();
   const [yearSelected, setYearSelected] = useState(today.getFullYear());
   const [monthSelected, setMonthSelected] = useState(today.getMonth()); // month index
   const [wordsList, setWordsList] = useState(
-    archivedWords[yearSelected][monthSelected]
+    wordsArchived[yearSelected][monthSelected]
   );
   const [isFilterMode, setIsFilterMode] = useState(false);
   const handleCancelFilter = useRef(null);
-  // const searchInputRef = useRef(null);
   const containerHeight = useRef(null);
   const animatedList = useRef(new Animated.Value(0)).current;
   const animatedCancelBtn = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    setWordsList(wordsArchived[yearSelected][0]);
+  }, [yearSelected]);
+
+  useEffect(() => {
     if (isFilterMode) {
       setWordsList([]);
     } else {
-      setWordsList(archivedWords[yearSelected][monthSelected]);
+      setWordsList(wordsArchived[yearSelected][monthSelected]);
     }
   }, [monthSelected, isFilterMode]);
-
-  useEffect(() => {
-    setWordsList(archivedWords[yearSelected][0]);
-  }, [yearSelected]);
 
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
@@ -56,7 +56,7 @@ const ArchivedScreen = ({ navigation }) => {
   };
 
   const handleFilterSearch = (input) => {
-    const wordsFiltered = archivedWordsList.filter((archivedWord) => {
+    const wordsFiltered = wordsArchivedList.filter((archivedWord) => {
       const multiWord = archivedWord.split(" ");
       if (multiWord.length > 1) {
         for (let i = 0; i < multiWord.length; i++) {
@@ -75,10 +75,6 @@ const ArchivedScreen = ({ navigation }) => {
   const initContainerHeight = (event) => {
     containerHeight.current = event.nativeEvent.layout.height;
   };
-
-  // const setSearchInputRef = (ref) => {
-  //   searchInputRef.current = ref;
-  // };
 
   const setCancelFilterRef = (ref) => {
     handleCancelFilter.current = ref;
@@ -114,7 +110,7 @@ const ArchivedScreen = ({ navigation }) => {
   const getYearsForSelector = () => {
     const yearsData = [];
     let index = 0;
-    for (year in archivedWords) {
+    for (year in wordsArchived) {
       yearsData.push({
         key: index,
         label: year,
@@ -139,9 +135,15 @@ const ArchivedScreen = ({ navigation }) => {
             cancelButtonAccessibilityLabel={"Cancel Button"}
             onChange={(option) => setYearSelected(option.label)}
           >
-            <CustomText style={styles.year} option='large'>
-              {yearSelected}
-            </CustomText>
+            <View style={styles.yearSelector}>
+              <CustomText option='large'>{yearSelected}</CustomText>
+              <Ionicons
+                name='ios-caret-down'
+                size={22}
+                style={styles.icon}
+                color='#dbdbdb'
+              />
+            </View>
           </ModalSelector>
         </View>
 
@@ -220,9 +222,14 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     backgroundColor: Colors.grayTint,
   },
-  year: {
+  yearSelector: {
     marginVertical: 20,
     paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icon: {
+    marginHorizontal: 8,
   },
   filterBarContainer: {
     flexDirection: "row",

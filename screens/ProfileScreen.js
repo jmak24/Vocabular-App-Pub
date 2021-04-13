@@ -24,8 +24,8 @@ const screen = Dimensions.get("screen");
 const ProfileScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { userProfile, words } = useSelector((state) => state);
-  const numBookmarkedWords = words.wordsList.length;
-  const numArchivedWords = words.archivedWordsList.length;
+  const numBookmarkedWords = words.wordsBookmarked.length;
+  const numArchivedWords = words.wordsArchivedList.length;
   const { userTag, email } = userProfile;
 
   const updateProfileScreen = async ({ formType }) => {
@@ -94,26 +94,13 @@ const ProfileScreen = ({ route, navigation }) => {
           </View>
         </View>
         <CustomText style={styles.optionTitle} option='mid'>
-          Data
+          Account
         </CustomText>
-        <OptionButton
-          icon={"ios-bookmark-outline"}
-          title={"Clear Bookmarked Words"}
-          onPress={clearBookmarksConfirmation}
-        />
-        <OptionButton
-          icon={"ios-archive-outline"}
-          title={"Clear Archived Words"}
-          onPress={clearArchiveConfirmation}
-        />
         <OptionButton
           icon={"ios-chatbubble-ellipses-outline"}
           title={"Delete Phrases"}
           onPress={() => {}}
         />
-        <CustomText style={styles.optionTitle} option='mid'>
-          Account
-        </CustomText>
         <OptionButton
           icon={"ios-at"}
           title={"Change Username"}

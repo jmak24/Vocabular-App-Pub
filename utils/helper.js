@@ -138,11 +138,20 @@ export const createUserProfile = async ({ user }) => {
   }
 };
 
-// UPDATE USER PROFILE USERTAG
-export const updateUserTag = async ({ id, userTag }) => {
-  return API.graphql(
-    graphqlOperation(mutations.updateUserProfile, { input: { id, userTag } })
+// UPDATE USER PROFILE - userTag, wordsArchived, bookmarkedWords
+export const updateUserProfile = async ({
+  id,
+  userTag,
+  bookmarkedWords,
+  wordsArchived,
+}) => {
+  const input = Object.assign(
+    { id },
+    userTag && { userTag },
+    bookmarkedWords && { bookmarkedWords },
+    wordsArchived && { wordsArchived }
   );
+  return API.graphql(graphqlOperation(mutations.updateUserProfile, { input }));
 };
 
 // CREATE PHRASE
@@ -168,11 +177,10 @@ export const updatePhraseLikes = ({ phraseId, userId, likes }) => {
   } else {
     updatedLikes = likes.filter((id) => id !== userId); // remove user from likes
   }
-
   const input = {
     id: phraseId,
     likes: JSON.stringify(updatedLikes),
-    numLikes: likes.length,
+    numLikes: updatedLikes.length,
   };
 
   return API.graphql(graphqlOperation(mutations.updatePhrase, { input }));
@@ -219,9 +227,19 @@ export const getPhrasesByLikes = ({ word }) => {
 export const getPhrasesByDate = async ({ word }) => {
   return await API.graphql(
     graphqlOperation(queries.phrasesByDate, {
+      limit: 25,
       word,
       isPublic: { eq: true },
       sortDirection: "DESC",
     })
   );
+};
+
+// ########### SYNC DATA (LAMABDA FUNCTION) ###########
+export const syncData = async ({ userId, words, archived }) => {
+  return await API.graphql(graphqlOperation(mutations.syncData), {
+    userId,
+    words,
+    archived,
+  });
 };

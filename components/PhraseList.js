@@ -22,7 +22,7 @@ const screen = Dimensions.get("screen");
 const HeaderHeight = 131;
 const NavBarHeight = 60;
 
-const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
+const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {
     phrases: phraseData,
@@ -30,6 +30,14 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
     userProfile: authedUser,
   } = useSelector((state) => state);
   const { myPhrases, topPhrases, recentPhrases } = phraseData;
+
+  const addPhrasePressed = () => {
+    if (authedUser) {
+      toggleModal();
+    } else {
+      navigation.push("Login");
+    }
+  };
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -64,7 +72,7 @@ const PhraseList = ({ forwardRef, scrollY, routeIndex, word }) => {
           <View style={styles.phraseCategoryBar}>
             <CustomText option='mid'>My Phrases</CustomText>
           </View>
-          <TouchableOpacity onPress={toggleModal}>
+          <TouchableOpacity onPress={addPhrasePressed}>
             <View style={styles.addPhraseCard}>
               <Ionicons
                 name={"ios-add"}

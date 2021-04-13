@@ -3,6 +3,13 @@ import { generateUUID } from "../../utils/helper";
 export const SET_TOAST = "SET_TOAST";
 export const REMOVE_TOAST = "REMOVE_TOAST";
 
+export const removeToast = (id) => {
+  return {
+    type: REMOVE_TOAST,
+    id,
+  };
+};
+
 export const setToast = (toastType, msg, icon) => async (dispatch) => {
   const id = await generateUUID();
   dispatch({
@@ -11,11 +18,4 @@ export const setToast = (toastType, msg, icon) => async (dispatch) => {
   });
 
   setTimeout(() => dispatch(removeToast(id)), 5000);
-};
-
-export const removeToast = (id) => {
-  return {
-    type: REMOVE_TOAST,
-    id,
-  };
 };

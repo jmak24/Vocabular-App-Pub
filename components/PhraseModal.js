@@ -21,7 +21,7 @@ import { handlePostPhrase } from "../store/actions/phrases";
 const PhraseModal = ({ toggleModal, modalVisible, word }) => {
   const dispatch = useDispatch();
   const [isPublic, setIsPublic] = useState(true);
-  const [postBtnDisabled, setPostBtnDisabled] = useState(true);
+  const [postBtnEnabled, setPostBtnEnabled] = useState(false);
   const [textInput, setTextInput] = useState("");
   const eyeIcon = isPublic ? "ios-eye" : "ios-eye-off";
 
@@ -30,10 +30,11 @@ const PhraseModal = ({ toggleModal, modalVisible, word }) => {
   const closeModal = () => {
     toggleModal();
     setTextInput("");
+    setPostBtnEnabled(false);
   };
 
   const postPhrase = () => {
-    if (!postBtnDisabled) {
+    if (postBtnEnabled) {
       dispatch(handlePostPhrase({ word, textInput, isPublic }));
       closeModal();
     } else {
@@ -48,9 +49,9 @@ const PhraseModal = ({ toggleModal, modalVisible, word }) => {
   const onTextInput = (text) => {
     setTextInput(text);
     if (wordExistsInPhrase(text)) {
-      setPostBtnDisabled(false);
+      setPostBtnEnabled(true);
     } else {
-      setPostBtnDisabled(true);
+      setPostBtnEnabled(false);
     }
   };
 
@@ -107,15 +108,15 @@ const PhraseModal = ({ toggleModal, modalVisible, word }) => {
               <View
                 style={{
                   ...styles.postButton,
-                  backgroundColor: postBtnDisabled
-                    ? Colors.grayTint
-                    : Colors.primaryTheme,
+                  backgroundColor: postBtnEnabled
+                    ? Colors.primaryTheme
+                    : Colors.grayTint,
                 }}
               >
                 <CustomText
                   option='mid'
                   style={{
-                    color: postBtnDisabled ? Colors.secondaryText : "#fff",
+                    color: postBtnEnabled ? "#fff" : Colors.secondaryText,
                   }}
                 >
                   Post

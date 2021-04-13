@@ -511,7 +511,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "bookmarkedWords",
+          "name" : "wordsBookmarked",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -526,7 +526,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "archivedWords",
+          "name" : "wordsArchived",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -1609,7 +1609,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bookmarkedWords",
+          "name" : "wordsBookmarked",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1618,7 +1618,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "archivedWords",
+          "name" : "wordsArchived",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -1889,6 +1889,44 @@
         "name" : "Mutation",
         "description" : null,
         "fields" : [ {
+          "name" : "syncData",
+          "description" : null,
+          "args" : [ {
+            "name" : "userId",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "ID",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "words",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "AWSJSON",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "archived",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "AWSJSON",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          } ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "SyncDataResponse",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
           "name" : "createUserProfile",
           "description" : null,
           "args" : [ {
@@ -2092,6 +2130,37 @@
         "enumValues" : null,
         "possibleTypes" : null
       }, {
+        "kind" : "OBJECT",
+        "name" : "SyncDataResponse",
+        "description" : null,
+        "fields" : [ {
+          "name" : "userProfile",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "AWSJSON",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "body",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        } ],
+        "inputFields" : null,
+        "interfaces" : [ ],
+        "enumValues" : null,
+        "possibleTypes" : null
+      }, {
         "kind" : "INPUT_OBJECT",
         "name" : "CreateUserProfileInput",
         "description" : null,
@@ -2141,7 +2210,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bookmarkedWords",
+          "name" : "wordsBookmarked",
           "description" : null,
           "type" : {
             "kind" : "NON_NULL",
@@ -2154,7 +2223,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "archivedWords",
+          "name" : "wordsArchived",
           "description" : null,
           "type" : {
             "kind" : "NON_NULL",
@@ -2194,7 +2263,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bookmarkedWords",
+          "name" : "wordsBookmarked",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2203,7 +2272,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "archivedWords",
+          "name" : "wordsArchived",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -2296,7 +2365,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bookmarkedWords",
+          "name" : "wordsBookmarked",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2305,7 +2374,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "archivedWords",
+          "name" : "wordsArchived",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -2688,20 +2757,7 @@
         "fields" : [ {
           "name" : "onCreateUserProfile",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "NON_NULL",
-              "name" : null,
-              "ofType" : {
-                "kind" : "SCALAR",
-                "name" : "String",
-                "ofType" : null
-              }
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "UserProfile",
@@ -2712,20 +2768,7 @@
         }, {
           "name" : "onUpdateUserProfile",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "NON_NULL",
-              "name" : null,
-              "ofType" : {
-                "kind" : "SCALAR",
-                "name" : "String",
-                "ofType" : null
-              }
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "UserProfile",
@@ -2736,20 +2779,7 @@
         }, {
           "name" : "onDeleteUserProfile",
           "description" : null,
-          "args" : [ {
-            "name" : "owner",
-            "description" : null,
-            "type" : {
-              "kind" : "NON_NULL",
-              "name" : null,
-              "ofType" : {
-                "kind" : "SCALAR",
-                "name" : "String",
-                "ofType" : null
-              }
-            },
-            "defaultValue" : null
-          } ],
+          "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
             "name" : "UserProfile",
@@ -3711,23 +3741,6 @@
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
         "name" : "aws_api_key",
         "description" : "Tells the service this field/object has access authorized by an API key.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
@@ -3781,6 +3794,23 @@
             }
           },
           "defaultValue" : null
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,

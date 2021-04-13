@@ -1,14 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  View,
-  Dimensions,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { useSelector } from "react-redux";
+import { View, Dimensions, StyleSheet, ScrollView, Alert } from "react-native";
 import PropTypes from "prop-types";
 
 import CustomText from "../components/CustomText";
@@ -16,13 +8,20 @@ import Colors from "../constants/Colors";
 import OptionButton from "../components/OptionButton";
 import TopNavBar from "../components/TopNavBar";
 import Sizing from "../constants/Sizing";
+import { clearBookmarkedWords } from "../store/actions/words";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const SettingsScreen = ({ route, navigation }) => {
-  const selectMyProfile = async () => {
-    navigation.push("Profile", {});
+  const { userProfile: authedUser } = useSelector((state) => state);
+
+  const selectMyProfile = () => {
+    if (authedUser) {
+      navigation.push("Profile");
+    } else {
+      navigation.push("Login");
+    }
   };
 
   const clearBookmarksConfirmation = () =>
@@ -31,7 +30,7 @@ const SettingsScreen = ({ route, navigation }) => {
         text: "No",
         style: "cancel",
       },
-      { text: "Yes", onPress: () => console.log("IMPLEMENT ACTION") },
+      { text: "Yes", onPress: () => clearBookmarkedWords() },
     ]);
 
   const clearArchiveConfirmation = () =>
@@ -55,7 +54,7 @@ const SettingsScreen = ({ route, navigation }) => {
           title={"My Profile"}
           onPress={selectMyProfile}
         />
-        {/* <OptionButton
+        <OptionButton
           icon={"ios-bookmark-outline"}
           title={"Clear Bookmarked Words"}
           onPress={clearBookmarksConfirmation}
@@ -64,7 +63,7 @@ const SettingsScreen = ({ route, navigation }) => {
           icon={"ios-archive-outline"}
           title={"Clear Archived Words"}
           onPress={clearArchiveConfirmation}
-        /> */}
+        />
         <CustomText style={styles.optionTitle} option='mid'>
           Support Us
         </CustomText>

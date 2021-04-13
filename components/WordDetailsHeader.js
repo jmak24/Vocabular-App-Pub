@@ -6,7 +6,11 @@ import PropTypes from "prop-types";
 
 import CustomText from "./CustomText";
 import Colors from "../constants/Colors";
-import { toggleArchive, toggleBookmark } from "../store/actions/words";
+import {
+  toggleArchive,
+  toggleBookmark,
+  removeWord,
+} from "../store/actions/words";
 import { setToast } from "../store/actions/toasts";
 
 const WordDetailsHeader = ({
@@ -36,10 +40,21 @@ const WordDetailsHeader = ({
     dispatch(toggleBookmark(wordDetails, isBookmarked));
   };
 
+  const removePressed = () => {
+    dispatch(
+      setToast(
+        "toastInfo",
+        "Removed from Archive and Bookmarks",
+        "ios-bookmark"
+      )
+    );
+    dispatch(removeWord(wordDetails));
+  };
+
   const archivePressed = () => {
-    const toastMsg = isArchived ? "Removed from Archive!" : "Moved to Archive!";
+    const toastMsg = isArchived ? "Removed from Archive" : "Moved to Archive";
     dispatch(setToast("toastInfo", toastMsg, "ios-archive"));
-    dispatch(toggleArchive(wordDetails.word, isArchived));
+    dispatch(toggleArchive(wordDetails, isArchived));
   };
 
   return (
@@ -79,6 +94,15 @@ const WordDetailsHeader = ({
               size={32}
               style={{ ...styles.icon, marginRight: 8 }}
               color={isBookmarked ? Colors.primaryTheme : Colors.iconLightGray}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={removePressed}>
+            <Ionicons
+              // name={"ios-close-circle-outline"}
+              name={"ios-remove-circle-outline"}
+              size={32}
+              style={{ ...styles.icon, marginRight: 8 }}
+              color='#f26f6f'
             />
           </TouchableOpacity>
         </View>

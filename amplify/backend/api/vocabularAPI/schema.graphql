@@ -1,7 +1,7 @@
 type UserProfile
   @model
   @aws_cognito_user_pools
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [{ allow: owner, operations: [create, update, delete] }])
   @key(
     name: "byEmail"
     fields: ["email", "id"]
@@ -12,14 +12,14 @@ type UserProfile
   userTag: String!
   email: AWSEmail!
   phrases: [Phrase]! @connection(keyName: "byUser", fields: ["id"])
-  bookmarkedWords: AWSJSON!
-  archivedWords: AWSJSON!
+  wordsBookmarked: AWSJSON!
+  wordsArchived: AWSJSON!
 }
 
 type Phrase
   @model
   @aws_cognito_user_pools
-  @auth(rules: [{ allow: owner, operations: [create, delete, update] }])
+  @auth(rules: [{ allow: owner, operations: [create, update, delete] }])
   @key(name: "byUser", fields: ["authorId"])
   @key(
     name: "phrasesByUser"
@@ -46,4 +46,14 @@ type Phrase
   isPublic: Boolean!
   createdAt: AWSDateTime!
   type: String!
+}
+
+type Mutation {
+  syncData(userId: ID, words: AWSJSON, archived: AWSJSON): SyncDataResponse
+    @function(name: "syncDataFunction-${env}")
+}
+
+type SyncDataResponse {
+  userProfile: AWSJSON
+  body: String
 }

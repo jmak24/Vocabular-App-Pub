@@ -24,8 +24,8 @@ export const getUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
@@ -46,8 +46,8 @@ export const listUserProfiles = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }
@@ -65,7 +65,17 @@ export const getPhrase = /* GraphQL */ `
       likes
       authorId
       author {
+        id
+        owner
         userTag
+        email
+        phrases {
+          nextToken
+        }
+        wordsBookmarked
+        wordsArchived
+        createdAt
+        updatedAt
       }
       isPublic
       createdAt
@@ -90,7 +100,14 @@ export const listPhrases = /* GraphQL */ `
         likes
         authorId
         author {
+          id
+          owner
           userTag
+          email
+          wordsBookmarked
+          wordsArchived
+          createdAt
+          updatedAt
         }
         isPublic
         createdAt
@@ -127,8 +144,8 @@ export const userProfileByEmail = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }
@@ -161,7 +178,14 @@ export const phrasesByUser = /* GraphQL */ `
         likes
         authorId
         author {
+          id
+          owner
           userTag
+          email
+          wordsBookmarked
+          wordsArchived
+          createdAt
+          updatedAt
         }
         isPublic
         createdAt
@@ -198,7 +222,14 @@ export const phrasesByDate = /* GraphQL */ `
         likes
         authorId
         author {
+          id
+          owner
           userTag
+          email
+          wordsBookmarked
+          wordsArchived
+          createdAt
+          updatedAt
         }
         isPublic
         createdAt
@@ -213,7 +244,7 @@ export const phrasesByDate = /* GraphQL */ `
 export const phrasesByLikes = /* GraphQL */ `
   query PhrasesByLikes(
     $type: String
-    $numLikes: ModelIntKeyConditionInput
+    # $numLikes: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPhraseFilterInput
     $limit: Int
@@ -221,7 +252,7 @@ export const phrasesByLikes = /* GraphQL */ `
   ) {
     phrasesByLikes(
       type: $type
-      numLikes: $numLikes
+      numLikes: { gt: 0 }
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -235,7 +266,14 @@ export const phrasesByLikes = /* GraphQL */ `
         likes
         authorId
         author {
+          id
+          owner
           userTag
+          email
+          wordsBookmarked
+          wordsArchived
+          createdAt
+          updatedAt
         }
         isPublic
         createdAt

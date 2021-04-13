@@ -20,7 +20,7 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const HomeScreen = ({ navigation }) => {
-  const wordsList = useSelector((state) => state.words.wordsList);
+  const { wordsBookmarked } = useSelector((state) => state.words);
 
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.push("Login");
   };
 
-  if (wordsList && wordsList.length === 0) {
+  if (wordsBookmarked && wordsBookmarked.length === 0) {
     return (
       <View style={[styles.screen, styles.centerContent]}>
         <Image style={styles.booksImage} source={BookmarkImage} />
@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
         </TouchableWithoutFeedback>
       </View>
       <FlatList
-        data={wordsList}
+        data={wordsBookmarked}
         style={styles.list}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => {

@@ -1,6 +1,14 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const syncData = /* GraphQL */ `
+  mutation SyncData($userId: ID, $words: AWSJSON, $archived: AWSJSON) {
+    syncData(userId: $userId, words: $words, archived: $archived) {
+      userProfile
+      body
+    }
+  }
+`;
 export const createUserProfile = /* GraphQL */ `
   mutation CreateUserProfile(
     $input: CreateUserProfileInput!
@@ -27,8 +35,8 @@ export const createUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
@@ -60,8 +68,8 @@ export const updateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
@@ -93,8 +101,8 @@ export const deleteUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
@@ -120,8 +128,8 @@ export const createPhrase = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }
@@ -153,8 +161,8 @@ export const updatePhrase = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }
@@ -186,8 +194,8 @@ export const deletePhrase = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }

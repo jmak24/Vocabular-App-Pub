@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "vocabular85c1d706": {}
+      },
+      "function": {
+        "syncDataFunction": {
+          "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+          "s3Key": "amplify-builds/syncDataFunction-36316d6b73776d677a32-build.zip"
+        }
       }
     }
   }

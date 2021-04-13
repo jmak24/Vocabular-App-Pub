@@ -1,5 +1,5 @@
 import { setToast } from "./toasts";
-import { getAsyncStorage } from "../../utils/helper";
+import { getAsyncStorage, updateUserProfile } from "../../utils/helper";
 import {
   WORDS_DATA,
   WORDS_LIST,
@@ -10,57 +10,70 @@ import {
 export const SETUP_INIT = "SETUP_INIT";
 export const TOGGLE_BOOKMARK = "TOGGLE_BOOKMARK";
 export const TOGGLE_ARCHIVE = "TOGGLE_ARCHIVE";
+export const REMOVE_WORD = "REMOVE_WORD";
 export const ADD_RECENT_WORD = "ADD_RECENT_WORD";
 export const REMOVE_RECENT_WORD = "REMOVE_RECENT_WORD";
 export const CLEAR_RECENT_WORDS = "CLEAR_RECENT_WORDS";
+export const CLEAR_BOOKMARKED_WORDS = "CLEAR_BOOKMARKED_WORDS";
+
+export const addRecentWord = (wordSearched) => {
+  return {
+    type: ADD_RECENT_WORD,
+    payload: { wordSearched },
+  };
+};
+
+export const removeRecentWord = (indexToRemove) => {
+  return {
+    type: REMOVE_RECENT_WORD,
+    payload: { indexToRemove },
+  };
+};
+
+export const clearAllRecentWords = () => {
+  return {
+    type: CLEAR_RECENT_WORDS,
+  };
+};
 
 export const setupInitWordsState = () => async (dispatch) => {
   try {
-    // const words = await getAsyncStorage("words");
-    // const wordsList = await getAsyncStorage("wordsList");
-    // const archivedWords = await getAsyncStorage("archivedWords");
-    // const recentWords = await getAsyncStorage("recentWords");
-    // let archivedWordsList = [];
-    // for (const year in archivedWords) {
+    // const wordsData = WORDS_DATA;
+    // const wordsBookmarked = WORDS_LIST;
+    // const wordsArchived = ARCHIVED_WORDS_LIST;
+    // const recentWords = RECENT_WORDS_LIST;
+    // let wordsArchivedList = [];
+    // for (const year in wordsArchived) {
     //   for (let i = 0; i < 12; i++) {
-    //     archivedWordsList = archivedWordsList.concat(archivedWords[year][i]);
+    //     wordsArchivedList = wordsArchivedList.concat(wordsArchived[year][i]);
     //   }
     // }
+    const wordsData = (await getAsyncStorage("words")) ?? {};
+    const wordsBookmarked = (await getAsyncStorage("wordsBookmarked")) ?? [];
+    const wordsArchived = (await getAsyncStorage("wordsArchived")) ?? {};
+    const recentWords = (await getAsyncStorage("recentWords")) ?? [];
+    let wordsArchivedList = [];
 
-    const wordsData = WORDS_DATA;
-    const wordsList = WORDS_LIST;
-    const archivedWords = ARCHIVED_WORDS_LIST;
-    const recentWords = RECENT_WORDS_LIST;
-    let archivedWordsList = [];
-    for (const year in archivedWords) {
+    const currentYear = new Date().getFullYear();
+    if (!wordsArchived.hasOwnProperty(currentYear)) {
+      wordsArchived[currentYear] = [];
       for (let i = 0; i < 12; i++) {
-        archivedWordsList = archivedWordsList.concat(archivedWords[year][i]);
+        wordsArchived[currentYear].push([]);
       }
     }
-    const currentYear = new Date().getFullYear();
-    if (!archivedWords.hasOwnProperty(currentYear))
-      archivedWords[currentYear] = [
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-      ];
+    for (const year in wordsArchived) {
+      for (let i = 0; i < 12; i++) {
+        wordsArchivedList = wordsArchivedList.concat(wordsArchived[year][i]);
+      }
+    }
 
     dispatch({
       type: SETUP_INIT,
       payload: {
         wordsData,
-        wordsList,
-        archivedWords,
-        archivedWordsList,
+        wordsBookmarked,
+        wordsArchived,
+        wordsArchivedList,
         recentWords,
       },
     });
@@ -88,11 +101,11 @@ export const toggleBookmark = (wordDetails, isBookmarked) => async (
   }
 };
 
-export const toggleArchive = (targetWord, isArchived) => async (dispatch) => {
+export const toggleArchive = (wordDetails, isArchived) => async (dispatch) => {
   try {
     dispatch({
       type: TOGGLE_ARCHIVE,
-      payload: { targetWord },
+      payload: { targetWord: wordDetails.word },
     });
   } catch (err) {
     console.log(err);
@@ -103,22 +116,44 @@ export const toggleArchive = (targetWord, isArchived) => async (dispatch) => {
   }
 };
 
-export const addRecentWord = (wordSearched) => {
-  return {
-    type: ADD_RECENT_WORD,
-    payload: { wordSearched },
-  };
+export const removeWord = (wordDetails) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REMOVE_WORD,
+      payload: { targetWord: wordDetails.word },
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch(
+      setToast(
+        "toastError",
+        "An error occurred removing the word",
+        "ios-warning"
+      )
+    );
+  }
 };
 
-export const removeRecentWord = (indexToRemove) => {
-  return {
-    type: REMOVE_RECENT_WORD,
-    payload: { indexToRemove },
-  };
-};
-
-export const clearAllRecentWords = () => {
-  return {
-    type: CLEAR_RECENT_WORDS,
-  };
+export const clearBookmarkedWords = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: CLEAR_BOOKMARKED_WORDS,
+    });
+    dispatch(
+      setToast(
+        "toastInfo",
+        "All Bookmarks have been cleared",
+        "ios-checkmark-circle"
+      )
+    );
+  } catch (err) {
+    console.log(err);
+    dispatch(
+      setToast(
+        "toastError",
+        "Something went wrong performing this action",
+        "ios-warning"
+      )
+    );
+  }
 };

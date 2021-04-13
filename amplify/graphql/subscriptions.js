@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUserProfile = /* GraphQL */ `
-  subscription OnCreateUserProfile($owner: String!) {
-    onCreateUserProfile(owner: $owner) {
+  subscription OnCreateUserProfile {
+    onCreateUserProfile {
       id
       owner
       userTag
@@ -24,16 +24,16 @@ export const onCreateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
   }
 `;
 export const onUpdateUserProfile = /* GraphQL */ `
-  subscription OnUpdateUserProfile($owner: String!) {
-    onUpdateUserProfile(owner: $owner) {
+  subscription OnUpdateUserProfile {
+    onUpdateUserProfile {
       id
       owner
       userTag
@@ -54,16 +54,16 @@ export const onUpdateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
   }
 `;
 export const onDeleteUserProfile = /* GraphQL */ `
-  subscription OnDeleteUserProfile($owner: String!) {
-    onDeleteUserProfile(owner: $owner) {
+  subscription OnDeleteUserProfile {
+    onDeleteUserProfile {
       id
       owner
       userTag
@@ -84,8 +84,8 @@ export const onDeleteUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      bookmarkedWords
-      archivedWords
+      wordsBookmarked
+      wordsArchived
       createdAt
       updatedAt
     }
@@ -108,8 +108,8 @@ export const onCreatePhrase = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }
@@ -138,8 +138,8 @@ export const onUpdatePhrase = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }
@@ -168,8 +168,8 @@ export const onDeletePhrase = /* GraphQL */ `
         phrases {
           nextToken
         }
-        bookmarkedWords
-        archivedWords
+        wordsBookmarked
+        wordsArchived
         createdAt
         updatedAt
       }

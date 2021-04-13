@@ -14,11 +14,14 @@ import userProfilerReducer from "./store/reducers/userProfile";
 import loadingReducer from "./store/reducers/loading";
 import AppContainer from "./AppContainer";
 import { setupInitWordsState } from "./store/actions/words";
-import { setUserProfile } from "./store/actions/userProfile";
+import {
+  setUserProfile,
+  handleCreateUserProfile,
+} from "./store/actions/userProfile";
 
 import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
 import * as queries from "./amplify/graphql/queries"; // TO REMOVE
-import { getPhrasesByDate } from "./utils/helper"; // TO REMOVE
+import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
 import { getUserProfile } from "./utils/helper";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
@@ -51,10 +54,23 @@ const fetchFonts = () => {
 function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  const testAPI = async () => {
+    try {
+      const userId = "d076de4f-8699-4822-bef4-891babcaebaa";
+      const words = JSON.stringify([]);
+      const archived = JSON.stringify({});
+      const res = await syncData({ userId, words, archived });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     store.dispatch(setupInitWordsState());
     loadUserProfile();
     authListener();
+    // testAPI();
   }, []);
 
   const authListener = () => {
@@ -81,30 +97,17 @@ function App() {
     const cognitoUser = await Auth.currentAuthenticatedUser();
     if (cognitoUser) {
       const userId = cognitoUser.username;
+      const email = cognitoUser.attributes.email;
       const userProfileRes = await getUserProfile({ id: userId });
       let userProfile = userProfileRes.data.getUserProfile;
       // create user profile (only on first time logging in)
-      if (!userProfile) {
-        const userAttributes = await Auth.userAttributes(cognitoUser);
-        let userTag;
-        for (let i = 0; i < userAttributes.length; i++) {
-          if (userAttributes[i].Name === "preferred_username")
-            userTag = userAttributes[i].Value;
-        }
-        const user = {
-          id: userId,
-          email,
-          userTag,
-          bookmarkedWords: JSON.stringify([]),
-          archivedWords: JSON.stringify({}),
-        };
-        const createUserProfileRes = await createUserProfile({ user });
-        userProfile = createUserProfileRes.data.createUserProfile;
-        console.log("New user profile created in Amplify");
+      if (userProfile) {
+        store.dispatch(setUserProfile(userProfile));
+      } else {
+        store.dispatch(
+          handleCreateUserProfile({ id: userId, cognitoUser, email })
+        );
       }
-
-      // console.log("APP - loadUserProfile", userProfile);
-      store.dispatch(setUserProfile(userProfile));
     }
   };
 

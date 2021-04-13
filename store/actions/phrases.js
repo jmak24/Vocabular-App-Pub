@@ -167,8 +167,7 @@ export const handleTogglePhraseLike = ({
 };
 
 export const handleTogglePhraseVisibility = ({ phraseId, isPublic }) => async (
-  dispatch,
-  getState
+  dispatch
 ) => {
   try {
     await updatePhraseVisibility({ phraseId, isPublic });

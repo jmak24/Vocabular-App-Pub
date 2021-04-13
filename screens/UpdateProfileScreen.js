@@ -101,7 +101,9 @@ const UpdateProfileScreen = ({ navigation, route }) => {
     }
 
     if (formType === "changeUserTag") {
-      dispatch(handleUpdateUserTag({ id: userId, userTag: newUserTag }));
+      dispatch(
+        handleUpdateUserTag({ id: userId, currentUserTag: userTag, newUserTag })
+      );
       navigation.goBack();
     }
   };
@@ -168,7 +170,7 @@ const UpdateProfileScreen = ({ navigation, route }) => {
         <View style={[styles.button, !submitEnabled && styles.buttonDisabled]}>
           <TouchableOpacity
             onPress={handleSaveChanges}
-            disabled={submitEnabled}
+            disabled={!submitEnabled}
           >
             <CustomText option='mid' style={{ color: "#fff" }}>
               Save Changes

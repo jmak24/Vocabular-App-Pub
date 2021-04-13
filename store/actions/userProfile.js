@@ -4,7 +4,7 @@ export const SET_USER_TAG = "SET_USER_TAG";
 
 import { Auth } from "@aws-amplify/auth";
 
-import { updateUserTag } from "../../utils/helper";
+import { updateUserProfile, createUserProfile } from "../../utils/helper";
 import { setToast } from "./toasts";
 
 export const setUserProfile = (userProfile) => {
@@ -27,12 +27,39 @@ export const setUserTag = (userTag) => {
   };
 };
 
-export const handleUpdateUserTag = ({ id, userTag }) => async (dispatch) => {
+export const handleCreateUserProfile = ({ id, cognitoUser, email }) => async (
+  dispatch
+) => {
+  const userAttributes = await Auth.userAttributes(cognitoUser);
+  let userTag;
+  for (let i = 0; i < userAttributes.length; i++) {
+    if (userAttributes[i].Name === "preferred_username")
+      userTag = userAttributes[i].Value;
+  }
+  const user = {
+    id,
+    email,
+    userTag,
+    wordsBookmarked: JSON.stringify([]),
+    wordsArchived: JSON.stringify({}),
+  };
+  const userProfile = await createUserProfile({ user });
+  console.log(userProfile);
+  dispatch(setUserProfile(userProfile));
+  console.log("New user profile created in Amplify");
+};
+
+export const handleUpdateUserTag = ({
+  id,
+  currentUserTag,
+  newUserTag,
+}) => async (dispatch) => {
+  dispatch(setUserTag(newUserTag));
   try {
-    await updateUserTag({ id, userTag });
-    dispatch(setUserTag(userTag));
+    await updateUserProfile({ id, userTag: currentUserTag });
     dispatch(setToast("toastInfo", "Username changed", "ios-checkmark-circle"));
   } catch (err) {
+    dispatch(setUserTag(currentUserTag));
     dispatch(
       setToast("toastError", "Error changing Username", "ios-close-circle")
     );
