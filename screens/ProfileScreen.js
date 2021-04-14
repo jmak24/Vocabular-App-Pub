@@ -1,35 +1,47 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  View,
-  Dimensions,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { View, Dimensions, StyleSheet, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
 import OptionButton from "../components/OptionButton";
-import { handleLogOut } from "../store/actions/userProfile";
+import { handleLogOut, loadUserProfile } from "../store/actions/userProfile";
 import TopNavBar from "../components/TopNavBar";
 import Sizing from "../constants/Sizing";
+import Loading from "../components/Loading";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
-const ProfileScreen = ({ route, navigation }) => {
+const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { userProfile, words } = useSelector((state) => state);
+  const {
+    userProfile,
+    words,
+    loading: { FETCH_USER_PROFILE },
+  } = useSelector((state) => state);
   const numBookmarkedWords = words.wordsBookmarked.length;
   const numArchivedWords = words.wordsArchivedList.length;
+  const numPhrases =
+    userProfile.phrases && Object.keys(userProfile.phrases).length;
   const { userTag, email } = userProfile;
 
-  const updateProfileScreen = async ({ formType }) => {
+  useEffect(() => {
+    dispatch(loadUserProfile({ withPhrases: true }));
+  }, []);
+
+  const updateProfileScreen = ({ formType }) => {
     navigation.push("UpdateProfile", { formType });
+  };
+
+  const selectMyPhrases = () => {
+    if (userProfile) {
+      navigation.push("MyPhrases");
+    } else {
+      navigation.push("Login");
+    }
   };
 
   const changeUsernameSelected = () => {
@@ -45,78 +57,76 @@ const ProfileScreen = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  const clearBookmarksConfirmation = () =>
-    Alert.alert("Are you sure you want to clear all Bookmarked words?", "", [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      { text: "Yes", onPress: () => console.log("IMPLEMENT ACTION") },
-    ]);
-
-  const clearArchiveConfirmation = () =>
-    Alert.alert("Are you sure you want to clear all Archived words?", "", [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      { text: "Yes", onPress: () => console.log("IMPLEMENT ACTION") },
-    ]);
-
   return (
     <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
       <TopNavBar navigation={navigation} title={"My Profile"} />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.profileCard}>
-          <CustomText option='subLarge' style={{ color: Colors.primaryTheme }}>
-            {userTag}
-          </CustomText>
-          <CustomText option='bodyGray'>{email}</CustomText>
-          <View style={styles.profileStats}>
-            <View style={styles.stat}>
-              <Ionicons
-                name={"ios-bookmark-outline"}
-                size={26}
-                style={{ ...styles.icon, paddingRight: 10 }}
-                color={"#496a80"}
-              />
-              <CustomText option='subLarge'>{numBookmarkedWords}</CustomText>
-            </View>
-            <View style={styles.stat}>
-              <Ionicons
-                name={"ios-archive-outline"}
-                size={26}
-                style={{ ...styles.icon, paddingRight: 10 }}
-                color={"#496a80"}
-              />
-              <CustomText option='subLarge'>{numArchivedWords}</CustomText>
+      {FETCH_USER_PROFILE.loading ? (
+        <Loading />
+      ) : (
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.profileCard}>
+            <CustomText
+              option='subLarge'
+              style={{ color: Colors.primaryTheme }}
+            >
+              {userTag}
+            </CustomText>
+            <CustomText option='bodyGray'>{email}</CustomText>
+            <View style={styles.profileStats}>
+              <View style={styles.stat}>
+                <Ionicons
+                  name={"ios-bookmark-outline"}
+                  size={26}
+                  style={{ ...styles.icon, paddingRight: 10 }}
+                  color={"#496a80"}
+                />
+                <CustomText option='subLarge'>{numBookmarkedWords}</CustomText>
+              </View>
+              <View style={styles.stat}>
+                <Ionicons
+                  name={"ios-archive-outline"}
+                  size={26}
+                  style={{ ...styles.icon, paddingRight: 10 }}
+                  color={"#496a80"}
+                />
+                <CustomText option='subLarge'>{numArchivedWords}</CustomText>
+              </View>
+              <View style={styles.stat}>
+                <Ionicons
+                  name={"ios-chatbubble-ellipses-outline"}
+                  size={26}
+                  style={{ ...styles.icon, paddingRight: 10 }}
+                  color={"#496a80"}
+                />
+                <CustomText option='subLarge'>{numPhrases}</CustomText>
+              </View>
             </View>
           </View>
-        </View>
-        <CustomText style={styles.optionTitle} option='mid'>
-          Account
-        </CustomText>
-        <OptionButton
-          icon={"ios-chatbubble-ellipses-outline"}
-          title={"Delete Phrases"}
-          onPress={() => {}}
-        />
-        <OptionButton
-          icon={"ios-at"}
-          title={"Change Username"}
-          onPress={changeUsernameSelected}
-        />
-        <OptionButton
-          icon={"ios-lock-closed-outline"}
-          title={"Change Password"}
-          onPress={changePasswordSelected}
-        />
-        <OptionButton
-          icon={"ios-log-out-outline"}
-          title={"Log out"}
-          onPress={logOutSelected}
-        />
-      </ScrollView>
+          <CustomText style={styles.optionTitle} option='mid'>
+            Account
+          </CustomText>
+          <OptionButton
+            icon={"ios-chatbubble-ellipses-outline"}
+            title={"My Phrases"}
+            onPress={selectMyPhrases}
+          />
+          <OptionButton
+            icon={"ios-at"}
+            title={"Change Username"}
+            onPress={changeUsernameSelected}
+          />
+          <OptionButton
+            icon={"ios-lock-closed-outline"}
+            title={"Change Password"}
+            onPress={changePasswordSelected}
+          />
+          <OptionButton
+            icon={"ios-log-out-outline"}
+            title={"Log out"}
+            onPress={logOutSelected}
+          />
+        </ScrollView>
+      )}
     </View>
   );
 };

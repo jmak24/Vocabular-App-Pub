@@ -14,15 +14,12 @@ import userProfilerReducer from "./store/reducers/userProfile";
 import loadingReducer from "./store/reducers/loading";
 import AppContainer from "./AppContainer";
 import { setupInitWordsState } from "./store/actions/words";
-import {
-  setUserProfile,
-  handleCreateUserProfile,
-} from "./store/actions/userProfile";
+import { setUserProfile } from "./store/actions/userProfile";
 
 import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
 import * as queries from "./amplify/graphql/queries"; // TO REMOVE
 import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
-import { getUserProfile } from "./utils/helper";
+import { loadUserProfile } from "./store/actions/userProfile";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
@@ -68,7 +65,7 @@ function App() {
 
   useEffect(() => {
     store.dispatch(setupInitWordsState());
-    loadUserProfile();
+    store.dispatch(loadUserProfile({ withPhrases: false }));
     authListener();
     // testAPI();
   }, []);
@@ -78,7 +75,7 @@ function App() {
       switch (event) {
         case "signIn":
         case "cognitoHostedUI":
-          loadUserProfile();
+          store.dispatch(loadUserProfile());
           console.log("SIGNED IN");
           break;
         case "signOut":
@@ -93,23 +90,27 @@ function App() {
     });
   };
 
-  const loadUserProfile = async () => {
-    const cognitoUser = await Auth.currentAuthenticatedUser();
-    if (cognitoUser) {
-      const userId = cognitoUser.username;
-      const email = cognitoUser.attributes.email;
-      const userProfileRes = await getUserProfile({ id: userId });
-      let userProfile = userProfileRes.data.getUserProfile;
-      // create user profile (only on first time logging in)
-      if (userProfile) {
-        store.dispatch(setUserProfile(userProfile));
-      } else {
-        store.dispatch(
-          handleCreateUserProfile({ id: userId, cognitoUser, email })
-        );
-      }
-    }
-  };
+  // const loadUserProfile = async ({ withPhrases }) => {
+  //   const cognitoUser = await Auth.currentAuthenticatedUser();
+  //   if (cognitoUser) {
+  //     const userId = cognitoUser.username;
+  //     const email = cognitoUser.attributes.email;
+  //     const userProfileRes = await getUserProfile({
+  //       id: userId,
+  //       withPhrases,
+  //     });
+  //     let userProfile = userProfileRes.data.getUserProfile;
+  //     console.log(userProfile);
+  //     // create user profile (only on first time logging in)
+  //     if (userProfile) {
+  //       store.dispatch(setUserProfile(userProfile));
+  //     } else {
+  //       store.dispatch(
+  //         handleCreateUserProfile({ id: userId, cognitoUser, email })
+  //       );
+  //     }
+  //   }
+  // };
 
   if (!fontLoaded) {
     return (

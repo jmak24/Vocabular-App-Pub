@@ -12,6 +12,7 @@ import ArchivedScreen from "../screens/ArchivedScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
+import MyPhrasesScreen from "../screens/MyPhrasesScreen";
 import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createStackNavigator();
@@ -45,6 +46,7 @@ const MainNavigator = () => (
     <Stack.Screen name='Settings' component={SettingsScreen} />
     <Stack.Screen name='Profile' component={ProfileScreen} />
     <Stack.Screen name='UpdateProfile' component={UpdateProfileScreen} />
+    <Stack.Screen name='MyPhrases' component={MyPhrasesScreen} />
     <Stack.Screen name='Login' component={LoginScreen} />
   </Stack.Navigator>
 );

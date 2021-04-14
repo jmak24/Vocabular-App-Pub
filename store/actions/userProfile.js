@@ -4,7 +4,13 @@ export const SET_USER_TAG = "SET_USER_TAG";
 
 import { Auth } from "@aws-amplify/auth";
 
-import { updateUserProfile, createUserProfile } from "../../utils/helper";
+import {
+  updateUserProfile,
+  createUserProfile,
+  getUserProfile,
+  phrasesToObj,
+} from "../../utils/helper";
+import { fetchUserProfile } from "../actions/loading";
 import { setToast } from "./toasts";
 
 export const setUserProfile = (userProfile) => {
@@ -25,6 +31,37 @@ export const setUserTag = (userTag) => {
     type: SET_USER_TAG,
     payload: { userTag },
   };
+};
+
+export const loadUserProfile = ({ withPhrases }) => async (dispatch) => {
+  try {
+    dispatch(fetchUserProfile("REQUEST"));
+    const cognitoUser = await Auth.currentAuthenticatedUser();
+    if (cognitoUser) {
+      const userId = cognitoUser.username;
+      const email = cognitoUser.attributes.email;
+      const userProfileRes = await getUserProfile({
+        id: userId,
+        withPhrases,
+      });
+      let userProfile = userProfileRes.data.getUserProfile;
+
+      if (userProfile) {
+        if (userProfile.hasOwnProperty("phrases")) {
+          const myPhrasesArr = userProfile.phrases.items;
+          userProfile.phrases = phrasesToObj(myPhrasesArr);
+        }
+        dispatch(setUserProfile(userProfile));
+      } else {
+        // create user profile (only on first time logging in)
+        dispatch(handleCreateUserProfile({ id: userId, cognitoUser, email }));
+      }
+    }
+    dispatch(fetchUserProfile("SUCCESS"));
+  } catch (err) {
+    dispatch(fetchUserProfile("FAIL"));
+    console.log(err);
+  }
 };
 
 export const handleCreateUserProfile = ({ id, cognitoUser, email }) => async (

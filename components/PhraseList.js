@@ -27,12 +27,12 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
   const {
     phrases: phraseData,
     loading: { FETCH_PHRASES },
-    userProfile: authedUser,
+    userProfile,
   } = useSelector((state) => state);
   const { myPhrases, topPhrases, recentPhrases } = phraseData;
-
+  console.log(myPhrases);
   const addPhrasePressed = () => {
-    if (authedUser) {
+    if (userProfile) {
       toggleModal();
     } else {
       navigation.push("Login");
@@ -91,13 +91,13 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
                 <Fragment>
                   {Object.keys(myPhrases).map((key, index) => {
                     index++;
-                    const item = myPhrases[key];
+                    const phraseDetails = myPhrases[key];
                     return (
                       <PhraseCard
                         key={("My Phrases", index)}
-                        details={item}
+                        details={phraseDetails}
                         myPhraseSection={true}
-                        authedUser={authedUser}
+                        authedUserId={userProfile.id}
                       />
                     );
                   })}
@@ -110,13 +110,13 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
                   </View>
                   {Object.keys(topPhrases).map((key, index) => {
                     index++;
-                    const item = topPhrases[key];
+                    const phraseDetails = topPhrases[key];
                     return (
                       <PhraseCard
                         key={("Top Phrases", index)}
-                        details={item}
+                        details={phraseDetails}
                         myPhraseSection={false}
-                        authedUser={authedUser}
+                        authedUser={userProfile}
                       />
                     );
                   })}
@@ -129,13 +129,13 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
                   </View>
                   {Object.keys(recentPhrases).map((key, index) => {
                     index++;
-                    const item = recentPhrases[key];
+                    const phraseDetails = recentPhrases[key];
                     return (
                       <PhraseCard
                         key={("Recent Phrases", index)}
-                        details={item}
+                        details={phraseDetails}
                         myPhraseSection={false}
-                        authedUser={authedUser}
+                        authedUser={userProfile}
                       />
                     );
                   })}

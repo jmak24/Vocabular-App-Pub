@@ -14,9 +14,7 @@ import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
 import LogoIcon from "../assets/bookmark-img.png";
 
-import { createUserProfile, getUserProfile } from "../utils/helper";
 import { Auth } from "@aws-amplify/auth";
-import { setUserProfile } from "../store/actions/userProfile";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();

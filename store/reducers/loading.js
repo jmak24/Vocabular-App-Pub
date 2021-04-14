@@ -1,4 +1,8 @@
-import { FETCH_WORD_DETAILS, FETCH_PHRASES } from "../actions/loading";
+import {
+  FETCH_WORD_DETAILS,
+  FETCH_PHRASES,
+  FETCH_USER_PROFILE,
+} from "../actions/loading";
 
 const getActionName = (actionType) => {
   if (typeof actionType !== "string") {
@@ -11,6 +15,7 @@ const getActionName = (actionType) => {
 const initialState = {
   [FETCH_WORD_DETAILS]: { loading: false },
   [FETCH_PHRASES]: { loading: false },
+  [FETCH_USER_PROFILE]: { loading: false },
 };
 
 export default (state = initialState, action) => {

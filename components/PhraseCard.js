@@ -12,19 +12,12 @@ import {
   handleTogglePhraseVisibility,
 } from "../store/actions/phrases";
 
-const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
+const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
   const dispatch = useDispatch();
-  const {
-    id,
-    phrase,
-    likes,
-    isPublic,
-    authorId,
-    author: { userTag },
-  } = details;
+  const { id, phrase, likes, isPublic, authorId, author } = details;
   const eyeIcon = isPublic ? "ios-eye-outline" : "ios-eye-off-outline";
-  const hasLiked = likes.includes(authedUser.id);
-  const isAuthor = authedUser.id === authorId;
+  const hasLiked = likes.includes(authedUserId);
+  const isAuthor = authedUserId === authorId;
   // if you are author of phrase and is set to private
   if (isAuthor && !myPhraseSection && !isPublic) {
     return null;
@@ -72,7 +65,7 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
               </TouchableOpacity>
             </Fragment>
           ) : (
-            <CustomText option='thin'>{userTag}</CustomText>
+            <CustomText option='thin'>{author && author.userTag}</CustomText>
           )}
         </View>
 
@@ -85,7 +78,7 @@ const PhraseCard = ({ details, myPhraseSection, authedUser }) => {
               dispatch(
                 handleTogglePhraseLike({
                   phraseId: id,
-                  authedUser,
+                  authedUserId,
                   hasLiked,
                   likes,
                 })

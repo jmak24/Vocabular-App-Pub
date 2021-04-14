@@ -20,7 +20,7 @@ const WordDetailsHeader = ({
   scrollY,
 }) => {
   const dispatch = useDispatch();
-  const HeaderHeight = useRef(131);
+  const HeaderHeight = useRef(191);
 
   const animatedContainer = scrollY.interpolate({
     inputRange: [0, HeaderHeight.current],
@@ -34,8 +34,8 @@ const WordDetailsHeader = ({
 
   const bookmarkPressed = () => {
     const toastMsg = isBookmarked
-      ? "Removed from Bookmarks!"
-      : "Added to Bookmarks!";
+      ? "Removed from Bookmarks"
+      : "Added to Bookmarks";
     dispatch(setToast("toastInfo", toastMsg, "ios-bookmark"));
     dispatch(toggleBookmark(wordDetails, isBookmarked));
   };
@@ -79,7 +79,7 @@ const WordDetailsHeader = ({
           )}
         </View>
         <View style={{ flexDirection: "row" }}>
-          {isBookmarked && (
+          {(isBookmarked || isArchived) && (
             <TouchableOpacity onPress={archivePressed}>
               <View style={{ ...styles.archiveBtn }}>
                 <CustomText option='bodyGray'>
@@ -88,23 +88,28 @@ const WordDetailsHeader = ({
               </View>
             </TouchableOpacity>
           )}
-          <TouchableOpacity onPress={bookmarkPressed}>
-            <Ionicons
-              name={isBookmarked ? "ios-bookmark" : "ios-bookmark"}
-              size={32}
-              style={{ ...styles.icon, marginRight: 8 }}
-              color={isBookmarked ? Colors.primaryTheme : Colors.iconLightGray}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={removePressed}>
-            <Ionicons
-              // name={"ios-close-circle-outline"}
-              name={"ios-remove-circle-outline"}
-              size={32}
-              style={{ ...styles.icon, marginRight: 8 }}
-              color='#f26f6f'
-            />
-          </TouchableOpacity>
+          {isArchived ? (
+            <TouchableOpacity onPress={removePressed}>
+              <Ionicons
+                // name={"ios-close-circle-outline"}
+                name={"ios-remove-circle-outline"}
+                size={32}
+                style={{ ...styles.icon, marginRight: 8 }}
+                color='#f26f6f'
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={bookmarkPressed}>
+              <Ionicons
+                name={"ios-bookmark"}
+                size={32}
+                style={{ ...styles.icon, marginRight: 8 }}
+                color={
+                  isBookmarked ? Colors.primaryTheme : Colors.iconLightGray
+                }
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Animated.View>

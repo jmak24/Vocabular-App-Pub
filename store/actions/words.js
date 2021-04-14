@@ -1,11 +1,11 @@
 import { setToast } from "./toasts";
-import { getAsyncStorage, updateUserProfile } from "../../utils/helper";
-import {
-  WORDS_DATA,
-  WORDS_LIST,
-  ARCHIVED_WORDS_LIST,
-  RECENT_WORDS_LIST,
-} from "../../models/dummy-data";
+import { getAsyncStorage } from "../../utils/helper";
+// import {
+//   WORDS_DATA,
+//   WORDS_LIST,
+//   ARCHIVED_WORDS_LIST,
+//   RECENT_WORDS_LIST,
+// } from "../../models/dummy-data";
 
 export const SETUP_INIT = "SETUP_INIT";
 export const TOGGLE_BOOKMARK = "TOGGLE_BOOKMARK";
@@ -14,7 +14,8 @@ export const REMOVE_WORD = "REMOVE_WORD";
 export const ADD_RECENT_WORD = "ADD_RECENT_WORD";
 export const REMOVE_RECENT_WORD = "REMOVE_RECENT_WORD";
 export const CLEAR_RECENT_WORDS = "CLEAR_RECENT_WORDS";
-export const CLEAR_BOOKMARKED_WORDS = "CLEAR_BOOKMARKED_WORDS";
+export const REMOVE_BOOKMARKED_WORDS = "REMOVE_BOOKMARKED_WORDS";
+export const REMOVE_ARCHIVED_WORDS = "REMOVE_ARCHIVED_WORDS";
 
 export const addRecentWord = (wordSearched) => {
   return {
@@ -48,7 +49,7 @@ export const setupInitWordsState = () => async (dispatch) => {
     //     wordsArchivedList = wordsArchivedList.concat(wordsArchived[year][i]);
     //   }
     // }
-    const wordsData = (await getAsyncStorage("words")) ?? {};
+    const wordsData = (await getAsyncStorage("wordsData")) ?? {};
     const wordsBookmarked = (await getAsyncStorage("wordsBookmarked")) ?? [];
     const wordsArchived = (await getAsyncStorage("wordsArchived")) ?? {};
     const recentWords = (await getAsyncStorage("recentWords")) ?? [];
@@ -137,15 +138,29 @@ export const removeWord = (wordDetails) => async (dispatch) => {
 export const clearBookmarkedWords = () => async (dispatch) => {
   try {
     dispatch({
-      type: CLEAR_BOOKMARKED_WORDS,
+      type: REMOVE_BOOKMARKED_WORDS,
     });
     dispatch(
+      setToast("toastInfo", "Bookmarks cleared", "ios-checkmark-circle")
+    );
+  } catch (err) {
+    console.log(err);
+    dispatch(
       setToast(
-        "toastInfo",
-        "All Bookmarks have been cleared",
-        "ios-checkmark-circle"
+        "toastError",
+        "Something went wrong performing this action",
+        "ios-warning"
       )
     );
+  }
+};
+
+export const clearArchivedWords = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: REMOVE_ARCHIVED_WORDS,
+    });
+    dispatch(setToast("toastInfo", "Archive cleared", "ios-checkmark-circle"));
   } catch (err) {
     console.log(err);
     dispatch(

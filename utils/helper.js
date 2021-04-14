@@ -119,9 +119,11 @@ export const prepareForWordDetails = (word) => {
 // AWS GraphQL Queries & Mutations
 
 // GET USER PROFILE
-export const getUserProfile = async ({ id }) => {
+export const getUserProfile = async ({ id, withPhrases }) => {
   try {
-    return await API.graphql(graphqlOperation(queries.getUserProfile, { id }));
+    return await API.graphql(
+      graphqlOperation(queries.getUserProfile, { id, withPhrases })
+    );
   } catch (err) {
     console.log(err);
   }

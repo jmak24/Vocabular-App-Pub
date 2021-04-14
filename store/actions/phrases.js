@@ -143,19 +143,19 @@ export const handleRemovePhrase = ({ phraseId }) => async (dispatch) => {
 
 export const handleTogglePhraseLike = ({
   phraseId,
-  authedUser,
+  authedUserId,
   hasLiked,
   likes,
 }) => async (dispatch) => {
   try {
     await updatePhraseLikes({
       phraseId,
-      userId: authedUser.id,
+      userId: authedUserId,
       likes,
     });
     dispatch({
       type: TOGGLE_PHRASE_LIKE,
-      payload: { phraseId, userId: authedUser.id, hasLiked },
+      payload: { phraseId, userId: authedUserId, hasLiked },
     });
   } catch (err) {
     const errorToastMsg = hasLiked

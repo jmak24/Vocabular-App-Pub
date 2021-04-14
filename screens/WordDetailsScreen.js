@@ -35,16 +35,18 @@ const TITLE_OFFSET_Y = 40;
 const WordDetailsScreen = ({ route, navigation }) => {
   const { word } = route.params;
   const {
-    words: { wordsData },
+    words: { wordsData, wordsBookmarked, wordsArchivedList },
     loading: { FETCH_WORD_DETAILS },
   } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const [wordDetails, setWordDetails] = useState({});
   const scrollY = useRef(new Animated.Value(0)).current;
-  const isBookmarked = wordsData.hasOwnProperty(word);
-  const isArchived =
-    wordsData.hasOwnProperty(word) && wordsData[word].archived != null;
+  // const isBookmarked = wordsData.hasOwnProperty(word);
+  // const isArchived =
+  //   wordsData.hasOwnProperty(word) && wordsData[word].archived != null;
+  const isBookmarked = wordsBookmarked.includes(word);
+  const isArchived = wordsArchivedList.includes(word);
 
   const animatedTopTitle = scrollY.interpolate({
     inputRange: [0, MAX_SCROLL_DISTANCE],
@@ -75,7 +77,7 @@ const WordDetailsScreen = ({ route, navigation }) => {
 
   const loadWordDetails = async (word) => {
     // word details are saved locally
-    if (isBookmarked) {
+    if (isBookmarked || isArchived) {
       console.log("Retrieving from saved words...");
       setWordDetails(wordsData[word]);
       return;

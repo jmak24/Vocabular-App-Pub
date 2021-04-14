@@ -14,11 +14,8 @@ const WordNotFound = ({ word, navigation }) => (
   <View
     style={{
       ...styles.screen,
-      paddingTop: Sizing.topNavBarHeight,
-      alignItems: "center",
     }}
   >
-    <TopNavBar navigation={navigation} />
     <View style={{ marginTop: "50%" }}>
       <CustomText option='subLargeGray' style={{ ...styles.questionMark }}>
         ?
@@ -44,6 +41,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     backgroundColor: Colors.grayTint,
+    width: "100%",
   },
   blockText: {
     marginTop: 20,

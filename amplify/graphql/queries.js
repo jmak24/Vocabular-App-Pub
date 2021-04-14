@@ -2,13 +2,13 @@
 // this is an auto generated file. This will be overwritten
 
 export const getUserProfile = /* GraphQL */ `
-  query GetUserProfile($id: ID!) {
+  query GetUserProfile($id: ID!, $withPhrases: Boolean!) {
     getUserProfile(id: $id) {
       id
       owner
       userTag
       email
-      phrases {
+      phrases @include(if: $withPhrases) {
         items {
           id
           word
@@ -40,16 +40,7 @@ export const listUserProfiles = /* GraphQL */ `
     listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        owner
         userTag
-        email
-        phrases {
-          nextToken
-        }
-        wordsBookmarked
-        wordsArchived
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -66,16 +57,7 @@ export const getPhrase = /* GraphQL */ `
       authorId
       author {
         id
-        owner
         userTag
-        email
-        phrases {
-          nextToken
-        }
-        wordsBookmarked
-        wordsArchived
-        createdAt
-        updatedAt
       }
       isPublic
       createdAt
@@ -101,13 +83,7 @@ export const listPhrases = /* GraphQL */ `
         authorId
         author {
           id
-          owner
           userTag
-          email
-          wordsBookmarked
-          wordsArchived
-          createdAt
-          updatedAt
         }
         isPublic
         createdAt
@@ -179,13 +155,7 @@ export const phrasesByUser = /* GraphQL */ `
         authorId
         author {
           id
-          owner
           userTag
-          email
-          wordsBookmarked
-          wordsArchived
-          createdAt
-          updatedAt
         }
         isPublic
         createdAt
@@ -223,13 +193,7 @@ export const phrasesByDate = /* GraphQL */ `
         authorId
         author {
           id
-          owner
           userTag
-          email
-          wordsBookmarked
-          wordsArchived
-          createdAt
-          updatedAt
         }
         isPublic
         createdAt
@@ -267,13 +231,7 @@ export const phrasesByLikes = /* GraphQL */ `
         authorId
         author {
           id
-          owner
           userTag
-          email
-          wordsBookmarked
-          wordsArchived
-          createdAt
-          updatedAt
         }
         isPublic
         createdAt
