@@ -30,7 +30,7 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
     userProfile,
   } = useSelector((state) => state);
   const { myPhrases, topPhrases, recentPhrases } = phraseData;
-  console.log(myPhrases);
+
   const addPhrasePressed = () => {
     if (userProfile) {
       toggleModal();

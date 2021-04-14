@@ -1,6 +1,7 @@
 export const SET_USER_PROFILE = "SET_USER_PROFILE";
 export const CLEAR_USER_PROFILE = "CLEAR_USER_PROFILE";
 export const SET_USER_TAG = "SET_USER_TAG";
+export const SET_USER_PHRASES = "SET_USER_PHRASES";
 
 import { Auth } from "@aws-amplify/auth";
 
@@ -8,15 +9,23 @@ import {
   updateUserProfile,
   createUserProfile,
   getUserProfile,
+  getPhrasesByUser,
   phrasesToObj,
 } from "../../utils/helper";
-import { fetchUserProfile } from "../actions/loading";
+import { fetchUserProfile, fetchPhrases } from "../actions/loading";
 import { setToast } from "./toasts";
 
 export const setUserProfile = (userProfile) => {
   return {
     type: SET_USER_PROFILE,
     payload: { userProfile },
+  };
+};
+
+export const setUserPhrases = (userPhrases) => {
+  return {
+    type: SET_USER_PHRASES,
+    payload: { userPhrases },
   };
 };
 
@@ -33,7 +42,7 @@ export const setUserTag = (userTag) => {
   };
 };
 
-export const loadUserProfile = ({ withPhrases }) => async (dispatch) => {
+export const loadUserProfile = () => async (dispatch) => {
   try {
     dispatch(fetchUserProfile("REQUEST"));
     const cognitoUser = await Auth.currentAuthenticatedUser();
@@ -42,19 +51,14 @@ export const loadUserProfile = ({ withPhrases }) => async (dispatch) => {
       const email = cognitoUser.attributes.email;
       const userProfileRes = await getUserProfile({
         id: userId,
-        withPhrases,
       });
       let userProfile = userProfileRes.data.getUserProfile;
 
       if (userProfile) {
-        if (userProfile.hasOwnProperty("phrases")) {
-          const myPhrasesArr = userProfile.phrases.items;
-          userProfile.phrases = phrasesToObj(myPhrasesArr);
-        }
         dispatch(setUserProfile(userProfile));
       } else {
         // create user profile (only on first time logging in)
-        dispatch(handleCreateUserProfile({ id: userId, cognitoUser, email }));
+        dispatch(handleCreateUserProfile({ userId, cognitoUser, email }));
       }
     }
     dispatch(fetchUserProfile("SUCCESS"));
@@ -64,9 +68,25 @@ export const loadUserProfile = ({ withPhrases }) => async (dispatch) => {
   }
 };
 
-export const handleCreateUserProfile = ({ id, cognitoUser, email }) => async (
-  dispatch
-) => {
+export const handleLoadUserPhrases = ({ userId }) => async (dispatch) => {
+  try {
+    dispatch(fetchPhrases("REQUEST"));
+    const userPhrasesRes = await getPhrasesByUser({ userId });
+    userPhrasesArr = userPhrasesRes.data.phrasesByUser.items;
+    const userPhrases = phrasesToObj(userPhrasesArr);
+    dispatch(setUserPhrases(userPhrases));
+    dispatch(fetchPhrases("SUCCESS"));
+  } catch (err) {
+    dispatch(fetchPhrases("FAIL"));
+    console.log(err);
+  }
+};
+
+export const handleCreateUserProfile = ({
+  userId,
+  cognitoUser,
+  email,
+}) => async (dispatch) => {
   const userAttributes = await Auth.userAttributes(cognitoUser);
   let userTag;
   for (let i = 0; i < userAttributes.length; i++) {
@@ -74,7 +94,7 @@ export const handleCreateUserProfile = ({ id, cognitoUser, email }) => async (
       userTag = userAttributes[i].Value;
   }
   const user = {
-    id,
+    id: userId,
     email,
     userTag,
     wordsBookmarked: JSON.stringify([]),
@@ -87,13 +107,13 @@ export const handleCreateUserProfile = ({ id, cognitoUser, email }) => async (
 };
 
 export const handleUpdateUserTag = ({
-  id,
+  userId,
   currentUserTag,
   newUserTag,
 }) => async (dispatch) => {
   dispatch(setUserTag(newUserTag));
   try {
-    await updateUserProfile({ id, userTag: currentUserTag });
+    await updateUserProfile({ id: userId, userTag: currentUserTag });
     dispatch(setToast("toastInfo", "Username changed", "ios-checkmark-circle"));
   } catch (err) {
     dispatch(setUserTag(currentUserTag));

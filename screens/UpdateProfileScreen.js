@@ -102,7 +102,7 @@ const UpdateProfileScreen = ({ navigation, route }) => {
 
     if (formType === "changeUserTag") {
       dispatch(
-        handleUpdateUserTag({ id: userId, currentUserTag: userTag, newUserTag })
+        handleUpdateUserTag({ userId, currentUserTag: userTag, newUserTag })
       );
       navigation.goBack();
     }

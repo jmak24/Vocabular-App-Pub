@@ -6,7 +6,7 @@ import {
   TOGGLE_PHRASE_VISIBILITY,
   CLEANUP_PHRASES,
 } from "../actions/phrases";
-import { omit } from "../../utils/helper";
+import { omitProp } from "../../utils/helper";
 
 initialState = { myPhrases: {}, topPhrases: {}, recentPhrases: {} };
 
@@ -34,11 +34,15 @@ export default (state = initialState, action) => {
     }
     case REMOVE_PHRASE: {
       const { phraseId } = action.payload;
+      const updatedMyPhrases = omitProp(phraseId, state.myPhrases);
+      const updatedTopPhrases = omitProp(phraseId, state.topPhrases);
+      const udpatedRecentPhrases = omitProp(phraseId, state.recentPhrases);
+
       return {
         ...state,
-        myPhrases: omit(phraseId, state.myPhrases),
-        topPhrases: omit(phraseId, state.topPhrases),
-        recentPhrases: omit(phraseId, state.recentPhrases),
+        myPhrases: updatedMyPhrases,
+        topPhrases: updatedTopPhrases,
+        recentPhrases: udpatedRecentPhrases,
       };
     }
     case TOGGLE_PHRASE_LIKE: {
@@ -83,9 +87,11 @@ export default (state = initialState, action) => {
     }
     case TOGGLE_PHRASE_VISIBILITY: {
       const { phraseId } = action.payload;
-      const updatedMyPhrases = { ...state.myPhrases };
-      updatedMyPhrases[phraseId].isPublic = !updatedMyPhrases[phraseId]
-        .isPublic;
+      let updatedMyPhrases = { ...state.myPhrases };
+      if (updatedMyPhrases.hasOwnProperty(phraseId)) {
+        updatedMyPhrases[phraseId].isPublic = !updatedMyPhrases[phraseId]
+          .isPublic;
+      }
 
       return {
         ...state,

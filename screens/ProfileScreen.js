@@ -7,7 +7,10 @@ import PropTypes from "prop-types";
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
 import OptionButton from "../components/OptionButton";
-import { handleLogOut, loadUserProfile } from "../store/actions/userProfile";
+import {
+  handleLogOut,
+  handleLoadUserPhrases,
+} from "../store/actions/userProfile";
 import TopNavBar from "../components/TopNavBar";
 import Sizing from "../constants/Sizing";
 import Loading from "../components/Loading";
@@ -20,7 +23,7 @@ const ProfileScreen = ({ navigation }) => {
   const {
     userProfile,
     words,
-    loading: { FETCH_USER_PROFILE },
+    loading: { FETCH_PHRASES },
   } = useSelector((state) => state);
   const numBookmarkedWords = words.wordsBookmarked.length;
   const numArchivedWords = words.wordsArchivedList.length;
@@ -29,7 +32,7 @@ const ProfileScreen = ({ navigation }) => {
   const { userTag, email } = userProfile;
 
   useEffect(() => {
-    dispatch(loadUserProfile({ withPhrases: true }));
+    dispatch(handleLoadUserPhrases({ userId: userProfile.id }));
   }, []);
 
   const updateProfileScreen = ({ formType }) => {
@@ -60,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
       <TopNavBar navigation={navigation} title={"My Profile"} />
-      {FETCH_USER_PROFILE.loading ? (
+      {FETCH_PHRASES.loading ? (
         <Loading />
       ) : (
         <ScrollView style={styles.scrollView}>

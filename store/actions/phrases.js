@@ -19,40 +19,10 @@ import {
   getPhrasesByDate,
 } from "../../utils/helper";
 
-// import { PHRASE_DATA } from "../../models/dummy-data"; // pull from AWS DB
-
 export const setPhraseData = (phraseData) => {
   return {
     type: SET_PHRASE_DATA,
     payload: { phraseData },
-  };
-};
-
-export const postPhrase = (phrase) => {
-  return {
-    type: POST_PHRASE,
-    payload: { phrase },
-  };
-};
-
-export const removePhrase = (phraseId) => {
-  return {
-    type: REMOVE_PHRASE,
-    payload: { phraseId },
-  };
-};
-
-export const togglePhraseLike = (phraseId, authedUserId, hasLiked) => {
-  return {
-    type: TOGGLE_PHRASE_LIKE,
-    payload: { phraseId, authedUserId, hasLiked },
-  };
-};
-
-export const togglePhraseVisibility = (phraseId, authedUser) => {
-  return {
-    type: TOGGLE_PHRASE_VISIBILITY,
-    payload: { phraseId, authedUser },
   };
 };
 
@@ -177,14 +147,15 @@ export const handleTogglePhraseVisibility = ({ phraseId, isPublic }) => async (
     });
   } catch (err) {
     const errorToastMsg = isPublic
-      ? "Failed to set Phrase Private"
-      : "Failed to set Phrase Public";
+      ? "Failed to set Phrase Public"
+      : "Failed to set Phrase Private";
     dispatch(setToast("toastError", errorToastMsg, "ios-close-circle"));
   }
+
   const toastMsg = isPublic
-    ? "Phrase has been set to Private"
-    : "Phrase has been set to Public";
-  const toastIcon = isPublic ? "ios-eye-off" : "ios-eye";
+    ? "Phrase has been set to Public"
+    : "Phrase has been set to Private";
+  const toastIcon = isPublic ? "ios-eye" : "ios-eye-off";
   dispatch(setToast("toastInfo", toastMsg, toastIcon));
 };
 

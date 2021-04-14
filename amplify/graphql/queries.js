@@ -2,28 +2,28 @@
 // this is an auto generated file. This will be overwritten
 
 export const getUserProfile = /* GraphQL */ `
-  query GetUserProfile($id: ID!, $withPhrases: Boolean!) {
+  query GetUserProfile($id: ID!) {
     getUserProfile(id: $id) {
       id
       owner
       userTag
       email
-      phrases @include(if: $withPhrases) {
-        items {
-          id
-          word
-          phrase
-          numLikes
-          likes
-          authorId
-          isPublic
-          createdAt
-          type
-          updatedAt
-          owner
-        }
-        nextToken
-      }
+      # phrases {
+      #   items {
+      #     id
+      #     word
+      #     phrase
+      #     numLikes
+      #     likes
+      #     authorId
+      #     isPublic
+      #     createdAt
+      #     type
+      #     updatedAt
+      #     owner
+      #   }
+      #   nextToken
+      # }
       wordsBookmarked
       wordsArchived
       createdAt

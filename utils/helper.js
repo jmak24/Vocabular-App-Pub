@@ -20,9 +20,11 @@ export const generateUUID = async () => {
   return await nanoid();
 };
 
-// Native method to remove keys from object
-export const omit = (keyToOmit, { [keyToOmit]: _, ...omittedPropObj } = {}) =>
-  omittedPropObj;
+// Native method to remove prop from object
+export const omitProp = (
+  propToOmit,
+  { [propToOmit]: _, ...omittedPropObj } = {}
+) => omittedPropObj;
 
 // Check if object is empty
 export const objIsNotEmpty = (myObject) => {
@@ -119,10 +121,12 @@ export const prepareForWordDetails = (word) => {
 // AWS GraphQL Queries & Mutations
 
 // GET USER PROFILE
-export const getUserProfile = async ({ id, withPhrases }) => {
+export const getUserProfile = async ({ id }) => {
   try {
     return await API.graphql(
-      graphqlOperation(queries.getUserProfile, { id, withPhrases })
+      graphqlOperation(queries.getUserProfile, {
+        id,
+      })
     );
   } catch (err) {
     console.log(err);
@@ -201,13 +205,16 @@ export const getUser = ({ userId }) => {
 
 // GET PHRASES BY USER ID
 export const getPhrasesByUser = ({ userId: authorId, word }) => {
-  return API.graphql(
-    graphqlOperation(queries.phrasesByUser, {
-      authorId,
-      filter: { word: { eq: word } },
-      sortDirection: "DESC",
-    })
-  );
+  const inputFilters = {
+    authorId,
+    sortDirection: "DESC",
+  };
+  const wordFilter = {
+    filter: { word: { eq: word } },
+  };
+  if (word) Object.assign(inputFilters, wordFilter);
+
+  return API.graphql(graphqlOperation(queries.phrasesByUser, inputFilters));
 };
 
 // GET PHRASES BY MOST LIKES
@@ -231,7 +238,9 @@ export const getPhrasesByDate = async ({ word }) => {
     graphqlOperation(queries.phrasesByDate, {
       limit: 25,
       word,
-      isPublic: { eq: true },
+      filter: {
+        isPublic: { eq: true },
+      },
       sortDirection: "DESC",
     })
   );
