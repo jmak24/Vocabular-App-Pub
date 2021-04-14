@@ -8,7 +8,10 @@ import Colors from "../constants/Colors";
 import OptionButton from "../components/OptionButton";
 import TopNavBar from "../components/TopNavBar";
 import Sizing from "../constants/Sizing";
-import { clearBookmarkedWords } from "../store/actions/words";
+import {
+  clearBookmarkedWords,
+  clearArchivedWords,
+} from "../store/actions/words";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -39,7 +42,7 @@ const SettingsScreen = ({ route, navigation }) => {
         text: "No",
         style: "cancel",
       },
-      { text: "Yes", onPress: () => console.log("IMPLEMENT ACTION") },
+      { text: "Yes", onPress: () => clearArchivedWords() },
     ]);
 
   return (

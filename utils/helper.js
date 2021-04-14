@@ -213,7 +213,7 @@ export const getPhrasesByUser = ({ userId: authorId, word }) => {
     filter: { word: { eq: word } },
   };
   if (word) Object.assign(inputFilters, wordFilter);
-
+  console.log(inputFilters);
   return API.graphql(graphqlOperation(queries.phrasesByUser, inputFilters));
 };
 

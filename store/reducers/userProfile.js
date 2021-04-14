@@ -44,7 +44,10 @@ export default (state = {}, action) => {
       };
     }
     case CLEANUP_PHRASES: {
-      return initialState;
+      return {
+        ...state,
+        phrases: null,
+      };
     }
     default:
       return state;
