@@ -24,7 +24,7 @@
     "buffer": "^5.7.1",
     "expo": "^40.0.0",
     "expo-app-loading": "^1.0.1",
-    "expo-cli": "^4.3.2",
+    "expo-cli": "^4.4.1",
     "expo-random": "~10.0.0",
     "nanoid": "github:ai/nanoid",
     "prop-types": "^15.7.2",

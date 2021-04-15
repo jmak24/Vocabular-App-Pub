@@ -11,6 +11,7 @@ import {
   handleTogglePhraseLike,
   handleTogglePhraseVisibility,
 } from "../store/actions/phrases";
+import { onShare } from "../utils/helper";
 
 const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
   const dispatch = useDispatch();
@@ -19,21 +20,21 @@ const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
   const hasLiked = likes.includes(authedUserId);
   const isAuthor = authedUserId === authorId;
   // if you are author of phrase and is set to private
-  if (isAuthor && !myPhraseSection && !isPublic) {
-    return null;
-  }
+  if (isAuthor && !myPhraseSection && !isPublic) return null;
 
   return (
     <View style={styles.phraseCard}>
       <CustomText option='body'>"{phrase}"</CustomText>
       <View style={styles.bottomSection}>
         <View style={{ flexDirection: "row" }}>
-          <Ionicons
-            name={"ios-arrow-redo-outline"}
-            size={25}
-            style={styles.icon}
-            color={Colors.iconLightGray}
-          />
+          <TouchableOpacity onPress={() => onShare({ message: phrase })}>
+            <Ionicons
+              name={"ios-arrow-redo-outline"}
+              size={25}
+              style={styles.icon}
+              color={Colors.iconLightGray}
+            />
+          </TouchableOpacity>
           {myPhraseSection ? (
             <Fragment>
               <TouchableOpacity

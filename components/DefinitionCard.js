@@ -19,7 +19,7 @@ const DefinitionRelatedItems = ({
       onLayout={(e) => initContainerHeight(e)}
     >
       {RELATED_TYPES.map((relatedType) => {
-        if (details.hasOwnProperty(relatedType)) {
+        if (relatedType in details) {
           const { title, color } = RelatedItems[relatedType];
           return (
             <View key={(uniqueId, " ", relatedType)}>
@@ -100,7 +100,7 @@ const DefinitionCard = ({
   };
 
   const relatedItemsExist = RELATED_TYPES.reduce((result, type) => {
-    if (result || details.hasOwnProperty(type)) return true;
+    if (result || type in details) return true;
     return false;
   }, false);
 

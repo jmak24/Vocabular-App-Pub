@@ -5,6 +5,7 @@ import axios from "axios";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import * as mutations from "../amplify/graphql/mutations";
 import * as queries from "../amplify/graphql/queries";
+import { Share } from "react-native";
 
 import { SPEECH_TYPES } from "../constants/OrderedItems";
 
@@ -118,6 +119,23 @@ export const prepareForWordDetails = (word) => {
   }
 };
 
+// Share function
+export const onShare = async (content) => {
+  console.log(content);
+  try {
+    const result = await Share.share(content);
+    console.log(result.activityType);
+    if (result.action === Share.sharedAction) {
+      if (result.activityType.includes("CopyToPasteboard")) {
+        // shared with activity type of result.activityType
+        console.log("COPIED");
+      }
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
 // AWS GraphQL Queries & Mutations
 
 // GET USER PROFILE
@@ -213,7 +231,6 @@ export const getPhrasesByUser = ({ userId: authorId, word }) => {
     filter: { word: { eq: word } },
   };
   if (word) Object.assign(inputFilters, wordFilter);
-  console.log(inputFilters);
   return API.graphql(graphqlOperation(queries.phrasesByUser, inputFilters));
 };
 

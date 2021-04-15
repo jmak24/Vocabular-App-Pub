@@ -48,7 +48,7 @@ export default (state = initialState, action) => {
     case TOGGLE_PHRASE_LIKE: {
       const { phraseId, userId, hasLiked } = action.payload;
       let updatedTopPhrases;
-      if (state.topPhrases.hasOwnProperty(phraseId)) {
+      if (phraseId in state.topPhrases) {
         updatedTopPhrases = {
           ...state.topPhrases,
           [phraseId]: {
@@ -63,7 +63,7 @@ export default (state = initialState, action) => {
       }
 
       let updatedRecentPhrases;
-      if (state.recentPhrases.hasOwnProperty(phraseId)) {
+      if (phraseId in state.recentPhrases) {
         updatedRecentPhrases = {
           ...state.recentPhrases,
           [phraseId]: {
@@ -88,7 +88,7 @@ export default (state = initialState, action) => {
     case TOGGLE_PHRASE_VISIBILITY: {
       const { phraseId } = action.payload;
       let updatedMyPhrases = { ...state.myPhrases };
-      if (updatedMyPhrases.hasOwnProperty(phraseId)) {
+      if (phraseId in updatedMyPhrases) {
         updatedMyPhrases[phraseId].isPublic = !updatedMyPhrases[phraseId]
           .isPublic;
       }

@@ -42,9 +42,6 @@ const WordDetailsScreen = ({ route, navigation }) => {
 
   const [wordDetails, setWordDetails] = useState({});
   const scrollY = useRef(new Animated.Value(0)).current;
-  // const isBookmarked = wordsData.hasOwnProperty(word);
-  // const isArchived =
-  //   wordsData.hasOwnProperty(word) && wordsData[word].archived != null;
   const isBookmarked = wordsBookmarked.includes(word);
   const isArchived = wordsArchivedList.includes(word);
 
@@ -78,9 +75,11 @@ const WordDetailsScreen = ({ route, navigation }) => {
   const loadWordDetails = async (word) => {
     // word details are saved locally
     if (isBookmarked || isArchived) {
-      console.log("Retrieving from saved words...");
-      setWordDetails(wordsData[word]);
-      return;
+      if (word in wordsData) {
+        console.log("Retrieving from saved words...");
+        setWordDetails(wordsData[word]);
+        return;
+      }
     }
     // fetch word details from WordsAPI
     try {

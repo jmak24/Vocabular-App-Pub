@@ -42,7 +42,6 @@ export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
         userId: authedUser.id,
         word,
       });
-      console.log(myPhrasesRes);
       myPhrasesArr = myPhrasesRes.data.phrasesByUser.items;
     }
     const topPhrasesRes = await getPhrasesByLikes({ word });

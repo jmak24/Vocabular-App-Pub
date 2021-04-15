@@ -10,6 +10,7 @@ import OptionButton from "../components/OptionButton";
 import {
   handleLogOut,
   handleLoadUserPhrases,
+  cleanupUserPhrases,
 } from "../store/actions/userProfile";
 import TopNavBar from "../components/TopNavBar";
 import Sizing from "../constants/Sizing";
@@ -33,6 +34,9 @@ const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(handleLoadUserPhrases({ userId: userProfile.id }));
+    return () => {
+      dispatch(cleanupUserPhrases());
+    };
   }, []);
 
   const updateProfileScreen = ({ formType }) => {

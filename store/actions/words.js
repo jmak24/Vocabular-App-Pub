@@ -56,7 +56,7 @@ export const setupInitWordsState = () => async (dispatch) => {
     let wordsArchivedList = [];
 
     const currentYear = new Date().getFullYear();
-    if (!wordsArchived.hasOwnProperty(currentYear)) {
+    if (!currentYear in wordsArchived) {
       wordsArchived[currentYear] = [];
       for (let i = 0; i < 12; i++) {
         wordsArchived[currentYear].push([]);

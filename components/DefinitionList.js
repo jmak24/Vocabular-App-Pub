@@ -48,7 +48,7 @@ const DefinitionList = ({
       if (expanded) multiUpdate = 0;
       setCardsExpanded({ ...cardsExpanded, [speechCategory]: multiUpdate });
     } else {
-      if (cardsExpanded.hasOwnProperty(speechCategory)) {
+      if (speechCategory in cardsExpanded) {
         if (expanded) {
           setCardsExpanded({
             ...cardsExpanded,
@@ -73,7 +73,7 @@ const DefinitionList = ({
   const onPressArrowIcon = (speechCategory) => {
     let command = speechCategory + "-";
     let expanded = cardsExpanded[speechCategory] > 0 ? true : false;
-    if (cardsExpanded.hasOwnProperty(speechCategory)) {
+    if (speechCategory in cardsExpanded) {
       command += expanded ? "collapse" : "expand";
     } else {
       command += "expand";

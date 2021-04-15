@@ -3,12 +3,9 @@ import {
   CLEAR_USER_PROFILE,
   SET_USER_TAG,
   SET_USER_PHRASES,
+  CLEANUP_USER_PHRASES,
 } from "../actions/userProfile";
-import {
-  TOGGLE_PHRASE_VISIBILITY,
-  REMOVE_PHRASE,
-  CLEANUP_PHRASES,
-} from "../actions/phrases";
+import { TOGGLE_PHRASE_VISIBILITY, REMOVE_PHRASE } from "../actions/phrases";
 import { omitProp } from "../../utils/helper";
 
 export default (state = {}, action) => {
@@ -27,7 +24,7 @@ export default (state = {}, action) => {
     case TOGGLE_PHRASE_VISIBILITY: {
       const { phraseId } = action.payload;
       let updatedPhrases = { ...state.phrases };
-      if (updatedPhrases.hasOwnProperty(phraseId)) {
+      if (phraseId in updatedPhrases) {
         updatedPhrases[phraseId].isPublic = !updatedPhrases[phraseId].isPublic;
       }
       return {
@@ -43,7 +40,7 @@ export default (state = {}, action) => {
         phrases: updatedPhrases,
       };
     }
-    case CLEANUP_PHRASES: {
+    case CLEANUP_USER_PHRASES: {
       return {
         ...state,
         phrases: null,

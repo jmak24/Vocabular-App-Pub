@@ -2,6 +2,7 @@ export const SET_USER_PROFILE = "SET_USER_PROFILE";
 export const CLEAR_USER_PROFILE = "CLEAR_USER_PROFILE";
 export const SET_USER_TAG = "SET_USER_TAG";
 export const SET_USER_PHRASES = "SET_USER_PHRASES";
+export const CLEANUP_USER_PHRASES = "CLEANUP_USER_PHRASES";
 
 import { Auth } from "@aws-amplify/auth";
 
@@ -39,6 +40,12 @@ export const setUserTag = (userTag) => {
   return {
     type: SET_USER_TAG,
     payload: { userTag },
+  };
+};
+
+export const cleanupUserPhrases = () => {
+  return {
+    type: CLEANUP_USER_PHRASES,
   };
 };
 

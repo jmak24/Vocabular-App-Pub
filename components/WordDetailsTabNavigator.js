@@ -64,7 +64,6 @@ const TabBar = ({
 
         const onTabPress = () => {
           expandHeader(routeIndex);
-          // syncScrollOffset(routeIndex);
 
           const event = navigation.emit({
             type: "tabPress",
@@ -112,15 +111,10 @@ const WordDetailsTabNavigator = ({
   scrollY,
 }) => {
   const listRefArr = useRef([]).current;
-  // const listHeightArr = useRef([]).current;
 
   const setListRefArr = (routeIndex, ref) => {
     listRefArr[routeIndex] = ref;
   };
-
-  // const setListHeightArr = (routeIndex, contentHeight) => {
-  //   listHeightArr[routeIndex] = contentHeight;
-  // };
 
   const expandHeader = (routeIndex) => {
     const curRouteIndex = routeIndex === 0 ? 1 : 0;

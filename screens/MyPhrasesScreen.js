@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   View,
   Dimensions,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   StyleSheet,
   FlatList,
 } from "react-native";
@@ -23,6 +23,12 @@ const MyPhrasesScreen = ({ navigation }) => {
   const { userProfile } = useSelector((state) => state);
   const phraseData = userProfile.phrases;
 
+  const selectWordHandler = (word) => {
+    navigation.push("WordDetails", {
+      word,
+    });
+  };
+
   return (
     <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
       <TopNavBar navigation={navigation} title={"My Phrases"} />
@@ -37,9 +43,13 @@ const MyPhrasesScreen = ({ navigation }) => {
             return (
               <Fragment>
                 <View style={styles.phraseInfo}>
-                  <CustomText style={styles.phraseWord} option='midGray'>
-                    {phraseDetails.word}
-                  </CustomText>
+                  <TouchableOpacity
+                    onPress={() => selectWordHandler(phraseDetails.word)}
+                  >
+                    <CustomText style={styles.phraseWord} option='midGray'>
+                      {phraseDetails.word}
+                    </CustomText>
+                  </TouchableOpacity>
                   <CustomText option='body'>
                     {dateCreated.toLocaleDateString()}
                   </CustomText>
