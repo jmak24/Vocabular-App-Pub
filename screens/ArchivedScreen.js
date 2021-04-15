@@ -7,6 +7,7 @@ import {
   Dimensions,
   StyleSheet,
   Animated,
+  SafeAreaView,
 } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import PropTypes from "prop-types";
@@ -121,93 +122,95 @@ const ArchivedScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.screen}>
-      <View onLayout={(e) => initContainerHeight(e)}>
-        <View style={{ alignSelf: "flex-start" }}>
-          <ModalSelector
-            data={getYearsForSelector()}
-            initValue={today.getFullYear().toString()}
-            supportedOrientations={["portrait"]}
-            animationType='fade'
-            accessible={true}
-            scrollViewAccessibilityLabel={"Scrollable options"}
-            cancelButtonAccessible={true}
-            cancelButtonAccessibilityLabel={"Cancel Button"}
-            onChange={(option) => setYearSelected(option.label)}
-          >
-            <View style={styles.yearSelector}>
-              <CustomText option='large'>{yearSelected}</CustomText>
-              <Ionicons
-                name='ios-caret-down'
-                size={22}
-                style={styles.icon}
-                color='#dbdbdb'
-              />
-            </View>
-          </ModalSelector>
-        </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        <View onLayout={(e) => initContainerHeight(e)}>
+          <View style={{ alignSelf: "flex-start" }}>
+            <ModalSelector
+              data={getYearsForSelector()}
+              initValue={today.getFullYear().toString()}
+              supportedOrientations={["portrait"]}
+              animationType='fade'
+              accessible={true}
+              scrollViewAccessibilityLabel={"Scrollable options"}
+              cancelButtonAccessible={true}
+              cancelButtonAccessibilityLabel={"Cancel Button"}
+              onChange={(option) => setYearSelected(option.label)}
+            >
+              <View style={styles.yearSelector}>
+                <CustomText option='large'>{yearSelected}</CustomText>
+                <Ionicons
+                  name='ios-caret-down'
+                  size={22}
+                  style={styles.icon}
+                  color='#dbdbdb'
+                />
+              </View>
+            </ModalSelector>
+          </View>
 
-        <View style={styles.monthsContainer}>
-          <MonthsContainer
-            monthSelected={monthSelected}
-            setMonthSelected={setMonthSelected}
-          />
-        </View>
-      </View>
-      <View style={{ position: "relative", width: "100%", height: "100%" }}>
-        <Animated.View
-          style={{ top: animatedList, ...styles.animatedContainer }}
-        >
-          <View style={styles.listContainer}>
-            <View style={styles.filterBarContainer}>
-              <FilterBar
-                handleFilterSearch={handleFilterSearch}
-                clearWordsList={clearWordsList}
-                isFilterMode={isFilterMode}
-                toggleFilterMode={toggleFilterMode}
-                forwardRefCancelFilter={setCancelFilterRef}
-              />
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      translateX: animatedCancelBtn.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [100, 0],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                {isFilterMode && (
-                  <TouchableOpacity onPress={cancelFilterMode}>
-                    <CustomText style={styles.cancelBtn} option='thin'>
-                      Cancel
-                    </CustomText>
-                  </TouchableOpacity>
-                )}
-              </Animated.View>
-            </View>
-            <FlatList
-              data={wordsList}
-              style={styles.list}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    key={item}
-                    style={styles.listWord}
-                    onPress={() => selectWordHandler(item)}
-                  >
-                    <CustomText option='subLarge'>{item}</CustomText>
-                  </TouchableOpacity>
-                );
-              }}
+          <View style={styles.monthsContainer}>
+            <MonthsContainer
+              monthSelected={monthSelected}
+              setMonthSelected={setMonthSelected}
             />
           </View>
-        </Animated.View>
+        </View>
+        <View style={{ position: "relative", width: "100%", height: "100%" }}>
+          <Animated.View
+            style={{ top: animatedList, ...styles.animatedContainer }}
+          >
+            <View style={styles.listContainer}>
+              <View style={styles.filterBarContainer}>
+                <FilterBar
+                  handleFilterSearch={handleFilterSearch}
+                  clearWordsList={clearWordsList}
+                  isFilterMode={isFilterMode}
+                  toggleFilterMode={toggleFilterMode}
+                  forwardRefCancelFilter={setCancelFilterRef}
+                />
+                <Animated.View
+                  style={{
+                    transform: [
+                      {
+                        translateX: animatedCancelBtn.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [100, 0],
+                        }),
+                      },
+                    ],
+                  }}
+                >
+                  {isFilterMode && (
+                    <TouchableOpacity onPress={cancelFilterMode}>
+                      <CustomText style={styles.cancelBtn} option='thin'>
+                        Cancel
+                      </CustomText>
+                    </TouchableOpacity>
+                  )}
+                </Animated.View>
+              </View>
+              <FlatList
+                data={wordsList}
+                style={styles.list}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                      key={item}
+                      style={styles.listWord}
+                      onPress={() => selectWordHandler(item)}
+                    >
+                      <CustomText option='subLarge'>{item}</CustomText>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
+          </Animated.View>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -216,11 +219,19 @@ ArchivedScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  // screen: {
+  //   flex: 1,
+  //   alignItems: "flex-start",
+  //   paddingVertical: 50,
+  //   backgroundColor: Colors.grayTint,
+  // },
+  safeArea: {
     flex: 1,
-    alignItems: "flex-start",
-    paddingVertical: 50,
     backgroundColor: Colors.grayTint,
+  },
+  screen: {
+    alignItems: "flex-start",
+    // paddingHorizontal: 20,
   },
   yearSelector: {
     marginVertical: 20,

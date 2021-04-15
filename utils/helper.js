@@ -1,13 +1,13 @@
 import "react-native-get-random-values";
-import { nanoid } from "nanoid/async/index.native";
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
-import { API, Auth, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "../amplify/graphql/mutations";
 import * as queries from "../amplify/graphql/queries";
 import { Share } from "react-native";
 
 import { SPEECH_TYPES } from "../constants/OrderedItems";
+import { setToast } from "../store/actions/toasts";
 
 const wordsAPIurl = "https://wordsapiv1.p.rapidapi.com";
 const rapidapiHost = "wordsapiv1.p.rapidapi.com";
@@ -15,11 +15,6 @@ const rapidapiKey = "003083cb60mshf221133e954e641p19ce9bjsnf315a270c0e0";
 
 const dataMuseAPIurl = "https://api.datamuse.com";
 const suggestedQuery = "/sug?s=";
-
-// Generate UUID
-export const generateUUID = async () => {
-  return await nanoid();
-};
 
 // Native method to remove prop from object
 export const omitProp = (
@@ -120,19 +115,18 @@ export const prepareForWordDetails = (word) => {
 };
 
 // Share function
-export const onShare = async (content) => {
-  console.log(content);
+export const onShare = (content) => async (dispatch) => {
   try {
     const result = await Share.share(content);
-    console.log(result.activityType);
     if (result.action === Share.sharedAction) {
       if (result.activityType.includes("CopyToPasteboard")) {
-        // shared with activity type of result.activityType
-        console.log("COPIED");
+        dispatch(
+          setToast("toastInfo", "Copied to Clipboard", "ios-copy-sharp")
+        );
       }
     }
   } catch (error) {
-    alert(error.message);
+    dispatch(setToast("toastError", error.message, "ios-close-circle"));
   }
 };
 

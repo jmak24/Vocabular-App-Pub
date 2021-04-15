@@ -17,21 +17,13 @@ import CustomText from "./CustomText";
 const Tab = createMaterialTopTabNavigator();
 const HeaderHeight = 131;
 
-const TabBar = ({
-  state,
-  descriptors,
-  navigation,
-  scrollY,
-  syncScrollOffset,
-  expandHeader,
-}) => {
+const TabBar = ({ state, descriptors, navigation, scrollY, expandHeader }) => {
   const animatedTabBarY = scrollY.interpolate({
     inputRange: [0, HeaderHeight],
     outputRange: [HeaderHeight, 0],
     extrapolate: "clamp",
   });
   const animateTabX = useRef(new Animated.Value(0)).current;
-
   const totalWidth = Dimensions.get("window").width;
   const tabWidth = totalWidth / state.routes.length;
 
@@ -121,41 +113,13 @@ const WordDetailsTabNavigator = ({
     listRefArr[curRouteIndex].scrollTo({ x: 0, y: 0, animated: true });
   };
 
-  // On tab switch - possibly remove sync offset and keep expand header by default
-  const syncScrollOffset = (routeIndex) => {
-    if (listRefArr[routeIndex]) {
-      if (scrollY._value >= 0 && scrollY._value < HeaderHeight) {
-        // if Header not fully collapsed, scroll to current offset
-        listRefArr[routeIndex].scrollTo({
-          x: 0,
-          y: scrollY._value,
-          animated: false,
-        });
-        // console.log("1: scrolledTo:", scrollY._value);
-      } else {
-        // if Header full collapsed, scroll to Header height
-        listRefArr[routeIndex].scrollTo({
-          x: 0,
-          y: HeaderHeight,
-          animated: false,
-        });
-        // console.log("2: scrolledTo:", HeaderHeight);
-      }
-    }
-  };
-
   return (
     <Tab.Navigator
       initialRouteName='Definitions'
       lazy={true}
       swipeEnabled={false}
       tabBar={(props) => (
-        <TabBar
-          {...props}
-          scrollY={scrollY}
-          syncScrollOffset={syncScrollOffset}
-          expandHeader={expandHeader}
-        />
+        <TabBar {...props} scrollY={scrollY} expandHeader={expandHeader} />
       )}
     >
       <Tab.Screen

@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { setToast } from "../store/actions/toasts";
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
-import LogoIcon from "../assets/bookmark-img.png";
+import LogoIcon from "../assets/Vocabular.png";
 
 import { Auth } from "@aws-amplify/auth";
 

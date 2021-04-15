@@ -1,10 +1,17 @@
 import React, { useRef, useEffect } from "react";
-import { View, StyleSheet, Animated, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import CustomText from "./CustomText";
+import DynamicText from "./DynamicText";
 import Colors from "../constants/Colors";
 import {
   toggleArchive,
@@ -12,6 +19,9 @@ import {
   removeWord,
 } from "../store/actions/words";
 import { setToast } from "../store/actions/toasts";
+
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 const WordDetailsHeader = ({
   wordDetails,
@@ -66,9 +76,9 @@ const WordDetailsHeader = ({
       ]}
     >
       <View>
-        <CustomText style={styles.wordTitle} option='large'>
+        <DynamicText style={styles.wordTitle} fontSize={40}>
           {wordDetails.word}
-        </CustomText>
+        </DynamicText>
       </View>
       <View style={styles.topContainer}>
         <View>
@@ -91,7 +101,6 @@ const WordDetailsHeader = ({
           {isArchived ? (
             <TouchableOpacity onPress={removePressed}>
               <Ionicons
-                // name={"ios-close-circle-outline"}
                 name={"ios-remove-circle-outline"}
                 size={32}
                 style={{ ...styles.icon, marginRight: 8 }}

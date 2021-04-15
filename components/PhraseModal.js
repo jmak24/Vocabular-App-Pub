@@ -15,9 +15,6 @@ import { TextInput } from "react-native-gesture-handler";
 import { setToast } from "../store/actions/toasts";
 import { handlePostPhrase } from "../store/actions/phrases";
 
-// const CollapsedHeight = 60;
-// const ExpandedHeight = 160;
-
 const PhraseModal = ({ toggleModal, modalVisible, word }) => {
   const dispatch = useDispatch();
   const [isPublic, setIsPublic] = useState(true);

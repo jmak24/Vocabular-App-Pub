@@ -1,4 +1,9 @@
-import { generateUUID } from "../../utils/helper";
+import { nanoid } from "nanoid/async/index.native";
+
+// Generate UUID
+export const generateUUID = async () => {
+  return await nanoid();
+};
 
 export const SET_TOAST = "SET_TOAST";
 export const REMOVE_TOAST = "REMOVE_TOAST";

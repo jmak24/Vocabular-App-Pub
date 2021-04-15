@@ -27,7 +27,9 @@ const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
       <CustomText option='body'>"{phrase}"</CustomText>
       <View style={styles.bottomSection}>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={() => onShare({ message: phrase })}>
+          <TouchableOpacity
+            onPress={() => dispatch(onShare({ message: phrase }))}
+          >
             <Ionicons
               name={"ios-arrow-redo-outline"}
               size={25}

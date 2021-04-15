@@ -8,6 +8,7 @@ import {
   Dimensions,
   StyleSheet,
   Image,
+  SafeAreaView,
 } from "react-native";
 import PropTypes from "prop-types";
 import { Ionicons } from "@expo/vector-icons";
@@ -48,39 +49,41 @@ const HomeScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.topBarContainer}>
-        <TouchableWithoutFeedback onPress={onPressSettings}>
-          <Ionicons
-            name={"ios-settings-sharp"}
-            size={32}
-            color={Colors.iconGray}
-          />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={onPressLogin}>
-          <Ionicons
-            name={"ios-person-outline"}
-            size={32}
-            color={Colors.iconGray}
-          />
-        </TouchableWithoutFeedback>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        <View style={styles.topBarContainer}>
+          <TouchableWithoutFeedback onPress={onPressSettings}>
+            <Ionicons
+              name={"ios-settings-sharp"}
+              size={32}
+              color={Colors.iconGray}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={onPressLogin}>
+            <Ionicons
+              name={"ios-person-outline"}
+              size={32}
+              color={Colors.iconGray}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+        <FlatList
+          data={wordsBookmarked}
+          style={styles.list}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                style={styles.listWord}
+                onPress={() => selectWordHandler(item)}
+              >
+                <CustomText option={"subLarge"}>{item}</CustomText>
+              </TouchableOpacity>
+            );
+          }}
+        />
       </View>
-      <FlatList
-        data={wordsBookmarked}
-        style={styles.list}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              style={styles.listWord}
-              onPress={() => selectWordHandler(item)}
-            >
-              <CustomText option={"subLarge"}>{item}</CustomText>
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -89,12 +92,13 @@ HomeScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  safeArea: {
     flex: 1,
-    alignItems: "flex-start",
-    paddingTop: 50,
-    paddingHorizontal: 20,
     backgroundColor: Colors.background,
+  },
+  screen: {
+    alignItems: "flex-start",
+    paddingHorizontal: 20,
   },
   centerContent: {
     alignItems: "center",
