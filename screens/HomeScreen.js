@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   screen: {
+    flex: 1,
     alignItems: "flex-start",
     paddingHorizontal: 20,
   },

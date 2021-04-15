@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Animated,
+  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -110,6 +111,7 @@ const WordDetailsScreen = ({ route, navigation }) => {
             flex: 1,
             width: "100%",
             height: "100%",
+            marginTop: Sizing.topNavBarHeight,
             backgroundColor: Colors.grayTint,
           }}
         >
@@ -136,30 +138,32 @@ const WordDetailsScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
-      <View
-        style={{
-          ...styles.topStrip,
-          height: 95,
-          paddingTop: 50,
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <Ionicons
-            name={"ios-arrow-back"}
-            size={32}
-            style={{ ...styles.backArrow, top: 50 }}
-            color={Colors.iconGray}
-          />
-        </TouchableWithoutFeedback>
-        <Animated.View
-          style={{ marginTop: animatedTopTitle, opacity: animatedOpacity }}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        <View
+          style={{
+            ...styles.topStrip,
+            height: Sizing.topNavBarHeight,
+            paddingTop: 0,
+          }}
         >
-          <CustomText option='mid'>{word}</CustomText>
-        </Animated.View>
+          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+            <Ionicons
+              name={"ios-arrow-back"}
+              size={32}
+              style={{ ...styles.backArrow, top: 0 }}
+              color={Colors.iconGray}
+            />
+          </TouchableWithoutFeedback>
+          <Animated.View
+            style={{ marginTop: animatedTopTitle, opacity: animatedOpacity }}
+          >
+            <CustomText option='mid'>{word}</CustomText>
+          </Animated.View>
+        </View>
+        {mainSection()}
       </View>
-      {mainSection()}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -168,10 +172,19 @@ WordDetailsScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  // screen: {
+  //   flex: 1,
+  //   alignItems: "flex-start",
+  //   backgroundColor: Colors.grayTint,
+  // },
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.grayTint,
+  },
   screen: {
     flex: 1,
     alignItems: "flex-start",
-    backgroundColor: Colors.grayTint,
+    overflow: "hidden",
   },
   topStrip: {
     position: "absolute",

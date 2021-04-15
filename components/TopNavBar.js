@@ -10,7 +10,6 @@ import PropTypes from "prop-types";
 
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
-import Sizing from "../constants/Sizing";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -21,15 +20,13 @@ const TopNavBar = ({ title, navigation }) => {
       <View
         style={{
           ...styles.topStrip,
-          height: Sizing.topNavBarHeight,
-          paddingTop: 50,
         }}
       >
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Ionicons
             name={"ios-arrow-back"}
             size={32}
-            style={{ ...styles.backArrow, top: 50 }}
+            style={{ ...styles.backArrow }}
             color={Colors.iconGray}
           />
         </TouchableWithoutFeedback>
@@ -49,6 +46,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.grayTint,
     zIndex: 200,
+    paddingTop: 4,
+    paddingBottom: 15,
   },
   backArrow: {
     position: "absolute",

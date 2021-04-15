@@ -219,19 +219,13 @@ ArchivedScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  // screen: {
-  //   flex: 1,
-  //   alignItems: "flex-start",
-  //   paddingVertical: 50,
-  //   backgroundColor: Colors.grayTint,
-  // },
   safeArea: {
     flex: 1,
     backgroundColor: Colors.grayTint,
   },
   screen: {
+    flex: 1,
     alignItems: "flex-start",
-    // paddingHorizontal: 20,
   },
   yearSelector: {
     marginVertical: 20,

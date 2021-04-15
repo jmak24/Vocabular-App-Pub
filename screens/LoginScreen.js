@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -128,197 +129,202 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.screen}>
-      {formState.formType === "signUp" && (
-        <Fragment>
-          <View style={styles.headerSection}>
-            <Image style={styles.logo} source={LogoIcon} />
-            <CustomText style={styles.header} option='thin'>
-              Welcome
-            </CustomText>
-            <CustomText style={styles.subHeader} option='mid'>
-              Sign up to use Vocabular
-            </CustomText>
-          </View>
-          <View style={styles.mainSection}>
-            <View style={styles.fieldInput}>
-              <Ionicons
-                name={"ios-person-outline"}
-                size={26}
-                style={styles.icon}
-                color={Colors.iconLightGray}
-              />
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "userTag")}
-                placeholder='Username'
-                value={formState.userTag}
-              />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        {formState.formType === "signUp" && (
+          <Fragment>
+            <View style={styles.headerSection}>
+              <Image style={styles.logo} source={LogoIcon} />
+              <CustomText style={styles.header} option='thin'>
+                Welcome
+              </CustomText>
+              <CustomText style={styles.subHeader} option='mid'>
+                Sign up to use Vocabular
+              </CustomText>
+            </View>
+            <View style={styles.mainSection}>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-person-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "userTag")}
+                  placeholder='Username'
+                  value={formState.userTag}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-mail-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "email")}
+                  placeholder='Email address'
+                  value={formState.email}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-lock-closed-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "password")}
+                  placeholder='Password'
+                  secureTextEntry={true}
+                  value={formState.password}
+                />
+              </View>
+              <View
+                style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+              >
+                <TouchableOpacity onPress={signUp}>
+                  <CustomText option='mid' style={{ color: "#fff" }}>
+                    Sign Up
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <CustomText option='bodyGray'>
+                  Already have an account?
+                </CustomText>
+                <TouchableOpacity onPress={() => updateFormType("signIn")}>
+                  <CustomText option='body' style={styles.signUpOrSignIn}>
+                    Sign In
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Fragment>
+        )}
+        {formState.formType === "confirmSignUp" && (
+          <Fragment>
+            <View style={styles.headerSection}>
+              <Image style={styles.logo} source={LogoIcon} />
+              <CustomText style={styles.header} option='thin'>
+                Verify Email
+              </CustomText>
+              <CustomText style={styles.subHeader} option='mid'>
+                Please input the verification code sent to your email. Your
+                email is only used to recover your password.
+              </CustomText>
             </View>
             <View style={styles.fieldInput}>
               <Ionicons
-                name={"ios-mail-outline"}
+                name={"ios-checkmark-circle"}
                 size={26}
                 style={styles.icon}
                 color={Colors.iconLightGray}
               />
               <TextInput
                 style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "email")}
-                placeholder='Email address'
-                value={formState.email}
-              />
-            </View>
-            <View style={styles.fieldInput}>
-              <Ionicons
-                name={"ios-lock-closed-outline"}
-                size={26}
-                style={styles.icon}
-                color={Colors.iconLightGray}
-              />
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "password")}
-                placeholder='Password'
-                secureTextEntry={true}
-                value={formState.password}
+                onChange={(event) => handleSetFieldInput(event, "authCode")}
+                value={formState.authCode}
+                placeholder='Verification Code'
+                keyboardType='numeric'
               />
             </View>
             <View
               style={[styles.button, !submitEnabled && styles.buttonDisabled]}
             >
-              <TouchableOpacity onPress={signUp}>
+              <TouchableOpacity onPress={confirmSignUp}>
                 <CustomText option='mid' style={{ color: "#fff" }}>
-                  Sign Up
+                  Confirm Sign Up
                 </CustomText>
               </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <CustomText option='bodyGray'>
-                Already have an account?
+          </Fragment>
+        )}
+        {formState.formType === "signIn" && (
+          <Fragment>
+            <View style={styles.headerSection}>
+              <Image style={styles.logo} source={LogoIcon} />
+              <CustomText style={styles.header} option='thin'>
+                Welcome Back
               </CustomText>
-              <TouchableOpacity onPress={() => updateFormType("signIn")}>
-                <CustomText option='body' style={styles.signUpOrSignIn}>
-                  Sign In
-                </CustomText>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Fragment>
-      )}
-      {formState.formType === "confirmSignUp" && (
-        <Fragment>
-          <View style={styles.headerSection}>
-            <Image style={styles.logo} source={LogoIcon} />
-            <CustomText style={styles.header} option='thin'>
-              Verify Email
-            </CustomText>
-            <CustomText style={styles.subHeader} option='mid'>
-              Please input the verification code sent to your email. Your email
-              is only used to recover your password.
-            </CustomText>
-          </View>
-          <View style={styles.fieldInput}>
-            <Ionicons
-              name={"ios-checkmark-circle"}
-              size={26}
-              style={styles.icon}
-              color={Colors.iconLightGray}
-            />
-            <TextInput
-              style={styles.textInput}
-              onChange={(event) => handleSetFieldInput(event, "authCode")}
-              value={formState.authCode}
-              placeholder='Verification Code'
-              keyboardType='numeric'
-            />
-          </View>
-          <View
-            style={[styles.button, !submitEnabled && styles.buttonDisabled]}
-          >
-            <TouchableOpacity onPress={confirmSignUp}>
-              <CustomText option='mid' style={{ color: "#fff" }}>
-                Confirm Sign Up
+              <CustomText style={styles.subHeader} option='mid'>
+                Sign in to Vocabular
               </CustomText>
-            </TouchableOpacity>
-          </View>
-        </Fragment>
-      )}
-      {formState.formType === "signIn" && (
-        <Fragment>
-          <View style={styles.headerSection}>
-            <Image style={styles.logo} source={LogoIcon} />
-            <CustomText style={styles.header} option='thin'>
-              Welcome Back
-            </CustomText>
-            <CustomText style={styles.subHeader} option='mid'>
-              Sign in to Vocabular
-            </CustomText>
-          </View>
-          <View style={styles.mainSection}>
-            <View style={styles.fieldInput}>
-              <Ionicons
-                name={"ios-mail-outline"}
-                size={26}
-                style={styles.icon}
-                color={Colors.iconLightGray}
-              />
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "email")}
-                placeholder='Email address'
-                value={formState.email}
-              />
             </View>
-            <View style={styles.fieldInput}>
-              <Ionicons
-                name={"ios-lock-closed-outline"}
-                size={26}
-                style={styles.icon}
-                color={Colors.iconLightGray}
-              />
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "password")}
-                placeholder='Password'
-                secureTextEntry={true}
-                value={formState.password}
-              />
-            </View>
-            <View
-              style={[styles.button, !submitEnabled && styles.buttonDisabled]}
-            >
-              <TouchableOpacity onPress={signIn}>
-                <CustomText option='mid' style={{ color: "#fff" }}>
-                  Sign In
+            <View style={styles.mainSection}>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-mail-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "email")}
+                  placeholder='Email address'
+                  value={formState.email}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-lock-closed-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "password")}
+                  placeholder='Password'
+                  secureTextEntry={true}
+                  value={formState.password}
+                />
+              </View>
+              <View
+                style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+              >
+                <TouchableOpacity onPress={signIn}>
+                  <CustomText option='mid' style={{ color: "#fff" }}>
+                    Sign In
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <CustomText option='bodyGray'>
+                  Don't have an account yet?
                 </CustomText>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => updateFormType("signUp")}>
+                  <CustomText option='body' style={styles.signUpOrSignIn}>
+                    Sign Up
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <CustomText option='bodyGray'>
-                Don't have an account yet?
-              </CustomText>
-              <TouchableOpacity onPress={() => updateFormType("signUp")}>
-                <CustomText option='body' style={styles.signUpOrSignIn}>
-                  Sign Up
-                </CustomText>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Fragment>
-      )}
-    </View>
+          </Fragment>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 LoginScreen.propTypes = {};
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
   screen: {
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 25,
-    backgroundColor: Colors.background,
   },
   logo: {
     resizeMode: "contain",

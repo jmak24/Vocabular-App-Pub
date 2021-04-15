@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Dimensions, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
@@ -65,76 +71,80 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
-      <TopNavBar navigation={navigation} title={"My Profile"} />
-      {FETCH_PHRASES.loading ? (
-        <Loading />
-      ) : (
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.profileCard}>
-            <CustomText
-              option='subLarge'
-              style={{ color: Colors.primaryTheme }}
-            >
-              {userTag}
-            </CustomText>
-            <CustomText option='bodyGray'>{email}</CustomText>
-            <View style={styles.profileStats}>
-              <View style={styles.stat}>
-                <Ionicons
-                  name={"ios-bookmark-outline"}
-                  size={26}
-                  style={{ ...styles.icon, paddingRight: 10 }}
-                  color={"#496a80"}
-                />
-                <CustomText option='subLarge'>{numBookmarkedWords}</CustomText>
-              </View>
-              <View style={styles.stat}>
-                <Ionicons
-                  name={"ios-archive-outline"}
-                  size={26}
-                  style={{ ...styles.icon, paddingRight: 10 }}
-                  color={"#496a80"}
-                />
-                <CustomText option='subLarge'>{numArchivedWords}</CustomText>
-              </View>
-              <View style={styles.stat}>
-                <Ionicons
-                  name={"ios-chatbubble-ellipses-outline"}
-                  size={26}
-                  style={{ ...styles.icon, paddingRight: 10 }}
-                  color={"#496a80"}
-                />
-                <CustomText option='subLarge'>{numPhrases}</CustomText>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        <TopNavBar navigation={navigation} title={"My Profile"} />
+        {FETCH_PHRASES.loading ? (
+          <Loading />
+        ) : (
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.profileCard}>
+              <CustomText
+                option='subLarge'
+                style={{ color: Colors.primaryTheme }}
+              >
+                {userTag}
+              </CustomText>
+              <CustomText option='bodyGray'>{email}</CustomText>
+              <View style={styles.profileStats}>
+                <View style={styles.stat}>
+                  <Ionicons
+                    name={"ios-bookmark-outline"}
+                    size={26}
+                    style={{ ...styles.icon, paddingRight: 10 }}
+                    color={"#496a80"}
+                  />
+                  <CustomText option='subLarge'>
+                    {numBookmarkedWords}
+                  </CustomText>
+                </View>
+                <View style={styles.stat}>
+                  <Ionicons
+                    name={"ios-archive-outline"}
+                    size={26}
+                    style={{ ...styles.icon, paddingRight: 10 }}
+                    color={"#496a80"}
+                  />
+                  <CustomText option='subLarge'>{numArchivedWords}</CustomText>
+                </View>
+                <View style={styles.stat}>
+                  <Ionicons
+                    name={"ios-chatbubble-ellipses-outline"}
+                    size={26}
+                    style={{ ...styles.icon, paddingRight: 10 }}
+                    color={"#496a80"}
+                  />
+                  <CustomText option='subLarge'>{numPhrases}</CustomText>
+                </View>
               </View>
             </View>
-          </View>
-          <CustomText style={styles.optionTitle} option='mid'>
-            Account
-          </CustomText>
-          <OptionButton
-            icon={"ios-chatbubble-ellipses-outline"}
-            title={"My Phrases"}
-            onPress={selectMyPhrases}
-          />
-          <OptionButton
-            icon={"ios-at"}
-            title={"Change Username"}
-            onPress={changeUsernameSelected}
-          />
-          <OptionButton
-            icon={"ios-lock-closed-outline"}
-            title={"Change Password"}
-            onPress={changePasswordSelected}
-          />
-          <OptionButton
-            icon={"ios-log-out-outline"}
-            title={"Log out"}
-            onPress={logOutSelected}
-          />
-        </ScrollView>
-      )}
-    </View>
+            <CustomText style={styles.optionTitle} option='mid'>
+              Account
+            </CustomText>
+            <OptionButton
+              icon={"ios-chatbubble-ellipses-outline"}
+              title={"My Phrases"}
+              onPress={selectMyPhrases}
+            />
+            <OptionButton
+              icon={"ios-at"}
+              title={"Change Username"}
+              onPress={changeUsernameSelected}
+            />
+            <OptionButton
+              icon={"ios-lock-closed-outline"}
+              title={"Change Password"}
+              onPress={changePasswordSelected}
+            />
+            <OptionButton
+              icon={"ios-log-out-outline"}
+              title={"Log out"}
+              onPress={logOutSelected}
+            />
+          </ScrollView>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -143,15 +153,19 @@ ProfileScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.grayTint,
+  },
   screen: {
     flex: 1,
-    alignItems: "flex-start",
-    backgroundColor: Colors.grayTint,
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: Sizing.topNavBarHeight,
   },
   scrollView: {
     width: "100%",
-    paddingHorizontal: 20,
-    paddingTop: 25,
+    paddingTop: 10,
   },
   profileCard: {
     justifyContent: "center",

@@ -1,6 +1,11 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Auth } from "@aws-amplify/auth";
 
@@ -109,87 +114,97 @@ const UpdateProfileScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
-      <TopNavBar navigation={navigation} title={screenTitle()} />
-      <View style={styles.mainSection}>
-        {formType === "changePassword" && (
-          <Fragment>
-            <View style={styles.fieldInput}>
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) =>
-                  handleSetFieldInput(event, "currentPassword")
-                }
-                placeholder='Current Password'
-                value={currentPassword}
-                secureTextEntry={true}
-              />
-            </View>
-            <View style={styles.fieldInput}>
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "newPassword")}
-                placeholder='New Password'
-                value={newPassword}
-                secureTextEntry={true}
-              />
-            </View>
-            <View style={styles.fieldInput}>
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) =>
-                  handleSetFieldInput(event, "confirmNewPassword")
-                }
-                placeholder='Confirm New Password'
-                secureTextEntry={true}
-                value={confirmNewPassword}
-                secureTextEntry={true}
-              />
-            </View>
-          </Fragment>
-        )}
-        {formType === "changeUserTag" && (
-          <Fragment>
-            <View style={styles.fieldInput}>
-              <TextInput
-                style={styles.textInput}
-                editable={false}
-                value={userTag}
-              />
-            </View>
-            <View style={styles.fieldInput}>
-              <TextInput
-                style={styles.textInput}
-                onChange={(event) => handleSetFieldInput(event, "newUserTag")}
-                placeholder='New Username'
-                value={newUserTag}
-              />
-            </View>
-          </Fragment>
-        )}
-        <View style={[styles.button, !submitEnabled && styles.buttonDisabled]}>
-          <TouchableOpacity
-            onPress={handleSaveChanges}
-            disabled={!submitEnabled}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        <TopNavBar navigation={navigation} title={screenTitle()} />
+        <View style={styles.mainSection}>
+          {formType === "changePassword" && (
+            <Fragment>
+              <View style={styles.fieldInput}>
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) =>
+                    handleSetFieldInput(event, "currentPassword")
+                  }
+                  placeholder='Current Password'
+                  value={currentPassword}
+                  secureTextEntry={true}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) =>
+                    handleSetFieldInput(event, "newPassword")
+                  }
+                  placeholder='New Password'
+                  value={newPassword}
+                  secureTextEntry={true}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) =>
+                    handleSetFieldInput(event, "confirmNewPassword")
+                  }
+                  placeholder='Confirm New Password'
+                  secureTextEntry={true}
+                  value={confirmNewPassword}
+                  secureTextEntry={true}
+                />
+              </View>
+            </Fragment>
+          )}
+          {formType === "changeUserTag" && (
+            <Fragment>
+              <View style={styles.fieldInput}>
+                <TextInput
+                  style={styles.textInput}
+                  editable={false}
+                  value={userTag}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "newUserTag")}
+                  placeholder='New Username'
+                  value={newUserTag}
+                />
+              </View>
+            </Fragment>
+          )}
+          <View
+            style={[styles.button, !submitEnabled && styles.buttonDisabled]}
           >
-            <CustomText option='mid' style={{ color: "#fff" }}>
-              Save Changes
-            </CustomText>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSaveChanges}
+              disabled={!submitEnabled}
+            >
+              <CustomText option='mid' style={{ color: "#fff" }}>
+                Save Changes
+              </CustomText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 UpdateProfileScreen.propTypes = {};
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.grayTint,
+  },
   screen: {
     flex: 1,
     alignItems: "center",
-    paddingHorizontal: 30,
-    backgroundColor: Colors.grayTint,
+    paddingHorizontal: 20,
+    paddingTop: Sizing.topNavBarHeight,
   },
   fieldInput: {
     flexDirection: "row",

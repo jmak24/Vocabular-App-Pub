@@ -1,6 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { View, Dimensions, StyleSheet, ScrollView, Alert } from "react-native";
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  SafeAreaView,
+} from "react-native";
 import PropTypes from "prop-types";
 
 import CustomText from "../components/CustomText";
@@ -16,7 +23,7 @@ import {
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
-const SettingsScreen = ({ route, navigation }) => {
+const SettingsScreen = ({ navigation }) => {
   const { userProfile: authedUser } = useSelector((state) => state);
 
   const selectMyProfile = () => {
@@ -46,42 +53,44 @@ const SettingsScreen = ({ route, navigation }) => {
     ]);
 
   return (
-    <View style={{ ...styles.screen, paddingTop: Sizing.topNavBarHeight }}>
-      <TopNavBar navigation={navigation} title={"Settings"} />
-      <ScrollView style={styles.scrollView}>
-        <CustomText style={styles.optionTitle} option='mid'>
-          App
-        </CustomText>
-        <OptionButton
-          icon={"ios-person-outline"}
-          title={"My Profile"}
-          onPress={selectMyProfile}
-        />
-        <OptionButton
-          icon={"ios-bookmark-outline"}
-          title={"Clear Bookmarked Words"}
-          onPress={clearBookmarksConfirmation}
-        />
-        <OptionButton
-          icon={"ios-archive-outline"}
-          title={"Clear Archived Words"}
-          onPress={clearArchiveConfirmation}
-        />
-        <CustomText style={styles.optionTitle} option='mid'>
-          Support Us
-        </CustomText>
-        <OptionButton icon={"ios-share-outline"} title={"Share Vocabular"} />
-        <OptionButton icon={"ios-star-outline"} title={"Leave us a Review"} />
-        <CustomText style={styles.optionTitle} option='mid'>
-          Help
-        </CustomText>
-        <OptionButton
-          icon={"ios-chatbox-ellipses-outline"}
-          title={"Give us Feedback"}
-        />
-        <OptionButton icon={"ios-help-circle-outline"} title={"Help"} />
-      </ScrollView>
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.screen}>
+        <TopNavBar navigation={navigation} title={"Settings"} />
+        <ScrollView style={styles.scrollView}>
+          <CustomText style={styles.optionTitle} option='mid'>
+            App
+          </CustomText>
+          <OptionButton
+            icon={"ios-person-outline"}
+            title={"My Profile"}
+            onPress={selectMyProfile}
+          />
+          <OptionButton
+            icon={"ios-bookmark-outline"}
+            title={"Clear Bookmarked Words"}
+            onPress={clearBookmarksConfirmation}
+          />
+          <OptionButton
+            icon={"ios-archive-outline"}
+            title={"Clear Archived Words"}
+            onPress={clearArchiveConfirmation}
+          />
+          <CustomText style={styles.optionTitle} option='mid'>
+            Support Us
+          </CustomText>
+          <OptionButton icon={"ios-share-outline"} title={"Share Vocabular"} />
+          <OptionButton icon={"ios-star-outline"} title={"Leave us a Review"} />
+          <CustomText style={styles.optionTitle} option='mid'>
+            Help
+          </CustomText>
+          <OptionButton
+            icon={"ios-chatbox-ellipses-outline"}
+            title={"Give us Feedback"}
+          />
+          <OptionButton icon={"ios-help-circle-outline"} title={"Help"} />
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -90,15 +99,18 @@ SettingsScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.grayTint,
+  },
   screen: {
     flex: 1,
-    alignItems: "flex-start",
-    backgroundColor: Colors.grayTint,
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: Sizing.topNavBarHeight,
   },
   scrollView: {
     width: "100%",
-    paddingHorizontal: 20,
-    paddingTop: 25,
   },
   optionTitle: {
     marginBottom: 16,

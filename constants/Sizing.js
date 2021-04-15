@@ -1,3 +1,3 @@
 export default {
-  topNavBarHeight: 95,
+  topNavBarHeight: 46,
 };
