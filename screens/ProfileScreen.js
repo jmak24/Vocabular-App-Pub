@@ -138,7 +138,7 @@ const ProfileScreen = ({ navigation }) => {
             />
             <OptionButton
               icon={"ios-log-out-outline"}
-              title={"Log out"}
+              title={"Sign out"}
               onPress={logOutSelected}
             />
           </ScrollView>

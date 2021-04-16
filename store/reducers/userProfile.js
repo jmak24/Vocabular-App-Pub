@@ -29,7 +29,7 @@ export default (state = {}, action) => {
       }
       return {
         ...state,
-        phrases: updatedMyPhrases,
+        phrases: updatedPhrases,
       };
     }
     case REMOVE_PHRASE: {

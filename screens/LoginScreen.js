@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,14 +18,18 @@ import LogoIcon from "../assets/Vocabular.png";
 
 import { Auth } from "@aws-amplify/auth";
 
+const initialFormState = {
+  userTag: "",
+  email: "",
+  password: "",
+  authCode: "",
+};
+
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [submitEnabled, setSubmitEnabled] = useState(false);
   const [formState, setFormState] = useState({
-    userTag: "",
-    email: "",
-    password: "",
-    authCode: "",
+    ...initialFormState,
     formType: "signUp",
   });
   const { userTag, email, password, authCode, formType } = formState;
@@ -33,7 +38,9 @@ const LoginScreen = ({ navigation }) => {
     if (
       (formType === "signIn" && email && password) ||
       (formType === "signUp" && userTag && email && password) ||
-      (formType === "confirmSignUp" && authCode)
+      (formType === "confirmSignUp" && authCode) ||
+      (formType === "forgotPassword" && email) ||
+      (formType === "resetPassword" && email && authCode && password)
     ) {
       setSubmitEnabled(true);
     } else {
@@ -49,12 +56,14 @@ const LoginScreen = ({ navigation }) => {
     setFormState((prevState) => ({ ...prevState, [field]: value }));
   };
 
-  const updateFormType = (formType) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      formType,
-    }));
-    3;
+  const updateFormType = (formType, reset) => {
+    setFormState((prevState) => {
+      const formData = reset ? initialState : prevState;
+      return {
+        ...formData,
+        formType,
+      };
+    });
   };
 
   const signUp = async () => {
@@ -66,7 +75,7 @@ const LoginScreen = ({ navigation }) => {
         attributes: { email, preferred_username: userTag },
       });
 
-      updateFormType("confirmSignUp");
+      updateFormType("confirmSignUp", false);
     } catch (err) {
       const msg = err.message;
       dispatch(setToast("toastWarning", msg, "ios-close-circle"));
@@ -78,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
       const { email, authCode } = formState;
       await Auth.confirmSignUp(email, authCode);
 
-      updateFormType("signIn");
+      updateFormType("signIn", false);
       dispatch(
         setToast("toastInfo", "Verification Complete!", "ios-checkmark-circle")
       );
@@ -95,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       await Auth.signIn({ username: email, password });
       dispatch(
-        setToast("toastInfo", "Log in Successful", "ios-checkmark-circle")
+        setToast("toastInfo", "Sign in Successful", "ios-checkmark-circle")
       );
       navigation.popToTop();
     } catch (err) {
@@ -125,6 +134,46 @@ const LoginScreen = ({ navigation }) => {
           toastType = "toastError";
       }
       dispatch(setToast(toastType, msg, "ios-close-circle"));
+    }
+  };
+
+  const forgotPassword = async () => {
+    try {
+      const { email } = formState;
+      await Auth.forgotPassword(email);
+
+      updateFormType("resetPassword", false);
+      dispatch(
+        setToast(
+          "toastInfo",
+          "An email has been sent to you",
+          "ios-checkmark-circle"
+        )
+      );
+    } catch (err) {
+      console.log(err);
+      const msg = err.message;
+      dispatch(setToast("toastWarning", msg, "ios-close-circle"));
+    }
+  };
+
+  const resetPassword = async () => {
+    try {
+      const { email, authCode, password } = formState;
+      await Auth.forgotPasswordSubmit(email, authCode, password);
+
+      updateFormType("signIn", false);
+      dispatch(
+        setToast(
+          "toastInfo",
+          "Your password has been reset!",
+          "ios-checkmark-circle"
+        )
+      );
+    } catch (err) {
+      console.log(err);
+      const msg = err.message;
+      dispatch(setToast("toastWarning", msg, "ios-close-circle"));
     }
   };
 
@@ -195,16 +244,17 @@ const LoginScreen = ({ navigation }) => {
                   </CustomText>
                 </TouchableOpacity>
               </View>
-              <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                style={styles.otherOption}
+                onPress={() => updateFormType("signIn", true)}
+              >
                 <CustomText option='bodyGray'>
                   Already have an account?
                 </CustomText>
-                <TouchableOpacity onPress={() => updateFormType("signIn")}>
-                  <CustomText option='body' style={styles.signUpOrSignIn}>
-                    Sign In
-                  </CustomText>
-                </TouchableOpacity>
-              </View>
+                <CustomText option='body' style={styles.signUpOrSignIn}>
+                  Sign In
+                </CustomText>
+              </TouchableOpacity>
             </View>
           </Fragment>
         )}
@@ -296,19 +346,139 @@ const LoginScreen = ({ navigation }) => {
                   </CustomText>
                 </TouchableOpacity>
               </View>
-              <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                style={styles.otherOption}
+                onPress={() => updateFormType("signUp", true)}
+              >
                 <CustomText option='bodyGray'>
                   Don't have an account yet?
                 </CustomText>
-                <TouchableOpacity onPress={() => updateFormType("signUp")}>
-                  <CustomText option='body' style={styles.signUpOrSignIn}>
-                    Sign Up
+                <CustomText option='body' style={styles.signUpOrSignIn}>
+                  Sign Up
+                </CustomText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => updateFormType("forgotPassword", true)}
+              >
+                <CustomText option='bodyGray'>Forgot your password?</CustomText>
+              </TouchableOpacity>
+            </View>
+          </Fragment>
+        )}
+        {formState.formType === "forgotPassword" && (
+          <Fragment>
+            <View style={styles.headerSection}>
+              <Image style={styles.logo} source={LogoIcon} />
+              <CustomText style={styles.subHeader} option='mid'>
+                Enter your email to reset your password.
+              </CustomText>
+            </View>
+            <View style={styles.mainSection}>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-mail-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "email")}
+                  placeholder='Email address'
+                  value={formState.email}
+                />
+              </View>
+              <View
+                style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+              >
+                <TouchableOpacity onPress={forgotPassword}>
+                  <CustomText option='mid' style={{ color: "#fff" }}>
+                    Reset password
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.otherOption}
+                onPress={() => updateFormType("signIn", true)}
+              >
+                <CustomText option='bodyGray'>
+                  Return to Sign in screen
+                </CustomText>
+              </TouchableOpacity>
+            </View>
+          </Fragment>
+        )}
+        {formState.formType === "resetPassword" && (
+          <Fragment>
+            <View style={styles.headerSection}>
+              <Image style={styles.logo} source={LogoIcon} />
+              <CustomText style={styles.subHeader} option='mid'>
+                Enter the code you received in your email and input a new
+                password.
+              </CustomText>
+            </View>
+            <View style={styles.mainSection}>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-mail-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "email")}
+                  placeholder='Email address'
+                  value={formState.email}
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-checkmark-circle"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "authCode")}
+                  value={formState.authCode}
+                  placeholder='Verification Code'
+                  keyboardType='numeric'
+                />
+              </View>
+              <View style={styles.fieldInput}>
+                <Ionicons
+                  name={"ios-lock-closed-outline"}
+                  size={26}
+                  style={styles.icon}
+                  color={Colors.iconLightGray}
+                />
+                <TextInput
+                  style={styles.textInput}
+                  onChange={(event) => handleSetFieldInput(event, "password")}
+                  placeholder='Password'
+                  secureTextEntry={true}
+                  value={formState.password}
+                />
+              </View>
+              <View
+                style={[styles.button, !submitEnabled && styles.buttonDisabled]}
+              >
+                <TouchableOpacity onPress={resetPassword}>
+                  <CustomText option='mid' style={{ color: "#fff" }}>
+                    Reset password
                   </CustomText>
                 </TouchableOpacity>
               </View>
             </View>
           </Fragment>
         )}
+      </View>
+      <View style={styles.closeBtn}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <Ionicons name={"ios-close-outline"} size={40} color='#a3a3a3' />
+        </TouchableWithoutFeedback>
       </View>
     </SafeAreaView>
   );
@@ -325,6 +495,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 25,
+  },
+  closeBtn: {
+    position: "absolute",
+    right: 25,
+    top: 20,
   },
   logo: {
     resizeMode: "contain",
@@ -351,7 +526,7 @@ const styles = StyleSheet.create({
   },
   headerSection: {
     width: "100%",
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 30,
     justifyContent: "flex-start",
   },
@@ -380,6 +555,10 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     opacity: 0.65,
+  },
+  otherOption: {
+    flexDirection: "row",
+    marginBottom: 15,
   },
   signUpOrSignIn: {
     color: Colors.primaryTheme,

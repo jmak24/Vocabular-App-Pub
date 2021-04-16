@@ -117,17 +117,21 @@ export const handleTogglePhraseLike = ({
   hasLiked,
   likes,
 }) => async (dispatch) => {
+  dispatch({
+    type: TOGGLE_PHRASE_LIKE,
+    payload: { phraseId, userId: authedUserId, hasLiked },
+  });
   try {
     await updatePhraseLikes({
       phraseId,
       userId: authedUserId,
       likes,
     });
+  } catch (err) {
     dispatch({
       type: TOGGLE_PHRASE_LIKE,
-      payload: { phraseId, userId: authedUserId, hasLiked },
+      payload: { phraseId, userId: authedUserId, hasLiked: !hasLiked },
     });
-  } catch (err) {
     const errorToastMsg = hasLiked
       ? "Failed to Unlike Phrase"
       : "Failed to Like Phrase";
@@ -139,13 +143,17 @@ export const handleTogglePhraseLike = ({
 export const handleTogglePhraseVisibility = ({ phraseId, isPublic }) => async (
   dispatch
 ) => {
+  dispatch({
+    type: TOGGLE_PHRASE_VISIBILITY,
+    payload: { phraseId },
+  });
   try {
     await updatePhraseVisibility({ phraseId, isPublic });
+  } catch (err) {
     dispatch({
       type: TOGGLE_PHRASE_VISIBILITY,
       payload: { phraseId },
     });
-  } catch (err) {
     const errorToastMsg = isPublic
       ? "Failed to set Phrase Public"
       : "Failed to set Phrase Private";

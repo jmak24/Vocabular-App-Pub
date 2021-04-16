@@ -2,12 +2,12 @@
   "expo": {
     "name": "Vocabular",
     "slug": "Vocabular",
-    "platforms": ["ios", "android", "web"],
+    "platforms": ["ios", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/vocabular.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/vocabular.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,7 +16,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     }
   }
 }

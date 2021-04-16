@@ -16,9 +16,9 @@ import AppContainer from "./AppContainer";
 import { setupInitWordsState } from "./store/actions/words";
 import { setUserProfile } from "./store/actions/userProfile";
 
-import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
-import * as queries from "./amplify/graphql/queries"; // TO REMOVE
-import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
+// import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
+// import * as queries from "./amplify/graphql/queries"; // TO REMOVE
+// import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
 import { loadUserProfile } from "./store/actions/userProfile";
 
 import Amplify, { Auth, Hub } from "aws-amplify";
@@ -89,28 +89,6 @@ function App() {
       }
     });
   };
-
-  // const loadUserProfile = async ({ withPhrases }) => {
-  //   const cognitoUser = await Auth.currentAuthenticatedUser();
-  //   if (cognitoUser) {
-  //     const userId = cognitoUser.username;
-  //     const email = cognitoUser.attributes.email;
-  //     const userProfileRes = await getUserProfile({
-  //       id: userId,
-  //       withPhrases,
-  //     });
-  //     let userProfile = userProfileRes.data.getUserProfile;
-  //     console.log(userProfile);
-  //     // create user profile (only on first time logging in)
-  //     if (userProfile) {
-  //       store.dispatch(setUserProfile(userProfile));
-  //     } else {
-  //       store.dispatch(
-  //         handleCreateUserProfile({ id: userId, cognitoUser, email })
-  //       );
-  //     }
-  //   }
-  // };
 
   if (!fontLoaded) {
     return (
