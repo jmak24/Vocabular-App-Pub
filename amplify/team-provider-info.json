@@ -12,9 +12,6 @@
       "AmplifyAppId": "d3ucptbx5mj1cf"
     },
     "categories": {
-      "auth": {
-        "vocabular85c1d706": {}
-      },
       "function": {
         "syncDataFunction": {
           "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",

@@ -37,17 +37,6 @@ const HomeScreen = ({ navigation }) => {
     navigation.push("Login");
   };
 
-  if (wordsBookmarked && wordsBookmarked.length === 0) {
-    return (
-      <View style={[styles.screen, styles.centerContent]}>
-        <Image style={styles.booksImage} source={BookmarkImage} />
-        <CustomText style={{ textAlign: "center" }} option='subLargeGray'>
-          Start Bookmarking{"\n"}Words!
-        </CustomText>
-      </View>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
@@ -67,21 +56,30 @@ const HomeScreen = ({ navigation }) => {
             />
           </TouchableWithoutFeedback>
         </View>
-        <FlatList
-          data={wordsBookmarked}
-          style={styles.list}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                style={styles.listWord}
-                onPress={() => selectWordHandler(item)}
-              >
-                <CustomText option={"subLarge"}>{item}</CustomText>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        {wordsBookmarked && wordsBookmarked.length > 0 ? (
+          <FlatList
+            data={wordsBookmarked}
+            style={styles.list}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  style={styles.listWord}
+                  onPress={() => selectWordHandler(item)}
+                >
+                  <CustomText option={"subLarge"}>{item}</CustomText>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        ) : (
+          <View style={styles.centerContent}>
+            <Image style={styles.booksImage} source={BookmarkImage} />
+            <CustomText style={{ textAlign: "center" }} option='subLargeGray'>
+              Start Bookmarking{"\n"}Words!
+            </CustomText>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -102,6 +100,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   centerContent: {
+    flex: 1,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -111,9 +111,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   booksImage: {
-    width: 135,
-    height: 135,
-    right: 10,
+    width: 90,
+    height: 90,
+    right: 8,
     marginBottom: 40,
   },
   searchText: {

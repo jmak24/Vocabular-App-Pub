@@ -201,7 +201,7 @@ export default (state = {}, action) => {
       return { ...state, recentWords: updatedRecentWords };
     }
     case CLEAR_RECENT_WORDS: {
-      setAsyncStorage("recentWords", "");
+      setAsyncStorage("recentWords", []);
       return { ...state, recentWords: [] };
     }
     case REMOVE_BOOKMARKED_WORDS: {

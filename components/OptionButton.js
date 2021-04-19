@@ -16,7 +16,7 @@ const OptionButton = ({ icon, title, onPress }) => {
           color={Colors.iconGray}
           style={styles.optionIcon}
         />
-        <CustomText option='mid'>{title}</CustomText>
+        <CustomText option='body'>{title}</CustomText>
       </View>
     </TouchableOpacity>
   );
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   optionIcon: {
-    width: 45,
-    marginHorizontal: 14,
+    width: 40,
+    marginHorizontal: 8,
   },
 });
 

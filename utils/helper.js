@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "../amplify/graphql/mutations";

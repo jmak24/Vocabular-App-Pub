@@ -1,14 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncData = /* GraphQL */ `
-  mutation SyncData($userId: ID, $words: AWSJSON, $archived: AWSJSON) {
-    syncData(userId: $userId, words: $words, archived: $archived) {
-      userProfile
-      body
-    }
-  }
-`;
 export const createUserProfile = /* GraphQL */ `
   mutation CreateUserProfile(
     $input: CreateUserProfileInput!
@@ -19,6 +11,10 @@ export const createUserProfile = /* GraphQL */ `
       owner
       userTag
       email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
       phrases {
         items {
           id
@@ -35,10 +31,6 @@ export const createUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -52,6 +44,10 @@ export const updateUserProfile = /* GraphQL */ `
       owner
       userTag
       email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
       phrases {
         items {
           id
@@ -68,10 +64,6 @@ export const updateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -85,6 +77,10 @@ export const deleteUserProfile = /* GraphQL */ `
       owner
       userTag
       email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
       phrases {
         items {
           id
@@ -101,10 +97,6 @@ export const deleteUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -120,23 +112,23 @@ export const createPhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
       author {
         id
         owner
         userTag
         email
-        phrases {
-          nextToken
-        }
         wordsBookmarked
         wordsArchived
         createdAt
         updatedAt
+        phrases {
+          nextToken
+        }
       }
-      isPublic
-      createdAt
-      type
-      updatedAt
       owner
     }
   }
@@ -153,23 +145,23 @@ export const updatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
       author {
         id
         owner
         userTag
         email
-        phrases {
-          nextToken
-        }
         wordsBookmarked
         wordsArchived
         createdAt
         updatedAt
+        phrases {
+          nextToken
+        }
       }
-      isPublic
-      createdAt
-      type
-      updatedAt
       owner
     }
   }
@@ -186,23 +178,23 @@ export const deletePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
       author {
         id
         owner
         userTag
         email
-        phrases {
-          nextToken
-        }
         wordsBookmarked
         wordsArchived
         createdAt
         updatedAt
+        phrases {
+          nextToken
+        }
       }
-      isPublic
-      createdAt
-      type
-      updatedAt
       owner
     }
   }

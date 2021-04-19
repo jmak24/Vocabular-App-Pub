@@ -11,19 +11,20 @@
               "userPoolId": "authvocabular85c1d706"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 7,
+                "description": "Vocabular API key"
+              }
+            }
+          ]
         }
       }
     }
   },
-  "auth": {
-    "vocabular85c1d706": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  },
+  "auth": {},
   "function": {
     "syncDataFunction": {
       "build": true,

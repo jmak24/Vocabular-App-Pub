@@ -101,6 +101,7 @@ const WordDetailsTabNavigator = ({
   wordDetails,
   selectWordHandler,
   scrollY,
+  navigation,
 }) => {
   const listRefArr = useRef([]).current;
 
@@ -145,6 +146,7 @@ const WordDetailsTabNavigator = ({
             scrollY={scrollY}
             forwardRef={setListRefArr}
             routeIndex={1}
+            navigation={navigation}
           />
         )}
         options={{ tabBarLabel: "Phrases" }}

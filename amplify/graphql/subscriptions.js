@@ -8,6 +8,10 @@ export const onCreateUserProfile = /* GraphQL */ `
       owner
       userTag
       email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
       phrases {
         items {
           id
@@ -24,10 +28,6 @@ export const onCreateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -38,6 +38,10 @@ export const onUpdateUserProfile = /* GraphQL */ `
       owner
       userTag
       email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
       phrases {
         items {
           id
@@ -54,10 +58,6 @@ export const onUpdateUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -68,6 +68,10 @@ export const onDeleteUserProfile = /* GraphQL */ `
       owner
       userTag
       email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
       phrases {
         items {
           id
@@ -84,10 +88,6 @@ export const onDeleteUserProfile = /* GraphQL */ `
         }
         nextToken
       }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -100,23 +100,23 @@ export const onCreatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
       author {
         id
         owner
         userTag
         email
-        phrases {
-          nextToken
-        }
         wordsBookmarked
         wordsArchived
         createdAt
         updatedAt
+        phrases {
+          nextToken
+        }
       }
-      isPublic
-      createdAt
-      type
-      updatedAt
       owner
     }
   }
@@ -130,23 +130,23 @@ export const onUpdatePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
       author {
         id
         owner
         userTag
         email
-        phrases {
-          nextToken
-        }
         wordsBookmarked
         wordsArchived
         createdAt
         updatedAt
+        phrases {
+          nextToken
+        }
       }
-      isPublic
-      createdAt
-      type
-      updatedAt
       owner
     }
   }
@@ -160,23 +160,23 @@ export const onDeletePhrase = /* GraphQL */ `
       numLikes
       likes
       authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
       author {
         id
         owner
         userTag
         email
-        phrases {
-          nextToken
-        }
         wordsBookmarked
         wordsArchived
         createdAt
         updatedAt
+        phrases {
+          nextToken
+        }
       }
-      isPublic
-      createdAt
-      type
-      updatedAt
       owner
     }
   }

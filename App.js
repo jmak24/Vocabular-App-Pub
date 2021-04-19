@@ -14,17 +14,16 @@ import userProfilerReducer from "./store/reducers/userProfile";
 import loadingReducer from "./store/reducers/loading";
 import AppContainer from "./AppContainer";
 import { setupInitWordsState } from "./store/actions/words";
-import { setUserProfile } from "./store/actions/userProfile";
+import { setUserProfile, loadUserProfile } from "./store/actions/userProfile";
 
 // import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
 // import * as queries from "./amplify/graphql/queries"; // TO REMOVE
 // import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
-import { loadUserProfile } from "./store/actions/userProfile";
 
-import Amplify, { Auth, Hub } from "aws-amplify";
+import Amplify, { Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 
 const rootReducer = combineReducers({
   words: wordsReducer,
@@ -50,6 +49,7 @@ const fetchFonts = () => {
 
 function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const { useProfile: authedUser } = store.getState();
 
   const testAPI = async () => {
     try {
@@ -65,10 +65,19 @@ function App() {
 
   useEffect(() => {
     store.dispatch(setupInitWordsState());
-    store.dispatch(loadUserProfile({ withPhrases: false }));
+    store.dispatch(loadUserProfile());
     authListener();
     // testAPI();
   }, []);
+
+  useEffect(() => {
+    const authType = authedUser ? "AMAZON_COGNITO_USER_POOLS" : "API_KEY";
+    console.log(authType);
+    Amplify.configure({
+      ...awsconfig,
+      aws_appsync_authenticationType: authType,
+    });
+  }, [authedUser]);
 
   const authListener = () => {
     Hub.listen("auth", ({ payload: { event, data } }) => {
@@ -79,7 +88,7 @@ function App() {
           console.log("SIGNED IN");
           break;
         case "signOut":
-          store.dispatch(setUserProfile({}));
+          store.dispatch(setUserProfile(null));
           console.log("SIGNED OUT");
           break;
         case "signIn_failure":

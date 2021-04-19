@@ -108,7 +108,6 @@ export const handleCreateUserProfile = ({
     wordsArchived: JSON.stringify({}),
   };
   const userProfile = await createUserProfile({ user });
-  console.log(userProfile);
   dispatch(setUserProfile(userProfile));
   console.log("New user profile created in Amplify");
 };

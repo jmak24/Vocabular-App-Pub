@@ -16,17 +16,15 @@ const WordNotFound = ({ word }) => (
       ...styles.screen,
     }}
   >
-    <View style={{ marginTop: "50%" }}>
-      <CustomText option='subLargeGray' style={{ ...styles.questionMark }}>
-        ?
-      </CustomText>
-      <CustomText option='subLarge' style={styles.blockText}>
-        {word}
-      </CustomText>
-      <CustomText option='midGray' style={styles.blockText}>
-        Oops, the word you're looking for was not found.
-      </CustomText>
-    </View>
+    <CustomText option='subLargeGray' style={{ ...styles.questionMark }}>
+      ?
+    </CustomText>
+    <CustomText option='subLarge' style={styles.blockText}>
+      {word}
+    </CustomText>
+    <CustomText option='midGray' style={styles.blockText}>
+      Oops, the word you're looking for was not found.
+    </CustomText>
   </View>
 );
 
@@ -39,6 +37,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 25,
     backgroundColor: Colors.grayTint,
     width: "100%",

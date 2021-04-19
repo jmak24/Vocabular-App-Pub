@@ -37,6 +37,7 @@ export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
   try {
     dispatch(fetchPhrases("REQUEST"));
     let myPhrasesArr, myPhrasesRes;
+
     if (authedUser) {
       myPhrasesRes = await getPhrasesByUser({
         userId: authedUser.id,
@@ -54,6 +55,7 @@ export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
       topPhrases: phrasesToObj(topPhrasesArr),
       recentPhrases: phrasesToObj(recentPhrasesArr),
     };
+
     dispatch(setPhraseData(phraseData));
     dispatch(fetchPhrases("SUCCESS"));
   } catch (err) {

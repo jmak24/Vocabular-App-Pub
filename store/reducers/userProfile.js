@@ -8,7 +8,7 @@ import {
 import { TOGGLE_PHRASE_VISIBILITY, REMOVE_PHRASE } from "../actions/phrases";
 import { omitProp } from "../../utils/helper";
 
-export default (state = {}, action) => {
+export default (state = null, action) => {
   switch (action.type) {
     case SET_USER_PROFILE:
       const { userProfile } = action.payload;

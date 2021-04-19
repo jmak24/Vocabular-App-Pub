@@ -18,21 +18,25 @@ import LoginScreen from "../screens/LoginScreen";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const LoginModal = (route, navigation) => {
+  return route.name === "Login"
+    ? {
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+        headerStatusBarHeight:
+          navigation.dangerouslyGetState().routes.indexOf(route) > 0
+            ? 0
+            : undefined,
+        ...TransitionPresets.ModalPresentationIOS,
+      }
+    : {};
+};
+
 const MainNavigator = () => (
   <Stack.Navigator
     initialRouteName='Home'
     screenOptions={({ route, navigation }) => {
-      return route.name === "Login"
-        ? {
-            gestureEnabled: true,
-            cardOverlayEnabled: true,
-            headerStatusBarHeight:
-              navigation.dangerouslyGetState().routes.indexOf(route) > 0
-                ? 0
-                : undefined,
-            ...TransitionPresets.ModalPresentationIOS,
-          }
-        : {};
+      return LoginModal(route, navigation);
     }}
     mode={({ route }) => (route.name === "Login" ? "modal" : "card")}
     headerMode='none'
@@ -52,7 +56,14 @@ const MainNavigator = () => (
 );
 
 const SearchNavigator = () => (
-  <Stack.Navigator initialRouteName='Search' headerMode='none'>
+  <Stack.Navigator
+    initialRouteName='Search'
+    screenOptions={({ route, navigation }) => {
+      return LoginModal(route, navigation);
+    }}
+    mode={({ route }) => (route.name === "Login" ? "modal" : "card")}
+    headerMode='none'
+  >
     <Stack.Screen
       name='Search'
       component={SearchScreen}
@@ -61,6 +72,7 @@ const SearchNavigator = () => (
       }}
     />
     <Stack.Screen name='WordDetails' component={WordDetailsScreen} />
+    <Stack.Screen name='Login' component={LoginScreen} />
   </Stack.Navigator>
 );
 

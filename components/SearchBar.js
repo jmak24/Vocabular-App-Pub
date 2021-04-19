@@ -80,6 +80,7 @@ const SearchBar = ({
         value={searchInput}
         ref={searchInputRef}
         onSubmitEditing={handleSearch}
+        enablesReturnKeyAutomatically={true}
         returnKeyType={"search"}
       />
       {clearTextInputBtn}

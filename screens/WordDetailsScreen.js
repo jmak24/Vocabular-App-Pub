@@ -125,6 +125,7 @@ const WordDetailsScreen = ({ route, navigation }) => {
             wordDetails={wordDetails}
             selectWordHandler={selectWordHandler}
             scrollY={scrollY}
+            navigation={navigation}
           />
         </View>
       );

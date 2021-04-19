@@ -26,6 +26,7 @@ const ArchivedScreen = ({ navigation }) => {
   const wordsArchivedList = useSelector(
     (state) => state.words.wordsArchivedList
   );
+
   const today = new Date();
   const [yearSelected, setYearSelected] = useState(today.getFullYear());
   const [monthSelected, setMonthSelected] = useState(today.getMonth()); // month index

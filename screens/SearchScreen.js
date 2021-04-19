@@ -13,7 +13,7 @@ const DISPLAY_STATE = {
   recent: { state: "recent", msg: "Recent Words" },
   suggested: { state: "suggested", msg: "Suggested Words" },
   noResults: { state: "noResults", msg: "No Results found for" },
-  empty: { state: "empty", msg: "Start Learning New Words" },
+  empty: { state: "empty", msg: "" },
   loading: { state: "loading" },
 };
 
