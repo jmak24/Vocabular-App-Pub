@@ -8,14 +8,14 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authvocabular85c1d706"
+              "userPoolId": "authvocabularAuth"
             }
           },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "API_KEY",
               "apiKeyConfig": {
-                "apiKeyExpirationDays": 7,
+                "apiKeyExpirationDays": 365,
                 "description": "Vocabular API key"
               }
             }
@@ -24,7 +24,24 @@
       }
     }
   },
-  "auth": {},
+  "auth": {
+    "vocabularAuth": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "vocabularAuthPreSignup",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
+      "customAuth": false
+    }
+  },
   "function": {
     "syncDataFunction": {
       "build": true,
@@ -40,6 +57,11 @@
           ]
         }
       ]
+    },
+    "vocabularAuthPreSignup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   }
 }

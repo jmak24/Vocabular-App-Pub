@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import Colors from "../constants/Colors";
-import { fetchSuggestedWords } from "../utils/helper";
+import { fetchDataMuseWords } from "../utils/helper";
+import { fetchSuggestedWords } from "../store/actions/loading";
+import { setToast } from "../store/actions/toasts";
 
 const SearchBar = ({
   displayRecentSearches,
@@ -13,6 +16,7 @@ const SearchBar = ({
 }) => {
   const [searchInput, setSearchInput] = useState("");
   const searchInputRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     searchInputRef.current.focus();
@@ -41,16 +45,25 @@ const SearchBar = ({
       }
 
       console.log("Searching... ", searchInput);
-
-      const suggestedWords = await fetchSuggestedWords(searchInput);
+      dispatch(fetchSuggestedWords("REQUEST"));
+      const suggestedWords = await fetchDataMuseWords(searchInput);
       if (suggestedWords.length > 0) {
         displaySuggestedWords(suggestedWords);
       } else {
         onNoResultsFound(searchInput);
       }
+      dispatch(fetchSuggestedWords("SUCCESS"));
     } catch (err) {
       if (err) console.log(err);
       onNoResultsFound(searchInput);
+      dispatch(fetchSuggestedWords("FAIL"));
+      dispatch(
+        setToast(
+          "toastWarning",
+          "Something went wrong while searching",
+          "ios-close-circle"
+        )
+      );
     }
   };
 

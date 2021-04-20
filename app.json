@@ -5,7 +5,7 @@
     "platforms": ["ios", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Vocabular.png",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -14,8 +14,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": ["/assets/**/*"],
     "ios": {
+      "bundleIdentifier": "com.vocabular.pocket-dictionary",
+      "buildNumber": "1.0.0",
       "supportsTablet": false
     }
   }

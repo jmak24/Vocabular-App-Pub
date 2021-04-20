@@ -3,16 +3,16 @@ import { View, Image, StyleSheet } from "react-native";
 
 import LoadingIcon from "../assets/loading.gif";
 
-const SIZE = 80;
+const SIZE = 70;
 
 const Loading = () => (
-  <View style={styles.screen}>
+  <View style={styles.container}>
     <Image style={styles.icon} source={LoadingIcon} />
   </View>
 );
 
 const styles = StyleSheet.create({
-  screen: {
+  container: {
     flex: 1,
     width: "100%",
     alignItems: "center",

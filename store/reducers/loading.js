@@ -2,6 +2,7 @@ import {
   FETCH_WORD_DETAILS,
   FETCH_PHRASES,
   FETCH_USER_PROFILE,
+  FETCH_SUGGESTED_WORDS,
 } from "../actions/loading";
 
 const getActionName = (actionType) => {
@@ -16,6 +17,7 @@ const initialState = {
   [FETCH_WORD_DETAILS]: { loading: false },
   [FETCH_PHRASES]: { loading: false },
   [FETCH_USER_PROFILE]: { loading: false },
+  [FETCH_SUGGESTED_WORDS]: { loading: false },
 };
 
 export default (state = initialState, action) => {

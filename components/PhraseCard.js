@@ -13,7 +13,7 @@ import {
 } from "../store/actions/phrases";
 import { onShare } from "../utils/helper";
 
-const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
+const PhraseCard = ({ navigation, details, myPhraseSection, authedUserId }) => {
   const dispatch = useDispatch();
   const { id, phrase, likes, isPublic, authorId, author } = details;
   const eyeIcon = isPublic ? "ios-eye-outline" : "ios-eye-off-outline";
@@ -21,6 +21,16 @@ const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
   const isAuthor = authedUserId === authorId;
   // if you are author of phrase and is set to private
   if (isAuthor && !myPhraseSection && !isPublic) return null;
+
+  const phraseLikePressed = () => {
+    if (authedUserId && !isAuthor) {
+      dispatch(
+        handleTogglePhraseLike({ phraseId: id, authedUserId, hasLiked, likes })
+      );
+    } else if (!authedUserId) {
+      navigation.push("Login");
+    }
+  };
 
   return (
     <View style={styles.phraseCard}>
@@ -76,19 +86,7 @@ const PhraseCard = ({ details, myPhraseSection, authedUserId }) => {
           {likes.length > 0 && (
             <CustomText option='bodyGray'>{likes.length}</CustomText>
           )}
-          <TouchableOpacity
-            onPress={() =>
-              dispatch(
-                handleTogglePhraseLike({
-                  phraseId: id,
-                  authedUserId,
-                  hasLiked,
-                  likes,
-                })
-              )
-            }
-            disabled={myPhraseSection}
-          >
+          <TouchableOpacity onPress={phraseLikePressed}>
             <Ionicons
               name={hasLiked ? "ios-heart" : "ios-heart-outline"}
               size={24}

@@ -5,6 +5,7 @@ type UserProfile
   @auth(
     rules: [
       { allow: owner, operations: [create, update, delete] }
+      { allow: private, operations: [read] }
       { allow: public, provider: apiKey }
     ]
   )
@@ -28,7 +29,8 @@ type Phrase
   @aws_api_key
   @auth(
     rules: [
-      { allow: owner, operations: [create, update, delete] }
+      { allow: owner, operations: [create, delete] }
+      { allow: private, operations: [read, update] }
       { allow: public, provider: apiKey }
     ]
   )

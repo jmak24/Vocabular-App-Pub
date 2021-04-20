@@ -8,6 +8,7 @@ import { removeRecentWord, clearAllRecentWords } from "../store/actions/words";
 import SearchBar from "../components/SearchBar";
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
+import Loading from "../components/Loading";
 
 const DISPLAY_STATE = {
   recent: { state: "recent", msg: "Recent Words" },
@@ -18,12 +19,15 @@ const DISPLAY_STATE = {
 };
 
 const SearchScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [recentWords, FETCH_SUGGESTED_WORDS] = useSelector((state) => [
+    state.words.recentWords,
+    state.loading.FETCH_SUGGESTED_WORDS,
+  ]);
+
   const [displayState, setDisplayState] = useState(DISPLAY_STATE.recent.state);
   const [suggestedWords, setSuggestedWords] = useState([]);
   const [noResults, setNoResults] = useState("");
-
-  const dispatch = useDispatch();
-  const recentWords = useSelector((state) => state.words.recentWords);
   const [showMoreRecent, setShowMoreRecent] = useState(false);
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
@@ -108,7 +112,9 @@ const SearchScreen = ({ navigation }) => {
   };
 
   const MainContent = () => {
-    if (displayState === DISPLAY_STATE.empty.state) {
+    if (FETCH_SUGGESTED_WORDS.loading) {
+      return <Loading />;
+    } else if (displayState === DISPLAY_STATE.empty.state) {
       // No Recent Searches to Display
       return (
         <View style={styles.centerContent}>
@@ -170,8 +176,6 @@ const SearchScreen = ({ navigation }) => {
           )}
         ></FlatList>
       );
-    } else {
-      return <CustomText>LOADING...</CustomText>;
     }
   };
 

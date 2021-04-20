@@ -14,53 +14,7 @@ import {
 //   ARCHIVED_WORDS_LIST,
 //   ARCHIVED_WORDS_EXTENDED,
 // } from "../../models/dummy-data";
-import { prepareForWordDetails, setAsyncStorage } from "../../utils/helper";
-
-// // Prepare Bookmarked and Archived Word Lists
-// const prepareWordsList = (words) => {
-//   let mainWords = [],
-//     wordsArchived = [];
-//   for (wordKey in words) {
-//     const word = words[wordKey];
-//     if (word.archived) {
-//       wordsArchived.push(wordKey);
-//     } else {
-//       mainWords.push(wordKey);
-//     }
-//   }
-//   // wordsArchived = wordsArchived.concat(ARCHIVED_WORDS_EXTENDED); // TO DELETE
-//   return { main: mainWords, archived: wordsArchived };
-// };
-// const wordsBookmarked = prepareWordsList(WORDS_DATA);
-
-// const wordsDataOrganized = (words) => {
-//   for (const word in words) {
-//     prepareForWordDetails(words[word]);
-//   }
-//   return words;
-// };
-
-// const WORDS_DATA_ORGANIZED = wordsDataOrganized(WORDS_DATA);
-
-// const initialState1 = {
-//   words: WORDS_DATA_ORGANIZED,
-//   wordsBookmarked: wordsBookmarked.main,
-//   wordsArchivedList: wordsBookmarked.archived,
-//   wordsArchived: ARCHIVED_WORDS_LIST,
-//   recentWords: [
-//     "pragmatic",
-//     "detrimental",
-//     "tabulate",
-//     "triage",
-//     "conflate",
-//     "counter",
-//     "cryptic",
-//     "tyranny",
-//     "lament",
-//     "stipulate",
-//     "capitulate",
-//   ],
-// };
+import { setAsyncStorage } from "../../utils/helper";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -97,7 +51,7 @@ export default (state = {}, action) => {
       const updatedWordsData = { ...state.wordsData };
       let updatedWordsBookmarked = [...state.wordsBookmarked];
       const updatedWordsArchived = { ...state.wordsArchived };
-      const updatedWordsArchivedList = [...state.wordsArchivedList];
+      let updatedWordsArchivedList = [...state.wordsArchivedList];
 
       const archived = updatedWordsData[targetWord].archived;
       if (!archived) {
@@ -121,12 +75,14 @@ export default (state = {}, action) => {
         const index = archiveRecord.indexOf(targetWord);
         if (index > -1) archiveRecord.splice(index, 1);
 
-        updatedWordsArchivedList.filter((word) => word !== targetWord);
+        updatedWordsArchivedList = updatedWordsArchivedList.filter(
+          (word) => word !== targetWord
+        );
         updatedWordsData[targetWord].archived = null;
         updatedWordsBookmarked.unshift(targetWord);
       }
 
-      setAsyncStorage("words", updatedWordsData);
+      setAsyncStorage("wordsData", updatedWordsData);
       setAsyncStorage("wordsBookmarked", updatedWordsBookmarked);
       setAsyncStorage("wordsArchived", updatedWordsArchived);
       setAsyncStorage("wordsArchivedList", updatedWordsArchivedList);
@@ -206,10 +162,12 @@ export default (state = {}, action) => {
     }
     case REMOVE_BOOKMARKED_WORDS: {
       const updatedWordsData = { ...state.wordsData };
-      const wordsBookmarked = [...state.wordsData];
-      wordsBookmarked.forEach((word) => {
+      const wordsBookmarked = [...state.wordsBookmarked];
+
+      for (let i = 0; i < wordsBookmarked.length; i++) {
+        const word = wordsBookmarked[i];
         delete updatedWordsData[word];
-      });
+      }
 
       setAsyncStorage("wordsData", updatedWordsData);
       setAsyncStorage("wordsBookmarked", []);
@@ -218,17 +176,27 @@ export default (state = {}, action) => {
     case REMOVE_ARCHIVED_WORDS: {
       const updatedWordsData = { ...state.wordsData };
       const wordsArchivedList = { ...state.wordsArchived };
-      wordsArchivedList.forEach((word) => {
+      let updatedWordsArchived = {};
+
+      for (let i = 0; i < wordsArchivedList.length; i++) {
+        const word = wordsArchivedList[i];
         delete updatedWordsData[word];
-      });
+      }
+
+      const currentYear = new Date().getFullYear();
+      updatedWordsArchived[currentYear] = [];
+      for (let i = 0; i < 12; i++) {
+        updatedWordsArchived[currentYear].push([]);
+      }
 
       setAsyncStorage("wordsData", updatedWordsData);
-      setAsyncStorage("wordsArchived", {});
+      setAsyncStorage("wordsArchived", updatedWordsArchived);
       setAsyncStorage("wordsArchivedList", []);
+
       return {
         ...state,
         wordsData: updatedWordsData,
-        wordsArchived: {},
+        wordsArchived: updatedWordsArchived,
         wordsArchivedList: [],
       };
     }

@@ -16,7 +16,14 @@
         "syncDataFunction": {
           "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
           "s3Key": "amplify-builds/syncDataFunction-36316d6b73776d677a32-build.zip"
+        },
+        "vocabularAuthPreSignup": {
+          "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+          "s3Key": "amplify-builds/vocabularAuthPreSignup-763259664a3873776c46-build.zip"
         }
+      },
+      "auth": {
+        "vocabularAuth": {}
       }
     }
   }

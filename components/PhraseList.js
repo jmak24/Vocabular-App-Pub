@@ -23,13 +23,15 @@ const HeaderHeight = 131;
 const NavBarHeight = 60;
 
 const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const {
-    phrases: phraseData,
-    loading: { FETCH_PHRASES },
-    userProfile,
-  } = useSelector((state) => state);
+  const [phraseData, userProfile, FETCH_PHRASES] = useSelector((state) => [
+    state.phrases,
+    state.userProfile,
+    state.loading.FETCH_PHRASES,
+  ]);
+
   const { myPhrases, topPhrases, recentPhrases } = phraseData;
+  const [modalVisible, setModalVisible] = useState(false);
+  const authedUserId = userProfile && userProfile.id;
 
   const addPhrasePressed = () => {
     if (userProfile) {
@@ -97,7 +99,8 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
                         key={("My Phrases", index)}
                         details={phraseDetails}
                         myPhraseSection={true}
-                        authedUserId={userProfile.id}
+                        authedUserId={authedUserId}
+                        navigation={navigation}
                       />
                     );
                   })}
@@ -116,7 +119,8 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
                         key={("Top Phrases", index)}
                         details={phraseDetails}
                         myPhraseSection={false}
-                        authedUser={userProfile}
+                        authedUserId={authedUserId}
+                        navigation={navigation}
                       />
                     );
                   })}
@@ -135,7 +139,8 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
                         key={("Recent Phrases", index)}
                         details={phraseDetails}
                         myPhraseSection={false}
-                        authedUser={userProfile}
+                        authedUserId={authedUserId}
+                        navigation={navigation}
                       />
                     );
                   })}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   View,
   Dimensions,
@@ -24,7 +24,8 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const SettingsScreen = ({ navigation }) => {
-  const { userProfile: authedUser } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const authedUser = useSelector((state) => state.userProfile);
 
   const selectMyProfile = () => {
     if (authedUser) {
@@ -40,7 +41,7 @@ const SettingsScreen = ({ navigation }) => {
         text: "No",
         style: "cancel",
       },
-      { text: "Yes", onPress: () => clearBookmarkedWords() },
+      { text: "Yes", onPress: () => dispatch(clearBookmarkedWords()) },
     ]);
 
   const clearArchiveConfirmation = () =>
@@ -49,7 +50,7 @@ const SettingsScreen = ({ navigation }) => {
         text: "No",
         style: "cancel",
       },
-      { text: "Yes", onPress: () => clearArchivedWords() },
+      { text: "Yes", onPress: () => dispatch(clearArchivedWords()) },
     ]);
 
   return (

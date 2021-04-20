@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToast } from "../store/actions/toasts";
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
-import LogoIcon from "../assets/Vocabular.png";
+import LogoIcon from "../assets/icon-transparent.png";
 import { fetchUserProfile } from "../store/actions/loading";
 import Loading from "../components/Loading";
 
@@ -30,9 +30,10 @@ const initialFormState = {
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const {
-    loading: { FETCH_USER_PROFILE },
-  } = useSelector((state) => state);
+  const FETCH_USER_PROFILE = useSelector(
+    (state) => state.loading.FETCH_USER_PROFILE
+  );
+
   const [submitEnabled, setSubmitEnabled] = useState(false);
   const [formState, setFormState] = useState({
     ...initialFormState,
@@ -44,7 +45,6 @@ const LoginScreen = ({ navigation }) => {
     if (
       (formType === "signIn" && email && password) ||
       (formType === "signUp" && userTag && email && password) ||
-      (formType === "confirmSignUp" && authCode) ||
       (formType === "forgotPassword" && email) ||
       (formType === "resetPassword" && email && authCode && password)
     ) {
@@ -80,25 +80,10 @@ const LoginScreen = ({ navigation }) => {
         password,
         attributes: { email, preferred_username: userTag },
       });
-
-      updateFormType("confirmSignUp", false);
-    } catch (err) {
-      const msg = err.message;
-      dispatch(setToast("toastWarning", msg, "ios-close-circle"));
-    }
-  };
-
-  const confirmSignUp = async () => {
-    try {
-      const { email, authCode } = formState;
-      await Auth.confirmSignUp(email, authCode);
-
+      setToast("toastInfo", "Sign Up Complete!", "ios-checkmark-circle");
       updateFormType("signIn", false);
-      dispatch(
-        setToast("toastInfo", "Verification Complete!", "ios-checkmark-circle")
-      );
     } catch (err) {
-      console.log(err);
+      console.log("signUp", err);
       const msg = err.message;
       dispatch(setToast("toastWarning", msg, "ios-close-circle"));
     }
@@ -115,6 +100,8 @@ const LoginScreen = ({ navigation }) => {
       );
       navigation.popToTop();
     } catch (err) {
+      dispatch(fetchUserProfile("FAIL"));
+      console.log("signIn", err);
       let msg;
       let toastType = "toastWarning";
       switch (err.code) {
@@ -124,20 +111,7 @@ const LoginScreen = ({ navigation }) => {
         case "UserNotFoundException":
           msg = "User does not exist";
           break;
-        case "UserNotConfirmedException":
-          try {
-            msg = "Email needs to be verified";
-            await Auth.resendSignUp(email);
-            console.log("Resending verification email");
-          } catch (err) {
-            console.log(err);
-            msg = "Something went wrong";
-            toastType = "toastError";
-          }
-          updateFormType("confirmSignUp");
-          break;
         default:
-          console.log(err);
           msg = "Something went wrong";
           toastType = "toastError";
       }
@@ -179,7 +153,7 @@ const LoginScreen = ({ navigation }) => {
         )
       );
     } catch (err) {
-      console.log(err);
+      console.log("resetPassword", err);
       const msg = err.message;
       dispatch(setToast("toastWarning", msg, "ios-close-circle"));
     }
@@ -187,10 +161,10 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>
-        {FETCH_USER_PROFILE.loading ? (
-          <Loading />
-        ) : (
+      {FETCH_USER_PROFILE.loading ? (
+        <Loading />
+      ) : (
+        <ScrollView>
           <View style={styles.screen}>
             {formState.formType === "signUp" && (
               <Fragment>
@@ -514,13 +488,13 @@ const LoginScreen = ({ navigation }) => {
               </Fragment>
             )}
           </View>
-        )}
-        <View style={styles.closeBtn}>
-          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-            <Ionicons name={"ios-close-outline"} size={40} color='#a3a3a3' />
-          </TouchableWithoutFeedback>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
+      <View style={styles.closeBtn}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <Ionicons name={"ios-close-outline"} size={40} color='#a3a3a3' />
+        </TouchableWithoutFeedback>
+      </View>
     </SafeAreaView>
   );
 };
@@ -595,7 +569,7 @@ const styles = StyleSheet.create({
     marginBottom: 35,
   },
   buttonDisabled: {
-    opacity: 0.65,
+    opacity: 0.45,
   },
   otherOption: {
     flexDirection: "row",

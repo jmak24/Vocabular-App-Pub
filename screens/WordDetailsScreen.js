@@ -35,10 +35,17 @@ const TITLE_OFFSET_Y = 40;
 
 const WordDetailsScreen = ({ route, navigation }) => {
   const { word } = route.params;
-  const {
-    words: { wordsData, wordsBookmarked, wordsArchivedList },
-    loading: { FETCH_WORD_DETAILS },
-  } = useSelector((state) => state);
+  const [
+    wordsData,
+    wordsBookmarked,
+    wordsArchivedList,
+    FETCH_WORD_DETAILS,
+  ] = useSelector((state) => [
+    state.words.wordsData,
+    state.words.wordsBookmarked,
+    state.words.wordsArchivedList,
+    state.loading.FETCH_WORD_DETAILS,
+  ]);
   const dispatch = useDispatch();
 
   const [wordDetails, setWordDetails] = useState({});

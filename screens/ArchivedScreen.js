@@ -22,10 +22,10 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const ArchivedScreen = ({ navigation }) => {
-  const wordsArchived = useSelector((state) => state.words.wordsArchived);
-  const wordsArchivedList = useSelector(
-    (state) => state.words.wordsArchivedList
-  );
+  const [wordsArchived, wordsArchivedList] = useSelector((state) => [
+    state.words.wordsArchived,
+    state.words.wordsArchivedList,
+  ]);
 
   const today = new Date();
   const [yearSelected, setYearSelected] = useState(today.getFullYear());

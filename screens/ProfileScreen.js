@@ -27,13 +27,20 @@ const screen = Dimensions.get("screen");
 
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const {
+  const [
+    wordsBookmarked,
+    wordsArchivedList,
     userProfile,
-    words,
-    loading: { FETCH_PHRASES },
-  } = useSelector((state) => state);
-  const numBookmarkedWords = words.wordsBookmarked.length;
-  const numArchivedWords = words.wordsArchivedList.length;
+    FETCH_PHRASES,
+  ] = useSelector((state) => [
+    state.words.wordsBookmarked,
+    state.words.wordsArchivedList,
+    state.userProfile,
+    state.loading.FETCH_PHRASES,
+  ]);
+
+  const numBookmarkedWords = wordsBookmarked.length;
+  const numArchivedWords = wordsArchivedList.length;
   const numPhrases =
     userProfile.phrases && Object.keys(userProfile.phrases).length;
   const { userTag, email } = userProfile;

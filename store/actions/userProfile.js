@@ -55,6 +55,7 @@ export const loadUserProfile = () => async (dispatch) => {
     const cognitoUser = await Auth.currentAuthenticatedUser();
     if (cognitoUser) {
       const userId = cognitoUser.username;
+      console.log(userId);
       const email = cognitoUser.attributes.email;
       const userProfileRes = await getUserProfile({
         id: userId,
@@ -71,21 +72,6 @@ export const loadUserProfile = () => async (dispatch) => {
     dispatch(fetchUserProfile("SUCCESS"));
   } catch (err) {
     dispatch(fetchUserProfile("FAIL"));
-    console.log(err);
-  }
-};
-
-export const handleLoadUserPhrases = ({ userId }) => async (dispatch) => {
-  try {
-    dispatch(fetchPhrases("REQUEST"));
-    const userPhrasesRes = await getPhrasesByUser({ userId });
-    userPhrasesArr = userPhrasesRes.data.phrasesByUser.items;
-    const userPhrases = phrasesToObj(userPhrasesArr);
-    dispatch(setUserPhrases(userPhrases));
-    dispatch(fetchPhrases("SUCCESS"));
-  } catch (err) {
-    dispatch(fetchPhrases("FAIL"));
-    console.log(err);
   }
 };
 
@@ -94,22 +80,28 @@ export const handleCreateUserProfile = ({
   cognitoUser,
   email,
 }) => async (dispatch) => {
-  const userAttributes = await Auth.userAttributes(cognitoUser);
-  let userTag;
-  for (let i = 0; i < userAttributes.length; i++) {
-    if (userAttributes[i].Name === "preferred_username")
-      userTag = userAttributes[i].Value;
+  try {
+    const userAttributes = await Auth.userAttributes(cognitoUser);
+    let userTag;
+    for (let i = 0; i < userAttributes.length; i++) {
+      if (userAttributes[i].Name === "preferred_username")
+        userTag = userAttributes[i].Value;
+    }
+    const user = {
+      id: userId,
+      email,
+      userTag,
+      wordsBookmarked: JSON.stringify([]),
+      wordsArchived: JSON.stringify({}),
+    };
+    const userProfileRes = await createUserProfile({ user });
+    let userProfile = userProfileRes.data.createUserProfile;
+    console.log("Created new userProfile:", userProfile);
+    dispatch(setUserProfile(userProfile));
+    console.log("New user profile created in Amplify");
+  } catch (err) {
+    console.log("handleCreateUserProfile:", err);
   }
-  const user = {
-    id: userId,
-    email,
-    userTag,
-    wordsBookmarked: JSON.stringify([]),
-    wordsArchived: JSON.stringify({}),
-  };
-  const userProfile = await createUserProfile({ user });
-  dispatch(setUserProfile(userProfile));
-  console.log("New user profile created in Amplify");
 };
 
 export const handleUpdateUserTag = ({
@@ -126,7 +118,21 @@ export const handleUpdateUserTag = ({
     dispatch(
       setToast("toastError", "Error changing Username", "ios-close-circle")
     );
-    console.log(err);
+    console.log("handleUpdateUserTag:", err);
+  }
+};
+
+export const handleLoadUserPhrases = ({ userId }) => async (dispatch) => {
+  try {
+    dispatch(fetchPhrases("REQUEST"));
+    const userPhrasesRes = await getPhrasesByUser({ userId });
+    userPhrasesArr = userPhrasesRes.data.phrasesByUser.items;
+    const userPhrases = phrasesToObj(userPhrasesArr);
+    dispatch(setUserPhrases(userPhrases));
+    dispatch(fetchPhrases("SUCCESS"));
+  } catch (err) {
+    dispatch(fetchPhrases("FAIL"));
+    console.log("handleLoadUserPhrases:", err);
   }
 };
 
@@ -136,6 +142,7 @@ export const handleLogOut = () => async (dispatch) => {
     dispatch(clearUserProfile());
     dispatch(setToast("toastInfo", "Logged out", "ios-checkmark-circle"));
   } catch (err) {
+    console.log("handleLogOut:", err);
     dispatch(setToast("toastError", "Error logging out", "ios-close-circle"));
   }
 };

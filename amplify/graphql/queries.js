@@ -1,36 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getUserProfile = /* GraphQL */ `
-  query GetUserProfile($id: ID!) {
-    getUserProfile(id: $id) {
-      id
-      owner
-      userTag
-      email
-      # phrases {
-      #   items {
-      #     id
-      #     word
-      #     phrase
-      #     numLikes
-      #     likes
-      #     authorId
-      #     isPublic
-      #     createdAt
-      #     type
-      #     updatedAt
-      #     owner
-      #   }
-      #   nextToken
-      # }
-      wordsBookmarked
-      wordsArchived
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const listUserProfiles = /* GraphQL */ `
   query ListUserProfiles(
     $filter: ModelUserProfileFilterInput
@@ -40,58 +10,48 @@ export const listUserProfiles = /* GraphQL */ `
     listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userTag
-      }
-      nextToken
-    }
-  }
-`;
-export const getPhrase = /* GraphQL */ `
-  query GetPhrase($id: ID!) {
-    getPhrase(id: $id) {
-      id
-      word
-      phrase
-      numLikes
-      likes
-      authorId
-      author {
-        id
-        userTag
-      }
-      isPublic
-      createdAt
-      type
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listPhrases = /* GraphQL */ `
-  query ListPhrases(
-    $filter: ModelPhraseFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPhrases(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        word
-        phrase
-        numLikes
-        likes
-        authorId
-        author {
-          id
-          userTag
-        }
-        isPublic
-        createdAt
-        type
-        updatedAt
         owner
+        userTag
+        email
+        wordsBookmarked
+        wordsArchived
+        createdAt
+        updatedAt
+        phrases {
+          nextToken
+        }
       }
       nextToken
+    }
+  }
+`;
+export const getUserProfile = /* GraphQL */ `
+  query GetUserProfile($id: ID!) {
+    getUserProfile(id: $id) {
+      id
+      owner
+      userTag
+      email
+      wordsBookmarked
+      wordsArchived
+      createdAt
+      updatedAt
+      phrases {
+        items {
+          id
+          word
+          phrase
+          numLikes
+          likes
+          authorId
+          isPublic
+          createdAt
+          type
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -114,16 +74,62 @@ export const userProfileByEmail = /* GraphQL */ `
     ) {
       items {
         id
-        owner
         userTag
-        email
         phrases {
           nextToken
         }
-        wordsBookmarked
-        wordsArchived
+      }
+      nextToken
+    }
+  }
+`;
+export const getPhrase = /* GraphQL */ `
+  query GetPhrase($id: ID!) {
+    getPhrase(id: $id) {
+      id
+      word
+      phrase
+      numLikes
+      likes
+      authorId
+      isPublic
+      createdAt
+      type
+      updatedAt
+      author {
+        id
+        userTag
+        phrases {
+          nextToken
+        }
+      }
+      owner
+    }
+  }
+`;
+export const listPhrases = /* GraphQL */ `
+  query ListPhrases(
+    $filter: ModelPhraseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhrases(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        word
+        phrase
+        numLikes
+        likes
+        authorId
+        isPublic
         createdAt
+        type
         updatedAt
+        author {
+          id
+          userTag
+        }
+        owner
       }
       nextToken
     }
@@ -153,14 +159,14 @@ export const phrasesByUser = /* GraphQL */ `
         numLikes
         likes
         authorId
-        author {
-          id
-          userTag
-        }
         isPublic
         createdAt
         type
         updatedAt
+        author {
+          id
+          userTag
+        }
         owner
       }
       nextToken
@@ -191,14 +197,14 @@ export const phrasesByDate = /* GraphQL */ `
         numLikes
         likes
         authorId
-        author {
-          id
-          userTag
-        }
         isPublic
         createdAt
         type
         updatedAt
+        author {
+          id
+          userTag
+        }
         owner
       }
       nextToken
@@ -229,14 +235,14 @@ export const phrasesByLikes = /* GraphQL */ `
         numLikes
         likes
         authorId
-        author {
-          id
-          userTag
-        }
         isPublic
         createdAt
         type
         updatedAt
+        author {
+          id
+          userTag
+        }
         owner
       }
       nextToken

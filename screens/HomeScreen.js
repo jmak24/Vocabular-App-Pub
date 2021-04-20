@@ -21,7 +21,7 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const HomeScreen = ({ navigation }) => {
-  const { wordsBookmarked } = useSelector((state) => state.words);
+  const wordsBookmarked = useSelector((state) => state.words.wordsBookmarked);
 
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
@@ -48,13 +48,13 @@ const HomeScreen = ({ navigation }) => {
               color={Colors.iconGray}
             />
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={onPressLogin}>
+          {/* <TouchableWithoutFeedback onPress={onPressLogin}>
             <Ionicons
               name={"ios-person-outline"}
               size={32}
               color={Colors.iconGray}
             />
-          </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback> */}
         </View>
         {wordsBookmarked && wordsBookmarked.length > 0 ? (
           <FlatList
@@ -111,9 +111,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   booksImage: {
-    width: 90,
-    height: 90,
-    right: 8,
+    width: 70,
+    height: 70,
     marginBottom: 40,
   },
   searchText: {

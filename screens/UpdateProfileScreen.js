@@ -19,6 +19,7 @@ import Sizing from "../constants/Sizing";
 const UpdateProfileScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const { id: userId, userTag } = useSelector((state) => state.userProfile);
+
   const [submitEnabled, setSubmitEnabled] = useState(false);
   const [formState, setFormState] = useState({
     currentPassword: "",

@@ -7,6 +7,7 @@ const createLoadingActionType = (suffix) => {
 export const FETCH_WORD_DETAILS = "FETCH_WORD_DETAILS";
 export const FETCH_PHRASES = "FETCH_PHRASES";
 export const FETCH_USER_PROFILE = "FETCH_USER_PROFILE";
+export const FETCH_SUGGESTED_WORDS = "FETCH_SUGGESTED_WORDS";
 
 const createFetchWordRequest = createLoadingActionType("REQUEST");
 const createFetchWordSuccess = createLoadingActionType("SUCCESS");
@@ -17,6 +18,9 @@ const createFetchPhrasesFail = createLoadingActionType("FAIL");
 const createFetchUserRequest = createLoadingActionType("REQUEST");
 const createFetchUserSuccess = createLoadingActionType("SUCCESS");
 const createFetchUserFail = createLoadingActionType("FAIL");
+const createFetchSuggestedRequest = createLoadingActionType("REQUEST");
+const createFetchSuggestedSuccess = createLoadingActionType("SUCCESS");
+const createFetchSuggestedFail = createLoadingActionType("FAIL");
 
 const FETCH_WORD_DETAILS_REQUEST = createFetchWordRequest(FETCH_WORD_DETAILS);
 const FETCH_WORD_DETAILS_SUCCESS = createFetchWordSuccess(FETCH_WORD_DETAILS);
@@ -27,6 +31,15 @@ const FETCH_PHRASES_FAIL = createFetchPhrasesFail(FETCH_PHRASES);
 const FETCH_USER_PROFILE_REQUEST = createFetchUserRequest(FETCH_USER_PROFILE);
 const FETCH_USER_PROFILE_SUCCESS = createFetchUserSuccess(FETCH_USER_PROFILE);
 const FETCH_USER_PROFILE_FAIL = createFetchUserFail(FETCH_USER_PROFILE);
+const FETCH_SUGGESTED_WORDS_REQUEST = createFetchSuggestedRequest(
+  FETCH_SUGGESTED_WORDS
+);
+const FETCH_SUGGESTED_WORDS_SUCCESS = createFetchSuggestedSuccess(
+  FETCH_SUGGESTED_WORDS
+);
+const FETCH_SUGGESTED_WORDS_FAIL = createFetchSuggestedFail(
+  FETCH_SUGGESTED_WORDS
+);
 
 export const fetchWordDetails = (actionType) => (dispatch) => {
   switch (actionType.toUpperCase()) {
@@ -62,6 +75,19 @@ export const fetchUserProfile = (actionType) => (dispatch) => {
       return dispatch({ type: FETCH_USER_PROFILE_SUCCESS });
     case "FAIL":
       return dispatch({ type: FETCH_USER_PROFILE_FAIL });
+    default:
+      return;
+  }
+};
+
+export const fetchSuggestedWords = (actionType) => (dispatch) => {
+  switch (actionType.toUpperCase()) {
+    case "REQUEST":
+      return dispatch({ type: FETCH_SUGGESTED_WORDS_REQUEST });
+    case "SUCCESS":
+      return dispatch({ type: FETCH_SUGGESTED_WORDS_SUCCESS });
+    case "FAIL":
+      return dispatch({ type: FETCH_SUGGESTED_WORDS_FAIL });
     default:
       return;
   }

@@ -43,12 +43,7 @@ export const setupInitWordsState = () => async (dispatch) => {
     // const wordsBookmarked = WORDS_LIST;
     // const wordsArchived = ARCHIVED_WORDS_LIST;
     // const recentWords = RECENT_WORDS_LIST;
-    // let wordsArchivedList = [];
-    // for (const year in wordsArchived) {
-    //   for (let i = 0; i < 12; i++) {
-    //     wordsArchivedList = wordsArchivedList.concat(wordsArchived[year][i]);
-    //   }
-    // }
+
     const wordsData = (await getAsyncStorage("wordsData")) ?? {};
     const wordsBookmarked = (await getAsyncStorage("wordsBookmarked")) ?? [];
     const wordsArchived = (await getAsyncStorage("wordsArchived")) ?? {};

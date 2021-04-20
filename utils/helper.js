@@ -5,16 +5,10 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "../amplify/graphql/mutations";
 import * as queries from "../amplify/graphql/queries";
 import { Share } from "react-native";
+import env from "../env.js";
 
 import { SPEECH_TYPES } from "../constants/OrderedItems";
 import { setToast } from "../store/actions/toasts";
-
-const wordsAPIurl = "https://wordsapiv1.p.rapidapi.com";
-const rapidapiHost = "wordsapiv1.p.rapidapi.com";
-const rapidapiKey = "003083cb60mshf221133e954e641p19ce9bjsnf315a270c0e0";
-
-const dataMuseAPIurl = "https://api.datamuse.com";
-const suggestedQuery = "/sug?s=";
 
 // Native method to remove prop from object
 export const omitProp = (
@@ -59,24 +53,24 @@ export const getAsyncStorage = async (storageKey) => {
 export const fetchApiWord = async (word) => {
   const config = {
     headers: {
-      "x-rapidapi-host": rapidapiHost,
-      "x-rapidapi-key": rapidapiKey,
+      "x-rapidapi-host": env.RAPID_API_HOST,
+      "x-rapidapi-key": env.RAPID_API_KEY,
     },
   };
   try {
-    const url = wordsAPIurl + "/words/" + word;
+    const url = env.WORDS_API_URL + "/words/" + word;
     const response = await axios.get(url, config);
     return response.data;
   } catch (err) {
-    if (err) console.log("apiWordSerch:", err.response);
+    if (err) console.log("fetchApiWord:", err.response);
   }
 };
 
 // Web service call to DataMuse API
 // Pulls suggested words based on keyword
-export const fetchSuggestedWords = async (keyword) => {
+export const fetchDataMuseWords = async (keyword) => {
   try {
-    const url = dataMuseAPIurl + suggestedQuery + keyword;
+    const url = env.DATA_MUSE_API_URL + "/sug?s=" + keyword;
     const response = await axios.get(url);
     const suggestedWords = response.data.map((item) => item.word);
     return suggestedWords;
@@ -200,6 +194,7 @@ export const updatePhraseLikes = ({ phraseId, userId, likes }) => {
     likes: JSON.stringify(updatedLikes),
     numLikes: updatedLikes.length,
   };
+  console.log(input);
 
   return API.graphql(graphqlOperation(mutations.updatePhrase, { input }));
 };

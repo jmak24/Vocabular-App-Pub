@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
@@ -13,15 +13,15 @@ import phrasesReducer from "./store/reducers/phrases";
 import userProfilerReducer from "./store/reducers/userProfile";
 import loadingReducer from "./store/reducers/loading";
 import AppContainer from "./AppContainer";
-import { setupInitWordsState } from "./store/actions/words";
-import { setUserProfile, loadUserProfile } from "./store/actions/userProfile";
+// import { setupInitWordsState } from "./store/actions/words";
+// import { setUserProfile, loadUserProfile } from "./store/actions/userProfile";
 
 // import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
 // import * as queries from "./amplify/graphql/queries"; // TO REMOVE
 // import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
 
-import Amplify, { Hub } from "aws-amplify";
-import awsconfig from "./aws-exports";
+// import Amplify, { Hub } from "aws-amplify";
+// import awsconfig from "./aws-exports";
 
 // Amplify.configure(awsconfig);
 
@@ -49,7 +49,6 @@ const fetchFonts = () => {
 
 function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const { useProfile: authedUser } = store.getState();
 
   const testAPI = async () => {
     try {
@@ -61,42 +60,6 @@ function App() {
     } catch (err) {
       console.log(err);
     }
-  };
-
-  useEffect(() => {
-    store.dispatch(setupInitWordsState());
-    store.dispatch(loadUserProfile());
-    authListener();
-    // testAPI();
-  }, []);
-
-  useEffect(() => {
-    const authType = authedUser ? "AMAZON_COGNITO_USER_POOLS" : "API_KEY";
-    console.log(authType);
-    Amplify.configure({
-      ...awsconfig,
-      aws_appsync_authenticationType: authType,
-    });
-  }, [authedUser]);
-
-  const authListener = () => {
-    Hub.listen("auth", ({ payload: { event, data } }) => {
-      switch (event) {
-        case "signIn":
-        case "cognitoHostedUI":
-          store.dispatch(loadUserProfile());
-          console.log("SIGNED IN");
-          break;
-        case "signOut":
-          store.dispatch(setUserProfile(null));
-          console.log("SIGNED OUT");
-          break;
-        case "signIn_failure":
-        case "cognitoHostedUI_failure":
-          console.log("SIGN IN FAILURE", data);
-          break;
-      }
-    });
   };
 
   if (!fontLoaded) {
