@@ -14,13 +14,14 @@ import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
 import OptionButton from "../components/OptionButton";
 import {
-  handleLogOut,
+  handleSignOut,
   handleLoadUserPhrases,
   cleanupUserPhrases,
 } from "../store/actions/userProfile";
 import TopNavBar from "../components/TopNavBar";
 import Sizing from "../constants/Sizing";
 import Loading from "../components/Loading";
+import BarChartGraph from "../components/BarChartGraph";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -48,7 +49,9 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(handleLoadUserPhrases({ userId: userProfile.id }));
     return () => {
-      dispatch(cleanupUserPhrases());
+      if (userProfile && userProfile.hasOwnProperty("id")) {
+        dispatch(cleanupUserPhrases());
+      }
     };
   }, []);
 
@@ -72,8 +75,8 @@ const ProfileScreen = ({ navigation }) => {
     updateProfileScreen({ formType: "changePassword" });
   };
 
-  const logOutSelected = () => {
-    dispatch(handleLogOut());
+  const signOutSelected = () => {
+    dispatch(handleSignOut());
     navigation.goBack();
   };
 
@@ -124,13 +127,14 @@ const ProfileScreen = ({ navigation }) => {
                   <CustomText option='subLarge'>{numPhrases}</CustomText>
                 </View>
               </View>
+              <BarChartGraph />
             </View>
             <CustomText style={styles.optionTitle} option='mid'>
               Account
             </CustomText>
             <OptionButton
               icon={"ios-chatbubble-ellipses-outline"}
-              title={"My Phrases"}
+              title={"View My Phrases"}
               onPress={selectMyPhrases}
             />
             <OptionButton
@@ -146,7 +150,7 @@ const ProfileScreen = ({ navigation }) => {
             <OptionButton
               icon={"ios-log-out-outline"}
               title={"Sign out"}
-              onPress={logOutSelected}
+              onPress={signOutSelected}
             />
           </ScrollView>
         )}
@@ -167,11 +171,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "center",
-    paddingHorizontal: 20,
     paddingTop: Sizing.topNavBarHeight,
   },
   scrollView: {
     width: "100%",
+    paddingHorizontal: 20,
     paddingTop: 10,
   },
   profileCard: {

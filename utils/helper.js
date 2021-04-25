@@ -16,6 +16,12 @@ export const omitProp = (
   { [propToOmit]: _, ...omittedPropObj } = {}
 ) => omittedPropObj;
 
+// Capitalize words
+export const capitalize = (s) => {
+  if (typeof s !== "string") return "";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
 // Check if object is empty
 export const objIsNotEmpty = (myObject) => {
   return (
@@ -194,7 +200,6 @@ export const updatePhraseLikes = ({ phraseId, userId, likes }) => {
     likes: JSON.stringify(updatedLikes),
     numLikes: updatedLikes.length,
   };
-  console.log(input);
 
   return API.graphql(graphqlOperation(mutations.updatePhrase, { input }));
 };

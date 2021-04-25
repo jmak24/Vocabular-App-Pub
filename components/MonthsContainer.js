@@ -10,21 +10,7 @@ import PropTypes from "prop-types";
 
 import CustomText from "./CustomText";
 import Colors from "../constants/Colors";
-
-const monthList = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
+import { MONTHS_LIST } from "../constants/OrderedItems";
 
 const MonthsContainer = ({ monthSelected, setMonthSelected }) => {
   const scrollRef = useRef(null);
@@ -50,7 +36,7 @@ const MonthsContainer = ({ monthSelected, setMonthSelected }) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        {monthList.map((item, index) => (
+        {MONTHS_LIST.map((item, index) => (
           <TouchableWithoutFeedback
             key={item}
             onPress={() => setMonthSelected(index)}
@@ -77,7 +63,7 @@ const MonthsContainer = ({ monthSelected, setMonthSelected }) => {
                 }}
                 option='subLargeGray'
               >
-                {item}
+                {item.toUpperCase()}
               </CustomText>
               <View
                 style={{

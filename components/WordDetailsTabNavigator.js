@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -135,7 +135,6 @@ const WordDetailsTabNavigator = ({
             routeIndex={0}
           />
         )}
-        style={styles.tabNav}
       ></Tab.Screen>
       <Tab.Screen
         name='Phrases'
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     backgroundColor: Colors.grayTint,
-    zIndex: 100,
+    zIndex: 10,
   },
   activeTab: {
     height: "100%",

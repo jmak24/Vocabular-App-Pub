@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "flex-start",
-    paddingHorizontal: 20,
     paddingTop: Sizing.topNavBarHeight,
   },
   list: {
     width: "100%",
+    paddingHorizontal: 20,
   },
   phraseInfo: {
     marginTop: 8,

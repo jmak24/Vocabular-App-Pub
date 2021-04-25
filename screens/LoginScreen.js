@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -178,53 +179,57 @@ const LoginScreen = ({ navigation }) => {
                   </CustomText>
                 </View>
                 <View style={styles.mainSection}>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-person-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) =>
-                        handleSetFieldInput(event, "userTag")
-                      }
-                      placeholder='Username'
-                      value={formState.userTag}
-                    />
-                  </View>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-mail-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) => handleSetFieldInput(event, "email")}
-                      placeholder='Email address'
-                      value={formState.email}
-                    />
-                  </View>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-lock-closed-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) =>
-                        handleSetFieldInput(event, "password")
-                      }
-                      placeholder='Password'
-                      secureTextEntry={true}
-                      value={formState.password}
-                    />
-                  </View>
+                  <KeyboardAvoidingView behavior='padding'>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-person-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "userTag")
+                        }
+                        placeholder='Username'
+                        value={formState.userTag}
+                      />
+                    </View>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-mail-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "email")
+                        }
+                        placeholder='Email address'
+                        value={formState.email}
+                      />
+                    </View>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-lock-closed-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "password")
+                        }
+                        placeholder='Password'
+                        secureTextEntry={true}
+                        value={formState.password}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
                   <View
                     style={[
                       styles.button,
@@ -263,21 +268,25 @@ const LoginScreen = ({ navigation }) => {
                     email is only used to recover your password.
                   </CustomText>
                 </View>
-                <View style={styles.fieldInput}>
-                  <Ionicons
-                    name={"ios-checkmark-circle"}
-                    size={26}
-                    style={styles.icon}
-                    color={Colors.iconLightGray}
-                  />
-                  <TextInput
-                    style={styles.textInput}
-                    onChange={(event) => handleSetFieldInput(event, "authCode")}
-                    value={formState.authCode}
-                    placeholder='Verification Code'
-                    keyboardType='numeric'
-                  />
-                </View>
+                <KeyboardAvoidingView behavior='padding'>
+                  <View style={styles.fieldInput}>
+                    <Ionicons
+                      name={"ios-checkmark-circle"}
+                      size={26}
+                      style={styles.icon}
+                      color={Colors.iconLightGray}
+                    />
+                    <TextInput
+                      style={styles.textInput}
+                      onChange={(event) =>
+                        handleSetFieldInput(event, "authCode")
+                      }
+                      value={formState.authCode}
+                      placeholder='Verification Code'
+                      keyboardType='numeric'
+                    />
+                  </View>
+                </KeyboardAvoidingView>
                 <View
                   style={[
                     styles.button,
@@ -304,37 +313,41 @@ const LoginScreen = ({ navigation }) => {
                   </CustomText>
                 </View>
                 <View style={styles.mainSection}>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-mail-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) => handleSetFieldInput(event, "email")}
-                      placeholder='Email address'
-                      value={formState.email}
-                    />
-                  </View>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-lock-closed-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) =>
-                        handleSetFieldInput(event, "password")
-                      }
-                      placeholder='Password'
-                      secureTextEntry={true}
-                      value={formState.password}
-                    />
-                  </View>
+                  <KeyboardAvoidingView behavior='padding'>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-mail-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "email")
+                        }
+                        placeholder='Email address'
+                        value={formState.email}
+                      />
+                    </View>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-lock-closed-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "password")
+                        }
+                        placeholder='Password'
+                        secureTextEntry={true}
+                        value={formState.password}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
                   <View
                     style={[
                       styles.button,
@@ -377,20 +390,24 @@ const LoginScreen = ({ navigation }) => {
                   </CustomText>
                 </View>
                 <View style={styles.mainSection}>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-mail-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) => handleSetFieldInput(event, "email")}
-                      placeholder='Email address'
-                      value={formState.email}
-                    />
-                  </View>
+                  <KeyboardAvoidingView behavior='padding'>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-mail-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "email")
+                        }
+                        placeholder='Email address'
+                        value={formState.email}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
                   <View
                     style={[
                       styles.button,
@@ -424,54 +441,58 @@ const LoginScreen = ({ navigation }) => {
                   </CustomText>
                 </View>
                 <View style={styles.mainSection}>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-mail-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) => handleSetFieldInput(event, "email")}
-                      placeholder='Email address'
-                      value={formState.email}
-                    />
-                  </View>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-checkmark-circle"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) =>
-                        handleSetFieldInput(event, "authCode")
-                      }
-                      value={formState.authCode}
-                      placeholder='Verification Code'
-                      keyboardType='numeric'
-                    />
-                  </View>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-lock-closed-outline"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) =>
-                        handleSetFieldInput(event, "password")
-                      }
-                      placeholder='Password'
-                      secureTextEntry={true}
-                      value={formState.password}
-                    />
-                  </View>
+                  <KeyboardAvoidingView behavior='padding'>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-mail-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "email")
+                        }
+                        placeholder='Email address'
+                        value={formState.email}
+                      />
+                    </View>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-checkmark-circle"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "authCode")
+                        }
+                        value={formState.authCode}
+                        placeholder='Verification Code'
+                        keyboardType='numeric'
+                      />
+                    </View>
+                    <View style={styles.fieldInput}>
+                      <Ionicons
+                        name={"ios-lock-closed-outline"}
+                        size={26}
+                        style={styles.icon}
+                        color={Colors.iconLightGray}
+                      />
+                      <TextInput
+                        style={styles.textInput}
+                        onChange={(event) =>
+                          handleSetFieldInput(event, "password")
+                        }
+                        placeholder='Password'
+                        secureTextEntry={true}
+                        value={formState.password}
+                      />
+                    </View>
+                  </KeyboardAvoidingView>
                   <View
                     style={[
                       styles.button,

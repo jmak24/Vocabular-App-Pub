@@ -99,13 +99,14 @@ export const handlePostPhrase = ({ word, textInput, isPublic }) => async (
 };
 
 export const handleRemovePhrase = ({ phraseId }) => async (dispatch) => {
+  dispatch({
+    type: REMOVE_PHRASE,
+    payload: { phraseId },
+  });
   try {
     await deletePhrase({ phraseId });
-    dispatch({
-      type: REMOVE_PHRASE,
-      payload: { phraseId },
-    });
   } catch (err) {
+    console.log("handleRemovePhrase:", err);
     dispatch(
       setToast("toastError", "Failed to Remove Phrase", "ios-close-circle")
     );

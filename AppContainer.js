@@ -9,10 +9,11 @@ import { setUserProfile, loadUserProfile } from "./store/actions/userProfile";
 
 import Amplify, { Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
+import { getAsyncStorage, setAsyncStorage } from "./utils/helper.js";
 
 const AppContainer = () => {
   const dispatch = useDispatch();
-  const authedUser = useSelector((state) => state.userProfile);
+  const userProfile = useSelector((state) => state.userProfile);
 
   // const testAPI = async () => {
   //   try {
@@ -26,6 +27,14 @@ const AppContainer = () => {
   //   }
   // };
 
+  // const getIsFirstTime = async () => {
+  //   const firstTime = await getAsyncStorage("isFirstTime");
+  //   if (firstTime) {
+  //     await setAsyncStorage('isFirstTime', false);
+  //   }
+  //   return firstTime;
+  // }
+
   useEffect(() => {
     dispatch(setupInitWordsState());
     dispatch(loadUserProfile());
@@ -34,13 +43,13 @@ const AppContainer = () => {
   }, []);
 
   useEffect(() => {
-    const authType = authedUser ? "AMAZON_COGNITO_USER_POOLS" : "API_KEY";
+    const authType = userProfile ? "AMAZON_COGNITO_USER_POOLS" : "API_KEY";
     console.log(authType);
     Amplify.configure({
       ...awsconfig,
       aws_appsync_authenticationType: authType,
     });
-  }, [authedUser]);
+  }, [userProfile]);
 
   const authListener = () => {
     Hub.listen("auth", ({ payload: { event, data } }) => {

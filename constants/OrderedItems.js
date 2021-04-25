@@ -15,3 +15,18 @@ export const RELATED_TYPES = [
   "inCategory",
   "antonyms",
 ];
+
+export const MONTHS_LIST = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dec",
+];

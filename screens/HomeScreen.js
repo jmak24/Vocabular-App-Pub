@@ -37,6 +37,39 @@ const HomeScreen = ({ navigation }) => {
     navigation.push("Login");
   };
 
+  const MainContent = () => {
+    if (wordsBookmarked && wordsBookmarked.length > 0) {
+      return (
+        <FlatList
+          data={wordsBookmarked}
+          style={styles.list}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                style={styles.listWord}
+                onPress={() => selectWordHandler(item)}
+              >
+                <CustomText option={"subLarge"}>{item}</CustomText>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      );
+    } else if (wordsBookmarked && wordsBookmarked.length === 0) {
+      return (
+        <View style={styles.centerContent}>
+          <Image style={styles.booksImage} source={BookmarkImage} />
+          <CustomText style={{ textAlign: "center" }} option='subLargeGray'>
+            Start Bookmarking{"\n"}Words!
+          </CustomText>
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
@@ -56,30 +89,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </TouchableWithoutFeedback> */}
         </View>
-        {wordsBookmarked && wordsBookmarked.length > 0 ? (
-          <FlatList
-            data={wordsBookmarked}
-            style={styles.list}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  style={styles.listWord}
-                  onPress={() => selectWordHandler(item)}
-                >
-                  <CustomText option={"subLarge"}>{item}</CustomText>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        ) : (
-          <View style={styles.centerContent}>
-            <Image style={styles.booksImage} source={BookmarkImage} />
-            <CustomText style={{ textAlign: "center" }} option='subLargeGray'>
-              Start Bookmarking{"\n"}Words!
-            </CustomText>
-          </View>
-        )}
+        <MainContent />
       </View>
     </SafeAreaView>
   );
@@ -97,7 +107,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "flex-start",
-    paddingHorizontal: 20,
   },
   centerContent: {
     flex: 1,
@@ -109,6 +118,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "flex-end",
+    paddingHorizontal: 20,
   },
   booksImage: {
     width: 70,
@@ -121,6 +131,7 @@ const styles = StyleSheet.create({
   list: {
     width: "100%",
     paddingTop: 20,
+    paddingHorizontal: 20,
   },
   listWord: {
     paddingVertical: 8,

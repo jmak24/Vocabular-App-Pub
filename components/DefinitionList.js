@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     paddingTop: 10 + HeaderHeight + NavBarHeight,
     paddingHorizontal: 20,
     backgroundColor: Colors.grayTint,
+    zIndex: 10,
   },
   speechCategoryBar: {
     width: "100%",

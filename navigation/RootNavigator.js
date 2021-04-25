@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
 import MyPhrasesScreen from "../screens/MyPhrasesScreen";
 import LoginScreen from "../screens/LoginScreen";
+import AboutScreen from "../screens/AboutScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +53,7 @@ const MainNavigator = () => (
     <Stack.Screen name='UpdateProfile' component={UpdateProfileScreen} />
     <Stack.Screen name='MyPhrases' component={MyPhrasesScreen} />
     <Stack.Screen name='Login' component={LoginScreen} />
+    <Stack.Screen name='About' component={AboutScreen} />
   </Stack.Navigator>
 );
 

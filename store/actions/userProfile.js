@@ -55,7 +55,6 @@ export const loadUserProfile = () => async (dispatch) => {
     const cognitoUser = await Auth.currentAuthenticatedUser();
     if (cognitoUser) {
       const userId = cognitoUser.username;
-      console.log(userId);
       const email = cognitoUser.attributes.email;
       const userProfileRes = await getUserProfile({
         id: userId,
@@ -136,13 +135,13 @@ export const handleLoadUserPhrases = ({ userId }) => async (dispatch) => {
   }
 };
 
-export const handleLogOut = () => async (dispatch) => {
+export const handleSignOut = () => async (dispatch) => {
   try {
     await Auth.signOut();
     dispatch(clearUserProfile());
     dispatch(setToast("toastInfo", "Logged out", "ios-checkmark-circle"));
   } catch (err) {
-    console.log("handleLogOut:", err);
+    console.log("handleSignOut:", err);
     dispatch(setToast("toastError", "Error logging out", "ios-close-circle"));
   }
 };

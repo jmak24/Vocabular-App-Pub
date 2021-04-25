@@ -203,7 +203,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-start",
     paddingTop: 50,
-    paddingHorizontal: 20,
     backgroundColor: Colors.background,
   },
   row: {
@@ -227,6 +226,7 @@ const styles = StyleSheet.create({
   list: {
     width: "100%",
     flex: 1,
+    paddingHorizontal: 20,
   },
   listHeader: {
     marginVertical: 30,

@@ -180,11 +180,6 @@ WordDetailsScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  // screen: {
-  //   flex: 1,
-  //   alignItems: "flex-start",
-  //   backgroundColor: Colors.grayTint,
-  // },
   safeArea: {
     flex: 1,
     backgroundColor: Colors.grayTint,

@@ -19,6 +19,7 @@ const PhraseCard = ({ navigation, details, myPhraseSection, authedUserId }) => {
   const eyeIcon = isPublic ? "ios-eye-outline" : "ios-eye-off-outline";
   const hasLiked = likes.includes(authedUserId);
   const isAuthor = authedUserId === authorId;
+  const fillHeartLike = hasLiked || (isAuthor && likes.length > 0);
   // if you are author of phrase and is set to private
   if (isAuthor && !myPhraseSection && !isPublic) return null;
 
@@ -88,10 +89,12 @@ const PhraseCard = ({ navigation, details, myPhraseSection, authedUserId }) => {
           )}
           <TouchableOpacity onPress={phraseLikePressed}>
             <Ionicons
-              name={hasLiked ? "ios-heart" : "ios-heart-outline"}
+              name={fillHeartLike ? "ios-heart" : "ios-heart-outline"}
               size={24}
               style={styles.heartIcon}
-              color={hasLiked ? Colors.iconHeartFilled : Colors.iconLightGray}
+              color={
+                fillHeartLike ? Colors.iconHeartFilled : Colors.iconLightGray
+              }
             />
           </TouchableOpacity>
         </View>

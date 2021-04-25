@@ -9,6 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import PropTypes from "prop-types";
+import * as Linking from "expo-linking";
 
 import CustomText from "../components/CustomText";
 import Colors from "../constants/Colors";
@@ -25,17 +26,17 @@ const screen = Dimensions.get("screen");
 
 const SettingsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const authedUser = useSelector((state) => state.userProfile);
+  const userProfile = useSelector((state) => state.userProfile);
 
   const selectMyProfile = () => {
-    if (authedUser) {
+    if (userProfile) {
       navigation.push("Profile");
     } else {
       navigation.push("Login");
     }
   };
 
-  const clearBookmarksConfirmation = () =>
+  const handlePressClearBookmarks = () =>
     Alert.alert("Are you sure you want to clear all Bookmarked words?", "", [
       {
         text: "No",
@@ -44,7 +45,7 @@ const SettingsScreen = ({ navigation }) => {
       { text: "Yes", onPress: () => dispatch(clearBookmarkedWords()) },
     ]);
 
-  const clearArchiveConfirmation = () =>
+  const handlePressClearArchive = () =>
     Alert.alert("Are you sure you want to clear all Archived words?", "", [
       {
         text: "No",
@@ -52,6 +53,10 @@ const SettingsScreen = ({ navigation }) => {
       },
       { text: "Yes", onPress: () => dispatch(clearArchivedWords()) },
     ]);
+
+  const handlePressFeedback = () => {
+    Linking.openURL("mailto:support@expo.io");
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -69,12 +74,12 @@ const SettingsScreen = ({ navigation }) => {
           <OptionButton
             icon={"ios-bookmark-outline"}
             title={"Clear Bookmarked Words"}
-            onPress={clearBookmarksConfirmation}
+            onPress={handlePressClearBookmarks}
           />
           <OptionButton
             icon={"ios-archive-outline"}
             title={"Clear Archived Words"}
-            onPress={clearArchiveConfirmation}
+            onPress={handlePressClearArchive}
           />
           <CustomText style={styles.optionTitle} option='mid'>
             Support Us
@@ -87,8 +92,13 @@ const SettingsScreen = ({ navigation }) => {
           <OptionButton
             icon={"ios-chatbox-ellipses-outline"}
             title={"Give us Feedback"}
+            onPress={handlePressFeedback}
           />
-          <OptionButton icon={"ios-help-circle-outline"} title={"Help"} />
+          <OptionButton
+            icon={"ios-help-circle-outline"}
+            title={"About"}
+            onPress={() => navigation.push("About")}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -107,11 +117,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "center",
-    paddingHorizontal: 20,
     paddingTop: Sizing.topNavBarHeight,
   },
   scrollView: {
     width: "100%",
+    paddingHorizontal: 20,
   },
   optionTitle: {
     marginBottom: 16,
