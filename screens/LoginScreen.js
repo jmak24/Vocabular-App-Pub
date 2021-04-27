@@ -166,20 +166,24 @@ const LoginScreen = ({ navigation }) => {
         <Loading />
       ) : (
         <ScrollView>
-          <View style={styles.screen}>
-            {formState.formType === "signUp" && (
-              <Fragment>
-                <View style={styles.headerSection}>
-                  <Image style={styles.logo} source={LogoIcon} />
-                  <CustomText style={styles.header} option='thin'>
-                    Welcome
-                  </CustomText>
-                  <CustomText style={styles.subHeader} option='mid'>
-                    Sign up to use Vocabular
-                  </CustomText>
-                </View>
-                <View style={styles.mainSection}>
-                  <KeyboardAvoidingView behavior='padding'>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            keyboardVerticalOffset={40}
+            behavior={"position"}
+          >
+            <View style={styles.screen}>
+              {formState.formType === "signUp" && (
+                <Fragment>
+                  <View style={styles.headerSection}>
+                    <Image style={styles.logo} source={LogoIcon} />
+                    <CustomText style={styles.header} option='thin'>
+                      Welcome
+                    </CustomText>
+                    <CustomText style={styles.subHeader} option='mid'>
+                      Sign up to use Vocabular
+                    </CustomText>
+                  </View>
+                  <View style={styles.mainSection}>
                     <View style={styles.fieldInput}>
                       <Ionicons
                         name={"ios-person-outline"}
@@ -229,46 +233,44 @@ const LoginScreen = ({ navigation }) => {
                         value={formState.password}
                       />
                     </View>
-                  </KeyboardAvoidingView>
-                  <View
-                    style={[
-                      styles.button,
-                      !submitEnabled && styles.buttonDisabled,
-                    ]}
-                  >
-                    <TouchableOpacity onPress={signUp}>
-                      <CustomText option='mid' style={{ color: "#fff" }}>
-                        Sign Up
+                    <View
+                      style={[
+                        styles.button,
+                        !submitEnabled && styles.buttonDisabled,
+                      ]}
+                    >
+                      <TouchableOpacity onPress={signUp}>
+                        <CustomText option='mid' style={{ color: "#fff" }}>
+                          Sign Up
+                        </CustomText>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.otherOption}
+                      onPress={() => updateFormType("signIn", true)}
+                    >
+                      <CustomText option='bodyGray'>
+                        Already have an account?
+                      </CustomText>
+                      <CustomText option='body' style={styles.signUpOrSignIn}>
+                        Sign In
                       </CustomText>
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    style={styles.otherOption}
-                    onPress={() => updateFormType("signIn", true)}
-                  >
-                    <CustomText option='bodyGray'>
-                      Already have an account?
+                </Fragment>
+              )}
+              {formState.formType === "confirmSignUp" && (
+                <Fragment>
+                  <View style={styles.headerSection}>
+                    <Image style={styles.logo} source={LogoIcon} />
+                    <CustomText style={styles.header} option='thin'>
+                      Verify Email
                     </CustomText>
-                    <CustomText option='body' style={styles.signUpOrSignIn}>
-                      Sign In
+                    <CustomText style={styles.subHeader} option='mid'>
+                      Please input the verification code sent to your email.
+                      Your email is only used to recover your password.
                     </CustomText>
-                  </TouchableOpacity>
-                </View>
-              </Fragment>
-            )}
-            {formState.formType === "confirmSignUp" && (
-              <Fragment>
-                <View style={styles.headerSection}>
-                  <Image style={styles.logo} source={LogoIcon} />
-                  <CustomText style={styles.header} option='thin'>
-                    Verify Email
-                  </CustomText>
-                  <CustomText style={styles.subHeader} option='mid'>
-                    Please input the verification code sent to your email. Your
-                    email is only used to recover your password.
-                  </CustomText>
-                </View>
-                <KeyboardAvoidingView behavior='padding'>
+                  </View>
                   <View style={styles.fieldInput}>
                     <Ionicons
                       name={"ios-checkmark-circle"}
@@ -286,34 +288,32 @@ const LoginScreen = ({ navigation }) => {
                       keyboardType='numeric'
                     />
                   </View>
-                </KeyboardAvoidingView>
-                <View
-                  style={[
-                    styles.button,
-                    !submitEnabled && styles.buttonDisabled,
-                  ]}
-                >
-                  <TouchableOpacity onPress={confirmSignUp}>
-                    <CustomText option='mid' style={{ color: "#fff" }}>
-                      Confirm Sign Up
+                  <View
+                    style={[
+                      styles.button,
+                      !submitEnabled && styles.buttonDisabled,
+                    ]}
+                  >
+                    <TouchableOpacity onPress={confirmSignUp}>
+                      <CustomText option='mid' style={{ color: "#fff" }}>
+                        Confirm Sign Up
+                      </CustomText>
+                    </TouchableOpacity>
+                  </View>
+                </Fragment>
+              )}
+              {formState.formType === "signIn" && (
+                <Fragment>
+                  <View style={styles.headerSection}>
+                    <Image style={styles.logo} source={LogoIcon} />
+                    <CustomText style={styles.header} option='thin'>
+                      Welcome Back
                     </CustomText>
-                  </TouchableOpacity>
-                </View>
-              </Fragment>
-            )}
-            {formState.formType === "signIn" && (
-              <Fragment>
-                <View style={styles.headerSection}>
-                  <Image style={styles.logo} source={LogoIcon} />
-                  <CustomText style={styles.header} option='thin'>
-                    Welcome Back
-                  </CustomText>
-                  <CustomText style={styles.subHeader} option='mid'>
-                    Sign in to Vocabular
-                  </CustomText>
-                </View>
-                <View style={styles.mainSection}>
-                  <KeyboardAvoidingView behavior='padding'>
+                    <CustomText style={styles.subHeader} option='mid'>
+                      Sign in to Vocabular
+                    </CustomText>
+                  </View>
+                  <View style={styles.mainSection}>
                     <View style={styles.fieldInput}>
                       <Ionicons
                         name={"ios-mail-outline"}
@@ -347,50 +347,48 @@ const LoginScreen = ({ navigation }) => {
                         value={formState.password}
                       />
                     </View>
-                  </KeyboardAvoidingView>
-                  <View
-                    style={[
-                      styles.button,
-                      !submitEnabled && styles.buttonDisabled,
-                    ]}
-                  >
-                    <TouchableOpacity onPress={signIn}>
-                      <CustomText option='mid' style={{ color: "#fff" }}>
-                        Sign In
+                    <View
+                      style={[
+                        styles.button,
+                        !submitEnabled && styles.buttonDisabled,
+                      ]}
+                    >
+                      <TouchableOpacity onPress={signIn}>
+                        <CustomText option='mid' style={{ color: "#fff" }}>
+                          Sign In
+                        </CustomText>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.otherOption}
+                      onPress={() => updateFormType("signUp", true)}
+                    >
+                      <CustomText option='bodyGray'>
+                        Don't have an account yet?
+                      </CustomText>
+                      <CustomText option='body' style={styles.signUpOrSignIn}>
+                        Sign Up
+                      </CustomText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => updateFormType("forgotPassword", true)}
+                    >
+                      <CustomText option='bodyGray'>
+                        Forgot your password?
                       </CustomText>
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    style={styles.otherOption}
-                    onPress={() => updateFormType("signUp", true)}
-                  >
-                    <CustomText option='bodyGray'>
-                      Don't have an account yet?
+                </Fragment>
+              )}
+              {formState.formType === "forgotPassword" && (
+                <Fragment>
+                  <View style={styles.headerSection}>
+                    <Image style={styles.logo} source={LogoIcon} />
+                    <CustomText style={styles.subHeader} option='mid'>
+                      Enter your email to reset your password.
                     </CustomText>
-                    <CustomText option='body' style={styles.signUpOrSignIn}>
-                      Sign Up
-                    </CustomText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => updateFormType("forgotPassword", true)}
-                  >
-                    <CustomText option='bodyGray'>
-                      Forgot your password?
-                    </CustomText>
-                  </TouchableOpacity>
-                </View>
-              </Fragment>
-            )}
-            {formState.formType === "forgotPassword" && (
-              <Fragment>
-                <View style={styles.headerSection}>
-                  <Image style={styles.logo} source={LogoIcon} />
-                  <CustomText style={styles.subHeader} option='mid'>
-                    Enter your email to reset your password.
-                  </CustomText>
-                </View>
-                <View style={styles.mainSection}>
-                  <KeyboardAvoidingView behavior='padding'>
+                  </View>
+                  <View style={styles.mainSection}>
                     <View style={styles.fieldInput}>
                       <Ionicons
                         name={"ios-mail-outline"}
@@ -407,41 +405,39 @@ const LoginScreen = ({ navigation }) => {
                         value={formState.email}
                       />
                     </View>
-                  </KeyboardAvoidingView>
-                  <View
-                    style={[
-                      styles.button,
-                      !submitEnabled && styles.buttonDisabled,
-                    ]}
-                  >
-                    <TouchableOpacity onPress={forgotPassword}>
-                      <CustomText option='mid' style={{ color: "#fff" }}>
-                        Reset password
+                    <View
+                      style={[
+                        styles.button,
+                        !submitEnabled && styles.buttonDisabled,
+                      ]}
+                    >
+                      <TouchableOpacity onPress={forgotPassword}>
+                        <CustomText option='mid' style={{ color: "#fff" }}>
+                          Reset password
+                        </CustomText>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.otherOption}
+                      onPress={() => updateFormType("signIn", true)}
+                    >
+                      <CustomText option='bodyGray'>
+                        Return to Sign in screen
                       </CustomText>
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    style={styles.otherOption}
-                    onPress={() => updateFormType("signIn", true)}
-                  >
-                    <CustomText option='bodyGray'>
-                      Return to Sign in screen
+                </Fragment>
+              )}
+              {formState.formType === "resetPassword" && (
+                <Fragment>
+                  <View style={styles.headerSection}>
+                    <Image style={styles.logo} source={LogoIcon} />
+                    <CustomText style={styles.subHeader} option='mid'>
+                      Enter the code you received in your email and input a new
+                      password.
                     </CustomText>
-                  </TouchableOpacity>
-                </View>
-              </Fragment>
-            )}
-            {formState.formType === "resetPassword" && (
-              <Fragment>
-                <View style={styles.headerSection}>
-                  <Image style={styles.logo} source={LogoIcon} />
-                  <CustomText style={styles.subHeader} option='mid'>
-                    Enter the code you received in your email and input a new
-                    password.
-                  </CustomText>
-                </View>
-                <View style={styles.mainSection}>
-                  <KeyboardAvoidingView behavior='padding'>
+                  </View>
+                  <View style={styles.mainSection}>
                     <View style={styles.fieldInput}>
                       <Ionicons
                         name={"ios-mail-outline"}
@@ -492,23 +488,23 @@ const LoginScreen = ({ navigation }) => {
                         value={formState.password}
                       />
                     </View>
-                  </KeyboardAvoidingView>
-                  <View
-                    style={[
-                      styles.button,
-                      !submitEnabled && styles.buttonDisabled,
-                    ]}
-                  >
-                    <TouchableOpacity onPress={resetPassword}>
-                      <CustomText option='mid' style={{ color: "#fff" }}>
-                        Reset password
-                      </CustomText>
-                    </TouchableOpacity>
+                    <View
+                      style={[
+                        styles.button,
+                        !submitEnabled && styles.buttonDisabled,
+                      ]}
+                    >
+                      <TouchableOpacity onPress={resetPassword}>
+                        <CustomText option='mid' style={{ color: "#fff" }}>
+                          Reset password
+                        </CustomText>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              </Fragment>
-            )}
-          </View>
+                </Fragment>
+              )}
+            </View>
+          </KeyboardAvoidingView>
         </ScrollView>
       )}
       <View style={styles.closeBtn}>

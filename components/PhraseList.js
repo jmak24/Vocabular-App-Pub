@@ -34,7 +34,7 @@ const PhraseList = ({ navigation, forwardRef, scrollY, routeIndex, word }) => {
   const authedUserId = userProfile && userProfile.id;
 
   const addPhrasePressed = () => {
-    if (userProfile) {
+    if (userProfile.isAuthed) {
       toggleModal();
     } else {
       navigation.push("Login");
