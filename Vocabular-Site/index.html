@@ -10,205 +10,204 @@
   <link rel="icon" type="image/png" href="assets/favicon32x32.png">
   <link href="https://fonts.googleapis.com/css?family=Hind+Vadodara:400,700|Mukta:500,700" rel="stylesheet">
 
-  <link rel="stylesheet" href="src/scss/style.css">
+  <link rel="stylesheet" href="dist/css/style.css">
   <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 </head>
 
 <body class="is-boxed has-animations">
-  <div class="body-wrap boxed-container">
-    <header class="site-header">
+  <header class="site-header">
+    <div class="container">
+      <div class="site-header-inner">
+        <div class="brand header-brand">
+          <a href="/">
+            <img width="60" alt="vocabular-logo" src="assets/icon.png" /></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
       <div class="container">
-        <div class="site-header-inner">
-          <div class="brand header-brand">
-            <a href="/">
-              <img width="60" alt="vocabular-logo" src="assets/icon.png" /></a>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <h1 class="hero-title h1-mobile mt-0 is-revealing">Vocabular</h1>
+            <div class="hero-underline"></div>
+            <h1 class="hero-title h1-mobile mt-0 is-revealing">A simple, clutter-free pocket dictionary</h1>
+            <p class="hero-paragraph is-revealing">Change the way you lookup words and retain the meaning of them.
+              Vocabular is your simple ad-free solution to learning new words and expanding your vocabulary.</p>
+            <a href="#">
+              <img width="155" class="hero-cta is-revealing" src="assets/iOS-download-badge.svg" /></a>
+          </div>
+          <div class="hero-illustration is-revealing">
+            <img width="110" alt="iPhone Mock image" src="assets/iPhone-12-Mock.png" />
           </div>
         </div>
       </div>
-    </header>
+    </section>
 
-    <main>
-      <section class="hero">
-        <div class="container">
-          <div class="hero-inner">
-            <div class="hero-copy">
-              <h1 class="hero-title h1-mobile mt-0 is-revealing">Vocabular</h1>
-              <div class="hero-underline"></div>
-              <h1 class="hero-title h1-mobile mt-0 is-revealing">A simple, clutter-free pocket dictionary</h1>
-              <p class="hero-paragraph is-revealing">Change the way you lookup words and retain the meaning of them.
-                Vocabular is your simple ad-free solution to learning new words and expanding your vocabulary.</p>
-              <a href="#">
-                <img width="155" class="hero-cta is-revealing" src="assets/iOS-download-badge.svg" /></a>
-            </div>
-            <div class="hero-illustration is-revealing">
-              <img width="110" alt="iPhone Mock image" src="assets/iPhone-12-Mock.png" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="features section text-center">
-        <div class="section-square"></div>
-        <div class="container">
-          <div class="features-inner section-inner">
-            <div class="features-wrap">
-              <div class="feature is-revealing">
-                <div class="feature-inner">
-                  <div class="feature-icon">
-                    <div class="feature-icon-highlight">
-                      <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-1-a">
-                            <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#007DFF" offset="100%" />
-                          </linearGradient>
-                          <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-1-b">
-                            <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#FF4F7A" offset="100%" />
-                          </linearGradient>
-                        </defs>
-                        <g fill="none" fill-rule="evenodd">
-                          <path d="M8 0h24v24a8 8 0 0 1-8 8H0V8a8 8 0 0 1 8-8z" fill="url(#feature-1-a)" />
-                        </g>
-                      </svg>
-                      <img alt="search icon" src="assets/search-icon.png" />
-                    </div>
-                  </div>
-                  <h4 class="feature-title h3-mobile">Explore</h4>
-                  <p class="text-sm">Search for words as you would on the web. Expand your vocabulary by viewing related
-                    words.</p>
-                </div>
-              </div>
-              <div class="feature is-revealing">
-                <div class="feature-inner">
-                  <div class="feature-icon">
-                    <div class="feature-icon-highlight">
-                      <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-2-a">
-                            <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#007DFF" offset="100%" />
-                          </linearGradient>
-                          <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-2-b">
-                            <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#FF4F7A" offset="100%" />
-                          </linearGradient>
-                        </defs>
-                        <g fill="none" fill-rule="evenodd">
-                          <path d="M0 0h32v7c0 13.807-11.193 25-25 25H0V0z" fill="url(#feature-2-a)" />
-
-                        </g>
-                      </svg>
-                      <img alt="bookmark icon" src="assets/bookmark-icon.png" />
-                    </div>
-                  </div>
-                  <h4 class="feature-title h3-mobile">Bookmark</h4>
-                  <p class="text-sm">Bookmark words to have them saved locally and accessible right in your homescreen.
-                  </p>
-                </div>
-              </div>
-              <div class="feature is-revealing">
-                <div class="feature-inner">
-                  <div class="feature-icon">
-                    <div class="feature-icon-highlight">
-                      <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-3-a">
-                            <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#007DFF" offset="100%" />
-                          </linearGradient>
-                          <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-3-b">
-                            <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#FF4F7A" offset="100%" />
-                          </linearGradient>
-                        </defs>
-                        <g fill="none" fill-rule="evenodd">
-                          <circle fill="url(#feature-3-a)" cx="16" cy="16" r="16" />
-                        </g>
-                      </svg>
-                      <img alt="archive icon" src="assets/archive-icon.png" />
-                    </div>
-                  </div>
-                  <h4 class="feature-title h3-mobile">Archive</h4>
-                  <p class="text-sm">Finish learning words and archive them. Archived words can be retrieved in the
-                    future.
-                  </p>
-                </div>
-              </div>
-              <div class="feature is-revealing">
-                <div class="feature-inner">
-                  <div class="feature-icon">
-                    <div class="feature-icon-highlight">
-                      <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-4-a">
-                            <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#FF4F7A" offset="100%" />
-                          </linearGradient>
-                          <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-4-b">
-                            <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
-                            <stop stop-color="#007DFF" offset="100%" />
-                          </linearGradient>
-                        </defs>
-                        <g fill="none" fill-rule="evenodd">
-
-                          <path d="M16 0h16v16c0 8.837-7.163 16-16 16H0V16C0 7.163 7.163 0 16 0z"
-                            fill="url(#feature-4-b)" />
-                        </g>
-                      </svg>
-                      <img alt="phrases icon" src="assets/phrases-icon.png" />
-                    </div>
-                  </div>
-                  <h4 class="feature-title h3-mobile">Phrases</h4>
-                  <p class="text-sm">Phrases are sentences containing a particular word. Create and view phrases for
-                    words you are learning to improve your understanding of a word. </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer text-light">
+    <section class="features section text-center">
+      <div class="section-square"></div>
       <div class="container">
-        <div class="site-footer-inner has-top-divider">
-          <div class="brand footer-brand">
-            <a href="#">
-              <svg width="48" height="32" viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
-                <title>Vocabular</title>
-                <defs>
-                  <linearGradient x1="0%" y1="100%" y2="0%" id="logo-footer-a">
-                    <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
-                    <stop stop-color="#007DFF" offset="100%" />
-                  </linearGradient>
-                  <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="logo-footer-b">
-                    <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
-                    <stop stop-color="#FF4F7A" offset="100%" />
-                  </linearGradient>
-                </defs>
-                <g fill="none" fill-rule="evenodd">
-                  <rect fill="url(#logo-footer-a)" width="32" height="32" rx="16" />
-                  <rect fill="url(#logo-footer-b)" x="16" width="32" height="32" rx="16" />
-                </g>
-              </svg>
-            </a>
+        <div class="features-inner section-inner">
+          <div class="features-wrap">
+            <div class="feature is-revealing">
+              <div class="feature-inner">
+                <div class="feature-icon">
+                  <div class="feature-icon-highlight">
+                    <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-1-a">
+                          <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#007DFF" offset="100%" />
+                        </linearGradient>
+                        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-1-b">
+                          <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#FF4F7A" offset="100%" />
+                        </linearGradient>
+                      </defs>
+                      <g fill="none" fill-rule="evenodd">
+                        <path d="M8 0h24v24a8 8 0 0 1-8 8H0V8a8 8 0 0 1 8-8z" fill="url(#feature-1-a)" />
+                      </g>
+                    </svg>
+                    <img alt="search icon" src="assets/search-icon.png" />
+                  </div>
+                </div>
+                <h4 class="feature-title h3-mobile">Explore</h4>
+                <p class="text-sm">Search for words as you would on the web. Expand your vocabulary by viewing related
+                  words.</p>
+              </div>
+            </div>
+            <div class="feature is-revealing">
+              <div class="feature-inner">
+                <div class="feature-icon">
+                  <div class="feature-icon-highlight">
+                    <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-2-a">
+                          <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#007DFF" offset="100%" />
+                        </linearGradient>
+                        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-2-b">
+                          <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#FF4F7A" offset="100%" />
+                        </linearGradient>
+                      </defs>
+                      <g fill="none" fill-rule="evenodd">
+                        <path d="M0 0h32v7c0 13.807-11.193 25-25 25H0V0z" fill="url(#feature-2-a)" />
+
+                      </g>
+                    </svg>
+                    <img alt="bookmark icon" src="assets/bookmark-icon.png" />
+                  </div>
+                </div>
+                <h4 class="feature-title h3-mobile">Bookmark</h4>
+                <p class="text-sm">Bookmark words to have them saved locally and accessible right in your homescreen.
+                </p>
+              </div>
+            </div>
+            <div class="feature is-revealing">
+              <div class="feature-inner">
+                <div class="feature-icon">
+                  <div class="feature-icon-highlight">
+                    <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-3-a">
+                          <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#007DFF" offset="100%" />
+                        </linearGradient>
+                        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-3-b">
+                          <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#FF4F7A" offset="100%" />
+                        </linearGradient>
+                      </defs>
+                      <g fill="none" fill-rule="evenodd">
+                        <circle fill="url(#feature-3-a)" cx="16" cy="16" r="16" />
+                      </g>
+                    </svg>
+                    <img alt="archive icon" src="assets/archive-icon.png" />
+                  </div>
+                </div>
+                <h4 class="feature-title h3-mobile">Archive</h4>
+                <p class="text-sm">Finish learning words and archive them. Archived words can be retrieved in the
+                  future.
+                </p>
+              </div>
+            </div>
+            <div class="feature is-revealing">
+              <div class="feature-inner">
+                <div class="feature-icon">
+                  <div class="feature-icon-highlight">
+                    <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="feature-4-a">
+                          <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#FF4F7A" offset="100%" />
+                        </linearGradient>
+                        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="feature-4-b">
+                          <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
+                          <stop stop-color="#007DFF" offset="100%" />
+                        </linearGradient>
+                      </defs>
+                      <g fill="none" fill-rule="evenodd">
+
+                        <path d="M16 0h16v16c0 8.837-7.163 16-16 16H0V16C0 7.163 7.163 0 16 0z"
+                          fill="url(#feature-4-b)" />
+                      </g>
+                    </svg>
+                    <img alt="phrases icon" src="assets/phrases-icon.png" />
+                  </div>
+                </div>
+                <h4 class="feature-title h3-mobile">Phrases</h4>
+                <p class="text-sm">Phrases are sentences containing a particular word. Create and view phrases for
+                  words you are learning to improve your understanding of a word. </p>
+              </div>
+            </div>
           </div>
-          <ul class="footer-links list-reset">
-            <li>
-              <a href="/terms.html">Terms of Service</a>
-            </li>
-            <li>
-              <a href="/privacy.html">Privacy Policy</a>
-            </li>
-          </ul>
-          <ul class="footer-social-links list-reset">
-            <li>
-              <a href="mailto:contact@vocabular.app">
-                contact@vocabular.app
-              </a>
-            </li>
-            <!-- <li>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer text-light">
+    <div class="container">
+      <div class="site-footer-inner has-top-divider">
+        <div class="brand footer-brand">
+          <a href="#">
+            <svg width="48" height="32" viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
+              <title>Vocabular</title>
+              <defs>
+                <linearGradient x1="0%" y1="100%" y2="0%" id="logo-footer-a">
+                  <stop stop-color="#007CFE" stop-opacity="0" offset="0%" />
+                  <stop stop-color="#007DFF" offset="100%" />
+                </linearGradient>
+                <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="logo-footer-b">
+                  <stop stop-color="#FF4F7A" stop-opacity="0" offset="0%" />
+                  <stop stop-color="#FF4F7A" offset="100%" />
+                </linearGradient>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <rect fill="url(#logo-footer-a)" width="32" height="32" rx="16" />
+                <rect fill="url(#logo-footer-b)" x="16" width="32" height="32" rx="16" />
+              </g>
+            </svg>
+          </a>
+        </div>
+        <ul class="footer-links list-reset">
+          <li>
+            <a href="/terms.html">Terms of Service</a>
+          </li>
+          <li>
+            <a href="/privacy.html">Privacy Policy</a>
+          </li>
+        </ul>
+        <ul class="footer-social-links list-reset">
+          <li>
+            <a href="mailto:learnvocabularapp@gmail.com">
+              learnvocabularapp@gmail.com
+            </a>
+          </li>
+          <!-- <li>
               <a href="#">
                 <span class="screen-reader-text">Facebook</span>
                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
@@ -238,14 +237,13 @@
                 </svg>
               </a>
             </li> -->
-          </ul>
-          <div class="footer-copyright">&copy; 2021 Vocabular App, All rights reserved</div>
-        </div>
+        </ul>
+        <div class="footer-copyright">&copy; 2021 Vocabular App, All rights reserved</div>
       </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
 
-  <script src="src/js/main.js"></script>
+  <script src="dist/js/main.min.js"></script>
 </body>
 
 </html>

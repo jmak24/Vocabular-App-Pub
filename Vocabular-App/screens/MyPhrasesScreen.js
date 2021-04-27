@@ -22,7 +22,7 @@ const screen = Dimensions.get("screen");
 
 const MyPhrasesScreen = ({ navigation }) => {
   const userProfile = useSelector((state) => state.userProfile);
-  const phraseData = userProfile.phrases;
+  const phraseData = userProfile && userProfile.phrases;
 
   const selectWordHandler = (word) => {
     navigation.push("WordDetails", {
