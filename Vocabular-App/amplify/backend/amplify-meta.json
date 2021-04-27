@@ -1,0 +1,140 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-vocabular-dev-180026-authRole",
+      "UnauthRoleArn": "arn:aws:iam::256674677869:role/amplify-vocabular-dev-180026-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::256674677869:role/amplify-vocabular-dev-180026-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+      "UnauthRoleName": "amplify-vocabular-dev-180026-unauthRole",
+      "StackName": "amplify-vocabular-dev-180026",
+      "StackId": "arn:aws:cloudformation:us-east-1:256674677869:stack/amplify-vocabular-dev-180026/5cae7640-8cec-11eb-ba52-125caf34a739",
+      "AmplifyAppId": "d3ucptbx5mj1cf"
+    }
+  },
+  "api": {
+    "vocabularAPI": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authvocabularAuth"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "description": "Vocabular API key"
+              }
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "lfwwo4upxbbb7fr4bf7ts3zko4",
+        "GraphQLAPIEndpointOutput": "https://6vs6gtf64jdfbplvdl7wfqts2m.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-ki623qiznvdpfazc4lvn22emra"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-vocabular-dev-180026-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apivocabularAPI"
+      },
+      "lastPushTimeStamp": "2021-04-20T15:29:55.881Z",
+      "lastPushDirHash": "dIoo5JNGQRJFazKhf7GfJfoV+Vo="
+    }
+  },
+  "auth": {
+    "vocabularAuth": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "vocabularAuthPreSignup",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
+      "customAuth": false,
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-vocabular-dev-180026-deployment/amplify-cfn-templates/auth/vocabularAuth-cloudformation-template.yml",
+        "logicalId": "authvocabularAuth"
+      },
+      "lastPushTimeStamp": "2021-04-20T15:29:55.867Z",
+      "output": {
+        "UserPoolId": "us-east-1_9JcadIh7l",
+        "AppClientIDWeb": "4nmtv7op1mjspudpno0bj05c0u",
+        "AppClientID": "28mc8t62qbdaqhjmbf2gu9n29f",
+        "UserPoolName": "vocabular_userPool"
+      },
+      "lastPushDirHash": "3IR55kgUIr7iDy+9B3m+59O6bHg="
+    }
+  },
+  "function": {
+    "syncDataFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2021-04-12T17:19:16.960Z",
+      "lastPackageTimeStamp": "2021-04-12T17:19:17.599Z",
+      "distZipFilename": "syncDataFunction-36316d6b73776d677a32-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+        "s3Key": "amplify-builds/syncDataFunction-36316d6b73776d677a32-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-vocabular-dev-180026-deployment/amplify-cfn-templates/function/syncDataFunction-cloudformation-template.json",
+        "logicalId": "functionsyncDataFunction"
+      },
+      "lastPushTimeStamp": "2021-04-20T15:29:55.869Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:256674677869:function:syncDataFunction-dev",
+        "Name": "syncDataFunction-dev",
+        "LambdaExecutionRole": "vocabularLambdaRole74942529-dev"
+      },
+      "lastPushDirHash": "RRr45ezTBWxKzqQ/h7DiKcqIujE=",
+      "lastDevBuildTimeStamp": "2021-04-12T13:55:49.182Z",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "vocabularAPI",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "vocabularAuthPreSignup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2021-04-19T13:56:22.945Z",
+      "lastPackageTimeStamp": "2021-04-19T13:56:22.975Z",
+      "distZipFilename": "vocabularAuthPreSignup-763259664a3873776c46-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+        "s3Key": "amplify-builds/vocabularAuthPreSignup-763259664a3873776c46-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-vocabular-dev-180026-deployment/amplify-cfn-templates/function/vocabularAuthPreSignup-cloudformation-template.json",
+        "logicalId": "functionvocabularAuthPreSignup"
+      },
+      "lastPushTimeStamp": "2021-04-20T15:29:55.872Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:256674677869:function:vocabularAuthPreSignup-dev",
+        "Name": "vocabularAuthPreSignup-dev",
+        "LambdaExecutionRole": "vocabularAuthPreSignup-dev"
+      },
+      "lastPushDirHash": "b20zIERVksG74KY22odi7G/7G8A="
+    }
+  }
+}
