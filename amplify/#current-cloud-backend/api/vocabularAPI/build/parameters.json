@@ -1,0 +1,14 @@
+{
+    "CreateAPIKey": 1,
+    "AppSyncApiName": "vocabularAPI",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authvocabularAuth",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "S3DeploymentBucket": "amplify-vocabular-dev-180026-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/1772d6556fb5b0ec62409e813488473e5c9d2b4f"
+}

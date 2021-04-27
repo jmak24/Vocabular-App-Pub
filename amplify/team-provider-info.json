@@ -1,0 +1,30 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-vocabular-dev-180026-authRole",
+      "UnauthRoleArn": "arn:aws:iam::256674677869:role/amplify-vocabular-dev-180026-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::256674677869:role/amplify-vocabular-dev-180026-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+      "UnauthRoleName": "amplify-vocabular-dev-180026-unauthRole",
+      "StackName": "amplify-vocabular-dev-180026",
+      "StackId": "arn:aws:cloudformation:us-east-1:256674677869:stack/amplify-vocabular-dev-180026/5cae7640-8cec-11eb-ba52-125caf34a739",
+      "AmplifyAppId": "d3ucptbx5mj1cf"
+    },
+    "categories": {
+      "function": {
+        "syncDataFunction": {
+          "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+          "s3Key": "amplify-builds/syncDataFunction-36316d6b73776d677a32-build.zip"
+        },
+        "vocabularAuthPreSignup": {
+          "deploymentBucketName": "amplify-vocabular-dev-180026-deployment",
+          "s3Key": "amplify-builds/vocabularAuthPreSignup-763259664a3873776c46-build.zip"
+        }
+      },
+      "auth": {
+        "vocabularAuth": {}
+      }
+    }
+  }
+}
