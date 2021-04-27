@@ -1,0 +1,286 @@
+type UserProfile @aws_cognito_user_pools @aws_api_key {
+  id: ID!
+  owner: String
+  userTag: String!
+  email: AWSEmail!
+  wordsBookmarked: AWSJSON!
+  wordsArchived: AWSJSON!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  phrases(filter: ModelPhraseFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPhraseConnection @aws_api_key @aws_cognito_user_pools
+}
+
+type Phrase @aws_cognito_user_pools @aws_api_key {
+  id: ID!
+  word: String!
+  phrase: String!
+  numLikes: Int!
+  likes: AWSJSON!
+  authorId: ID!
+  isPublic: Boolean!
+  createdAt: AWSDateTime!
+  type: String!
+  updatedAt: AWSDateTime!
+  author: UserProfile @aws_api_key @aws_cognito_user_pools
+  owner: String
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelUserProfileConnection @aws_api_key @aws_cognito_user_pools {
+  items: [UserProfile]
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelUserProfileFilterInput {
+  id: ModelIDInput
+  owner: ModelStringInput
+  userTag: ModelStringInput
+  email: ModelStringInput
+  wordsBookmarked: ModelStringInput
+  wordsArchived: ModelStringInput
+  and: [ModelUserProfileFilterInput]
+  or: [ModelUserProfileFilterInput]
+  not: ModelUserProfileFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  listUserProfiles(filter: ModelUserProfileFilterInput, limit: Int, nextToken: String): ModelUserProfileConnection @aws_api_key @aws_cognito_user_pools
+  getUserProfile(id: ID!): UserProfile @aws_api_key @aws_cognito_user_pools
+  userProfileByEmail(email: AWSEmail, id: ModelIDKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelUserProfileFilterInput, limit: Int, nextToken: String): ModelUserProfileConnection @aws_api_key @aws_cognito_user_pools
+  getPhrase(id: ID!): Phrase @aws_api_key @aws_cognito_user_pools
+  listPhrases(filter: ModelPhraseFilterInput, limit: Int, nextToken: String): ModelPhraseConnection @aws_api_key @aws_cognito_user_pools
+  phrasesByUser(authorId: ID, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPhraseFilterInput, limit: Int, nextToken: String): ModelPhraseConnection @aws_api_key @aws_cognito_user_pools
+  phrasesByDate(word: String, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPhraseFilterInput, limit: Int, nextToken: String): ModelPhraseConnection @aws_api_key @aws_cognito_user_pools
+  phrasesByLikes(type: String, numLikes: ModelIntKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPhraseFilterInput, limit: Int, nextToken: String): ModelPhraseConnection @aws_api_key @aws_cognito_user_pools
+}
+
+input CreateUserProfileInput {
+  id: ID
+  owner: String
+  userTag: String!
+  email: AWSEmail!
+  wordsBookmarked: AWSJSON!
+  wordsArchived: AWSJSON!
+}
+
+input UpdateUserProfileInput {
+  id: ID!
+  owner: String
+  userTag: String
+  email: AWSEmail
+  wordsBookmarked: AWSJSON
+  wordsArchived: AWSJSON
+}
+
+input DeleteUserProfileInput {
+  id: ID
+}
+
+type Mutation {
+  createUserProfile(input: CreateUserProfileInput!, condition: ModelUserProfileConditionInput): UserProfile @aws_api_key @aws_cognito_user_pools
+  updateUserProfile(input: UpdateUserProfileInput!, condition: ModelUserProfileConditionInput): UserProfile @aws_api_key @aws_cognito_user_pools
+  deleteUserProfile(input: DeleteUserProfileInput!, condition: ModelUserProfileConditionInput): UserProfile @aws_api_key @aws_cognito_user_pools
+  createPhrase(input: CreatePhraseInput!, condition: ModelPhraseConditionInput): Phrase @aws_api_key @aws_cognito_user_pools
+  updatePhrase(input: UpdatePhraseInput!, condition: ModelPhraseConditionInput): Phrase @aws_api_key @aws_cognito_user_pools
+  deletePhrase(input: DeletePhraseInput!, condition: ModelPhraseConditionInput): Phrase @aws_api_key @aws_cognito_user_pools
+}
+
+input ModelUserProfileConditionInput {
+  userTag: ModelStringInput
+  email: ModelStringInput
+  wordsBookmarked: ModelStringInput
+  wordsArchived: ModelStringInput
+  and: [ModelUserProfileConditionInput]
+  or: [ModelUserProfileConditionInput]
+  not: ModelUserProfileConditionInput
+}
+
+type Subscription {
+  onCreateUserProfile: UserProfile @aws_subscribe(mutations: ["createUserProfile"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateUserProfile: UserProfile @aws_subscribe(mutations: ["updateUserProfile"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteUserProfile: UserProfile @aws_subscribe(mutations: ["deleteUserProfile"]) @aws_api_key @aws_cognito_user_pools
+  onCreatePhrase: Phrase @aws_subscribe(mutations: ["createPhrase"]) @aws_api_key @aws_cognito_user_pools
+  onUpdatePhrase: Phrase @aws_subscribe(mutations: ["updatePhrase"]) @aws_api_key @aws_cognito_user_pools
+  onDeletePhrase: Phrase @aws_subscribe(mutations: ["deletePhrase"]) @aws_api_key @aws_cognito_user_pools
+}
+
+type ModelPhraseConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Phrase]
+  nextToken: String
+}
+
+input ModelPhraseFilterInput {
+  id: ModelIDInput
+  word: ModelStringInput
+  phrase: ModelStringInput
+  numLikes: ModelIntInput
+  likes: ModelStringInput
+  authorId: ModelIDInput
+  isPublic: ModelBooleanInput
+  createdAt: ModelStringInput
+  type: ModelStringInput
+  and: [ModelPhraseFilterInput]
+  or: [ModelPhraseFilterInput]
+  not: ModelPhraseFilterInput
+}
+
+input CreatePhraseInput {
+  id: ID
+  word: String!
+  phrase: String!
+  numLikes: Int!
+  likes: AWSJSON!
+  authorId: ID!
+  isPublic: Boolean!
+  createdAt: AWSDateTime
+  type: String!
+}
+
+input UpdatePhraseInput {
+  id: ID!
+  word: String
+  phrase: String
+  numLikes: Int
+  likes: AWSJSON
+  authorId: ID
+  isPublic: Boolean
+  createdAt: AWSDateTime
+  type: String
+}
+
+input DeletePhraseInput {
+  id: ID
+}
+
+input ModelPhraseConditionInput {
+  word: ModelStringInput
+  phrase: ModelStringInput
+  numLikes: ModelIntInput
+  likes: ModelStringInput
+  authorId: ModelIDInput
+  isPublic: ModelBooleanInput
+  createdAt: ModelStringInput
+  type: ModelStringInput
+  and: [ModelPhraseConditionInput]
+  or: [ModelPhraseConditionInput]
+  not: ModelPhraseConditionInput
+}
+
+input ModelIDKeyConditionInput {
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelStringKeyConditionInput {
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIntKeyConditionInput {
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
