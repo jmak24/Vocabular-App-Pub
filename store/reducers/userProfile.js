@@ -8,13 +8,15 @@ import {
 import { TOGGLE_PHRASE_VISIBILITY, REMOVE_PHRASE } from "../actions/phrases";
 import { omitProp } from "../../utils/helper";
 
-export default (state = null, action) => {
+const initialState = { isAuthed: false };
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case SET_USER_PROFILE:
       const { userProfile } = action.payload;
-      return { ...state, ...userProfile };
+      return { ...state, ...userProfile, isAuthed: true };
     case CLEAR_USER_PROFILE:
-      return {};
+      return { isAuthed: false };
     case SET_USER_TAG:
       const { userTag } = action.payload;
       return { ...state, userTag };

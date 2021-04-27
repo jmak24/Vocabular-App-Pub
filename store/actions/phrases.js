@@ -59,9 +59,9 @@ export const handleLoadPhrases = ({ word }) => async (dispatch, getState) => {
     dispatch(setPhraseData(phraseData));
     dispatch(fetchPhrases("SUCCESS"));
   } catch (err) {
-    dispatch(
-      setToast("toastError", "Failed to Load Phrases", "ios-close-circle")
-    );
+    // dispatch(
+    //   setToast("toastError", "Failed to Load Phrases", "ios-close-circle")
+    // );
     dispatch(fetchPhrases("FAIL"));
     console.log(err);
   }

@@ -131,7 +131,6 @@ export const handleLoadUserPhrases = ({ userId }) => async (dispatch) => {
     dispatch(fetchPhrases("SUCCESS"));
   } catch (err) {
     dispatch(fetchPhrases("FAIL"));
-    console.log("handleLoadUserPhrases:", err);
   }
 };
 
