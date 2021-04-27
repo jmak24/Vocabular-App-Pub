@@ -29,7 +29,7 @@ const SettingsScreen = ({ navigation }) => {
   const userProfile = useSelector((state) => state.userProfile);
 
   const selectMyProfile = () => {
-    if (userProfile) {
+    if (userProfile.isAuthed) {
       navigation.push("Profile");
     } else {
       navigation.push("Login");
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     paddingHorizontal: 20,
+    // paddingBottom: 20,
   },
   optionTitle: {
     marginBottom: 16,

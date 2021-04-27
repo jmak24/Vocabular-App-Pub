@@ -43,7 +43,9 @@ const ProfileScreen = ({ navigation }) => {
   const numBookmarkedWords = wordsBookmarked.length;
   const numArchivedWords = wordsArchivedList.length;
   const numPhrases =
-    userProfile.phrases && Object.keys(userProfile.phrases).length;
+    userProfile &&
+    userProfile.phrases &&
+    Object.keys(userProfile.phrases).length;
   const { userTag, email } = userProfile;
 
   useEffect(() => {
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     paddingHorizontal: 20,
-    paddingTop: 10,
+    marginTop: 10,
   },
   profileCard: {
     justifyContent: "center",
