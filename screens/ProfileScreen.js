@@ -43,15 +43,14 @@ const ProfileScreen = ({ navigation }) => {
   const numBookmarkedWords = wordsBookmarked.length;
   const numArchivedWords = wordsArchivedList.length;
   const numPhrases =
-    userProfile &&
-    userProfile.phrases &&
+    userProfile.hasOwnProperty("phrases") &&
     Object.keys(userProfile.phrases).length;
   const { userTag, email } = userProfile;
 
   useEffect(() => {
     dispatch(handleLoadUserPhrases({ userId: userProfile.id }));
     return () => {
-      if (userProfile && userProfile.hasOwnProperty("id")) {
+      if (userProfile.isAuthed) {
         dispatch(cleanupUserPhrases());
       }
     };
