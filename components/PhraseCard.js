@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import reactStringReplace from "react-string-replace";
 
 import Colors from "../constants/Colors";
 import CustomText from "./CustomText";
@@ -15,7 +16,7 @@ import { onShare } from "../utils/helper";
 
 const PhraseCard = ({ navigation, details, myPhraseSection, authedUserId }) => {
   const dispatch = useDispatch();
-  const { id, phrase, likes, isPublic, authorId, author } = details;
+  const { id, phrase, word, likes, isPublic, authorId, author } = details;
   const eyeIcon = isPublic ? "ios-eye-outline" : "ios-eye-off-outline";
   const hasLiked = likes.includes(authedUserId);
   const isAuthor = authedUserId === authorId;
@@ -33,9 +34,16 @@ const PhraseCard = ({ navigation, details, myPhraseSection, authedUserId }) => {
     }
   };
 
+  const highlightedWordsInPhrase = () =>
+    reactStringReplace(phrase.toLowerCase(), word, (match, i) => (
+      <CustomText key={i} option='highlightedWord'>
+        {word}
+      </CustomText>
+    ));
+
   return (
     <View style={styles.phraseCard}>
-      <CustomText option='body'>"{phrase}"</CustomText>
+      <CustomText option='body'>"{highlightedWordsInPhrase()}"</CustomText>
       <View style={styles.bottomSection}>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity

@@ -3,6 +3,7 @@ export default {
   primaryTheme: "#1a96e8",
   primaryText: "#000000",
   secondaryText: "#7C7C7C",
+  highlightedText: "#1974b0",
   grayTint: "#F6F6F6",
   iconGray: "#7C7C7C",
   iconLightGray: "#b8b8b8",

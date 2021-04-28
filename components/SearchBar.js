@@ -19,6 +19,10 @@ const SearchBar = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (searchInput.length > 2) handleSearch();
+  }, [searchInput]);
+
+  useEffect(() => {
     searchInputRef.current.focus();
   }, []);
 

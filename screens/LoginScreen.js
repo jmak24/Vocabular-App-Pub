@@ -81,7 +81,9 @@ const LoginScreen = ({ navigation }) => {
         password,
         attributes: { email, preferred_username: userTag },
       });
-      setToast("toastInfo", "Sign Up Complete!", "ios-checkmark-circle");
+      dispatch(
+        setToast("toastInfo", "Sign Up Complete!", "ios-checkmark-circle")
+      );
       updateFormType("signIn", false);
     } catch (err) {
       console.log("signUp", err);
@@ -231,6 +233,7 @@ const LoginScreen = ({ navigation }) => {
                         placeholder='Password'
                         secureTextEntry={true}
                         value={formState.password}
+                        onSubmitEditing={signUp}
                       />
                     </View>
                     <View
@@ -254,49 +257,6 @@ const LoginScreen = ({ navigation }) => {
                       </CustomText>
                       <CustomText option='body' style={styles.signUpOrSignIn}>
                         Sign In
-                      </CustomText>
-                    </TouchableOpacity>
-                  </View>
-                </Fragment>
-              )}
-              {formState.formType === "confirmSignUp" && (
-                <Fragment>
-                  <View style={styles.headerSection}>
-                    <Image style={styles.logo} source={LogoIcon} />
-                    <CustomText style={styles.header} option='thin'>
-                      Verify Email
-                    </CustomText>
-                    <CustomText style={styles.subHeader} option='mid'>
-                      Please input the verification code sent to your email.
-                      Your email is only used to recover your password.
-                    </CustomText>
-                  </View>
-                  <View style={styles.fieldInput}>
-                    <Ionicons
-                      name={"ios-checkmark-circle"}
-                      size={26}
-                      style={styles.icon}
-                      color={Colors.iconLightGray}
-                    />
-                    <TextInput
-                      style={styles.textInput}
-                      onChange={(event) =>
-                        handleSetFieldInput(event, "authCode")
-                      }
-                      value={formState.authCode}
-                      placeholder='Verification Code'
-                      keyboardType='numeric'
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.button,
-                      !submitEnabled && styles.buttonDisabled,
-                    ]}
-                  >
-                    <TouchableOpacity onPress={confirmSignUp}>
-                      <CustomText option='mid' style={{ color: "#fff" }}>
-                        Confirm Sign Up
                       </CustomText>
                     </TouchableOpacity>
                   </View>
@@ -345,6 +305,7 @@ const LoginScreen = ({ navigation }) => {
                         placeholder='Password'
                         secureTextEntry={true}
                         value={formState.password}
+                        onSubmitEditing={signIn}
                       />
                     </View>
                     <View
@@ -403,6 +364,7 @@ const LoginScreen = ({ navigation }) => {
                         }
                         placeholder='Email address'
                         value={formState.email}
+                        onSubmitEditing={forgotPassword}
                       />
                     </View>
                     <View
@@ -486,6 +448,7 @@ const LoginScreen = ({ navigation }) => {
                         placeholder='Password'
                         secureTextEntry={true}
                         value={formState.password}
+                        onSubmitEditing={resetPassword}
                       />
                     </View>
                     <View
