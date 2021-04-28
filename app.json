@@ -16,7 +16,7 @@
     },
     "assetBundlePatterns": ["/assets/**/*"],
     "ios": {
-      "bundleIdentifier": "com.vocabular.pocket-dictionary",
+      "bundleIdentifier": "app.vocabular",
       "buildNumber": "1.0.0",
       "supportsTablet": false
     }

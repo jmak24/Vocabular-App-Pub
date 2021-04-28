@@ -65,6 +65,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "poppins-semibold",
   },
+  highlightedWord: {
+    fontSize: 16,
+    fontFamily: "poppins-reg",
+    color: Colors.highlightedText,
+  },
   toast: {
     fontSize: 16,
     fontFamily: "poppins-medium",
