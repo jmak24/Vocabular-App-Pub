@@ -20,6 +20,7 @@ import {
   clearBookmarkedWords,
   clearArchivedWords,
 } from "../store/actions/words";
+import { onShare } from "../utils/helper";
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -34,6 +35,16 @@ const SettingsScreen = ({ navigation }) => {
     } else {
       navigation.push("Login");
     }
+  };
+
+  const handleShareApp = () => {
+    dispatch(
+      onShare({
+        message: "Vocabular - Pocket Dictionary",
+        url:
+          "https://apps.apple.com/ca/app/vocabular-pocket-dictionary/id1564676053",
+      })
+    );
   };
 
   const handlePressClearBookmarks = () =>
@@ -84,7 +95,11 @@ const SettingsScreen = ({ navigation }) => {
           <CustomText style={styles.optionTitle} option='mid'>
             Support Us
           </CustomText>
-          <OptionButton icon={"ios-share-outline"} title={"Share Vocabular"} />
+          <OptionButton
+            icon={"ios-share-outline"}
+            title={"Share Vocabular"}
+            onPress={handleShareApp}
+          />
           <OptionButton icon={"ios-star-outline"} title={"Leave us a Review"} />
           <CustomText style={styles.optionTitle} option='mid'>
             Help

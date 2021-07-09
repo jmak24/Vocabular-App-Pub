@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 import {
   View,
   Dimensions,
@@ -68,7 +68,7 @@ const MyPhrasesScreen = ({ navigation }) => {
         ) : (
           <MessagePage
             message={
-              "You do not have any phrases right now. Start exploring words and creating your own phrase!"
+              "You do not have any phrases right now. Start exploring words and creating your own phrases!"
             }
           />
         )}

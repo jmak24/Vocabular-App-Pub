@@ -46,6 +46,7 @@ export default (state = {}, action) => {
         wordsBookmarked: updatedWordsBookmarked,
       };
     }
+    
     case TOGGLE_ARCHIVE: {
       const targetWord = action.payload.targetWord;
       const updatedWordsData = { ...state.wordsData };

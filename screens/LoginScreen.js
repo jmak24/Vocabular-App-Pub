@@ -182,7 +182,7 @@ const LoginScreen = ({ navigation }) => {
                       Welcome
                     </CustomText>
                     <CustomText style={styles.subHeader} option='mid'>
-                      Sign up to use Vocabular
+                      Sign up to start posting Phrases
                     </CustomText>
                   </View>
                   <View style={styles.mainSection}>

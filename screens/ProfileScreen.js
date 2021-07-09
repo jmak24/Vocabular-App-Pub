@@ -44,6 +44,7 @@ const ProfileScreen = ({ navigation }) => {
   const numArchivedWords = wordsArchivedList.length;
   const numPhrases =
     userProfile.hasOwnProperty("phrases") &&
+    userProfile.phrases &&
     Object.keys(userProfile.phrases).length;
   const { userTag, email } = userProfile;
 
