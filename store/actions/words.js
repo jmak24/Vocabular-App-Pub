@@ -1,11 +1,5 @@
 import { setToast } from "./toasts";
 import { getAsyncStorage } from "../../utils/helper";
-// import {
-//   WORDS_DATA,
-//   WORDS_LIST,
-//   ARCHIVED_WORDS_LIST,
-//   RECENT_WORDS_LIST,
-// } from "../../models/dummy-data";
 
 export const SETUP_INIT = "SETUP_INIT";
 export const TOGGLE_BOOKMARK = "TOGGLE_BOOKMARK";
@@ -39,11 +33,6 @@ export const clearAllRecentWords = () => {
 
 export const setupInitWordsState = () => async (dispatch) => {
   try {
-    // const wordsData = WORDS_DATA;
-    // const wordsBookmarked = WORDS_LIST;
-    // const wordsArchived = ARCHIVED_WORDS_LIST;
-    // const recentWords = RECENT_WORDS_LIST;
-
     const wordsData = (await getAsyncStorage("wordsData")) ?? {};
     const wordsBookmarked = (await getAsyncStorage("wordsBookmarked")) ?? [];
     const wordsArchived = (await getAsyncStorage("wordsArchived")) ?? {};

@@ -15,26 +15,6 @@ const AppContainer = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.userProfile);
 
-  // const testAPI = async () => {
-  //   try {
-  //     const userId = "d076de4f-8699-4822-bef4-891babcaebaa";
-  //     const words = JSON.stringify([]);
-  //     const archived = JSON.stringify({});
-  //     const res = await syncData({ userId, words, archived });
-  //     console.log(res);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // const getIsFirstTime = async () => {
-  //   const firstTime = await getAsyncStorage("isFirstTime");
-  //   if (firstTime) {
-  //     await setAsyncStorage('isFirstTime', false);
-  //   }
-  //   return firstTime;
-  // }
-
   useEffect(() => {
     dispatch(setupInitWordsState());
     dispatch(loadUserProfile());

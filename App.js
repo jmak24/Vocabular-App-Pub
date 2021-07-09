@@ -13,17 +13,6 @@ import phrasesReducer from "./store/reducers/phrases";
 import userProfilerReducer from "./store/reducers/userProfile";
 import loadingReducer from "./store/reducers/loading";
 import AppContainer from "./AppContainer";
-// import { setupInitWordsState } from "./store/actions/words";
-// import { setUserProfile, loadUserProfile } from "./store/actions/userProfile";
-
-// import * as mutations from "./amplify/graphql/mutations"; // TO REMOVE
-// import * as queries from "./amplify/graphql/queries"; // TO REMOVE
-// import { getPhrasesByDate, syncData } from "./utils/helper"; // TO REMOVE
-
-// import Amplify, { Hub } from "aws-amplify";
-// import awsconfig from "./aws-exports";
-
-// Amplify.configure(awsconfig);
 
 const rootReducer = combineReducers({
   words: wordsReducer,
