@@ -19,10 +19,10 @@ When a bookmarked word is no longer of interest to you, you can have it moved in
 
 Phrases are sentences containing a particular word. Phrases should provide you with better context of how a word is used in a sentence. Create and view phrases for words you are learning to improve your understanding of a word. You can make your phrases public or private (account required).
 
-<img src="assets/AppStore-Images/1-iPhone.png" width="370px" />
-
-<img src="assets/AppStore-Images/2-iPhone.png" width="370px" />
-
+<div>
+  <img src="assets/AppStore-Images/1-iPhone.png" width="370px" />
+  <img src="assets/AppStore-Images/2-iPhone.png" width="370px" />
+</div>
 <img src="assets/AppStore-Images/3-iPhone.png" width="370px" />
 
 <img src="assets/AppStore-Images/4-iPhone.png" width="370px" />
