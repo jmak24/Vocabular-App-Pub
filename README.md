@@ -21,10 +21,10 @@ Phrases are sentences containing a particular word. Phrases should provide you w
 
 <img src="assets/AppStore-Images/1-iPhone.png" width="370px" />
 
-![iPhone 2](assets/AppStore-Images/2-iPhone.png?raw=true "Title")
+<img src="assets/AppStore-Images/2-iPhone.png" width="370px" />
 
-![iPhone 3](assets/AppStore-Images/3-iPhone.png?raw=true "Title")
+<img src="assets/AppStore-Images/3-iPhone.png" width="370px" />
 
-![iPhone 4](assets/AppStore-Images/4-iPhone.png?raw=true "Title")
+<img src="assets/AppStore-Images/4-iPhone.png" width="370px" />
 
-![iPhone 5](assets/AppStore-Images/5-iPhone.png?raw=true "Title")
+<img src="assets/AppStore-Images/5-iPhone.png" width="370px" />
